@@ -8,46 +8,19 @@ colnames(d) <- c("Estimate", "Familiarity", "Training", "Country")
 
 # change descriptions to numerical
 
-changeFamiliarity <- function(x){
-	
-	if (x == "Very Familiar"){
-		x <- 1
-	} 
-	if (x == "Familiar"){
-		x <- 2
-	} 
-	if (x == "Somewhat Familiar"){
-		x <- 3
-	} 
-	if (x == "What's a Plant?"){
-		x <- 4
-	} 
-	return(x)
-}
+lvl.familiarity <- c("Very Familiar", "Familiar", "Somewhat Familiar",
+                     "What's a Plant?")
+lvl.training <-
+  c("Postgraduate degree in botany or a related field",
+    "Partially complete postgraduate degree in botany or a related field",
+    "Undergraduate degree in botany or a related field",
+    "Some botany courses at either an undergraduate or postgraduate level",
+    "No formal training in botany")             
+             
+d$Familiarity <- factor(d$Familiarity, lvl.familiarity, ordered=TRUE)
+d$Training <- factor(d$Training, lvl.training, ordered=TRUE)
 
-changeTraining <- function(x){
-	
-	if (x == "Postgraduate degree in botany or a related field"){
-		x <- 1
-	}
-	if (x == "Partially complete postgraduate degree in botany or a related field"){
-		x <- 2
-	}
-	if (x == "Undergraduate degree in botany or a related field"){
-		x <- 3
-	}
-	if (x == "Some botany courses at either an undergraduate or postgraduate level"){
-		x <- 4
-	}
-	if (x == "No formal training in botany"){
-		x <- 5
-	}
-	return(x)
-}
-
-d[,"Familiarity"] <- sapply(d[,"Familiarity"], function(x) changeFamiliarity(x))
-
-d[,"Training"] <- sapply(d[,"Training"], function(x) changeTraining(x))
+d$Estimate[d$Estimate < 1] <- d$Estimate[d$Estimate < 1] * 100
 
 # get mean
 m <- mean(d$Estimate)
@@ -57,16 +30,10 @@ med <- median(d$Estimate)
 
 sd <- sd(d$Estimate)
 
+## Convert estimates to normal using logit transformation
+d$Estimate.logit <- boot::logit(d$Estimate / 100)
+res <- lm(Estimate.logit ~ Training + Familiarity, data=d)
 
-# Convert estimates to normal using logit transformation
-
-d[,"Estimate"] <- sapply(d[,"Estimate"], function(x) return(x/100))
-d[,"Estimate"] <- logit(d[,"Estimate"])
-
-# fit glm
-formula <- Estimate ~ Training + Familiarity
-
-res <- glm(formula, data=d)
 
 summary(res)
 
