@@ -2,6 +2,9 @@
 
 ## Temporary script to build the family tree.
 
+library(diversitree)
+path.forest <- readLines("~/.forest_path")
+
 get.class <- function(phy.f) {
   lab <- phy.f$node.label
   keep <- grepl("ales$", lab)
@@ -38,27 +41,36 @@ get.class <- function(phy.f) {
   grp
 }
 
-library(diversitree)
-path.forest <- readLines("~/.forest_path")
+build.family.tree <- function(regenerate=FALSE) {
+  filename <- "phy.f.rds"
+  if ( !regenerate && file.exists(filename) ) {
+    phy.f <- readRDS(filename)
+  } else {
+    phy <- read.tree(file.path(path.forest,
+                               "taxonomic/trees/spLevelApgBackbone.tre"))
+    i <- phy$node.label == ""
+    phy$node.label[i] <- sprintf("node.%d", (1:phy$Nnode)[i])
+    problems <-
+      readLines(file.path(path.forest,
+                          "taxonomic/trees/problemSpeciesAPG.txt"))
+    problems <- sub(" *$", "", problems) # kill trailing whitespace
+    phy <- diversitree:::drop.tip.fixed(phy, problems)
+    phy <- compute.brlen(phy, method="Grafen", power=.45)
+    families <-
+      read.csv(file.path(path.forest, "taxonomic/genus_order_lookup.csv"),
+               stringsAsFactors=FALSE)
+    genus <- sub("_.+$", "", phy$tip.label)
+    family <- families$family[match(genus, families$genus)]
+    family[is.na(family)] <- genus[is.na(family)] # Fabaceae x 5
+    phy.f <- clades.from.classification(phy, family, check=FALSE)
+    ord <- get.class(phy.f)
+    names(ord) <- phy.f$tip.label
+    phy.f$class <- ord
+    saveRDS(phy.f, filename)
+  }
+  phy.f
+}
 
-phy <- read.tree(file.path(path.forest,
-                           "taxonomic/trees/spLevelApgBackbone.tre"))
-i <- phy$node.label == ""
-phy$node.label[i] <- sprintf("node.%d", (1:phy$Nnode)[i])
-problems <-
-  readLines(file.path(path.forest,
-                      "taxonomic/trees/problemSpeciesAPG.txt"))
-problems <- sub(" *$", "", problems) # kill trailing whitespace
-phy <- diversitree:::drop.tip.fixed(phy, problems)
-phy <- compute.brlen(phy, method="Grafen", power=.45)
-families <-
-  read.csv(file.path(path.forest, "taxonomic/genus_order_lookup.csv"),
-           stringsAsFactors=FALSE)
-genus <- sub("_.+$", "", phy$tip.label)
-family <- families$family_final[match(genus, families$genus_final)]
-family[is.na(family)] <- genus[is.na(family)] # Fabaceae x 5
-phy.f <- clades.from.classification(phy, family, check=FALSE)
-ord <- get.class(phy.f)
-names(ord) <- phy.f$tip.label
-phy.f$class <- ord
-save(phy.f, file="phy.f.Rdata")
+if ( !interactive() ) {
+  build.family.tree()
+}

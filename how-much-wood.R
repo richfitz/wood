@@ -4,6 +4,7 @@ library(diversitree)
 library(RColorBrewer)
 path.forest <- readLines("~/.forest_path")
 source("functions.R")
+source("build-family-tree.R")
 
 read.forest.csv <- function(filename)
   read.csv(file.path(path.forest, filename), stringsAsFactors=FALSE)
@@ -26,15 +27,15 @@ lookup <- read.forest.csv("taxonomic/genus_order_lookup.csv")
 ## Currently, some orders are missing for individual genera that
 ## belong to families where the order relationship is already known.
 ## Fill these in:
-i <- lookup$order_final == "" & lookup$family_final != ""
-tmp <- lookup[lookup$order_final != "",]
-res <- tmp$order_final[match(lookup$family_final[i],
-                             tmp$family_final)]
+i <- lookup$order == "" & lookup$family != ""
+tmp <- lookup[lookup$order != "",]
+res <- tmp$order[match(lookup$family[i],
+                       tmp$family)]
 res[is.na(res)] <- ""
-lookup$order_final[i] <- res
+lookup$order[i] <- res
 
 ## Add order level to info, which also contains per-genus counts.
-info$order <- lookup$order_final[match(info$family, lookup$family_final)]
+info$order <- lookup$order[match(info$family, lookup$family)]
 info$order[is.na(info$order) | info$order == ""] <- "UnknownOrder"
 
 ## Extract genus for each observation to match against the 'info' table.
@@ -130,7 +131,7 @@ hist(prop.all, xlab="Percent woody", ylab="",
 
 ## Plot the tree with a distribution of fractions of woodiness per
 ## family around the outside.
-phy.f <- get(load("phy.f.Rdata"))
+phy.f <- build.family.tree()
 
 ## This tree has order information:
 phy.f.ord <- phy.f$class

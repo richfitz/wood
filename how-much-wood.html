@@ -39,14 +39,14 @@ code > span.er { font-weight: bold; }
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RColorBrewer)
 path.forest &lt;- <span class="kw">readLines</span>(<span class="st">&quot;~/.forest_path&quot;</span>)
 <span class="kw">source</span>(<span class="st">&quot;functions.R&quot;</span>)
+<span class="kw">source</span>(<span class="st">&quot;build-family-tree.R&quot;</span>)
 
-read.forest.csv &lt;- function(filename) <span class="kw">read.csv</span>(<span class="kw">file.path</span>(path.forest, 
-    filename), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+read.forest.csv &lt;- function(filename) <span class="kw">read.csv</span>(<span class="kw">file.path</span>(path.forest, filename), 
+    <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
 
 dat &lt;- <span class="kw">read.forest.csv</span>(<span class="st">&quot;export/speciesTraitData.csv&quot;</span>)</code></pre>
 <p>Extract the woodiness data:</p>
-<pre class="sourceCode r"><code class="sourceCode r">dat$woodiness[!(dat$woodiness %in% <span class="kw">c</span>(<span class="st">&quot;H&quot;</span>, <span class="st">&quot;W&quot;</span>)) &amp; 
-    !<span class="kw">is.na</span>(dat$woodiness)] &lt;- <span class="ot">NA</span>
+<pre class="sourceCode r"><code class="sourceCode r">dat$woodiness[!(dat$woodiness %in% <span class="kw">c</span>(<span class="st">&quot;H&quot;</span>, <span class="st">&quot;W&quot;</span>)) &amp; !<span class="kw">is.na</span>(dat$woodiness)] &lt;- <span class="ot">NA</span>
 x &lt;- <span class="kw">factor</span>(dat$woodiness)
 <span class="kw">names</span>(x) &lt;- dat$gs
 x &lt;- x[!<span class="kw">is.na</span>(x)]
@@ -55,16 +55,13 @@ info &lt;- <span class="kw">read.forest.csv</span>(<span class="st">&quot;taxono
 <p>Determine orders:</p>
 <pre class="sourceCode r"><code class="sourceCode r">lookup &lt;- <span class="kw">read.forest.csv</span>(<span class="st">&quot;taxonomic/genus_order_lookup.csv&quot;</span>)</code></pre>
 <p>Currently, some orders are missing for individual genera that belong to families where the order relationship is already known. Fill these in:</p>
-<pre class="sourceCode r"><code class="sourceCode r">i &lt;- lookup$order_final == <span class="st">&quot;&quot;</span> &amp; lookup$family_final != 
-    <span class="st">&quot;&quot;</span>
-tmp &lt;- lookup[lookup$order_final != <span class="st">&quot;&quot;</span>, ]
-res &lt;- tmp$order_final[<span class="kw">match</span>(lookup$family_final[i], 
-    tmp$family_final)]
+<pre class="sourceCode r"><code class="sourceCode r">i &lt;- lookup$order == <span class="st">&quot;&quot;</span> &amp; lookup$family != <span class="st">&quot;&quot;</span>
+tmp &lt;- lookup[lookup$order != <span class="st">&quot;&quot;</span>, ]
+res &lt;- tmp$order[<span class="kw">match</span>(lookup$family[i], tmp$family)]
 res[<span class="kw">is.na</span>(res)] &lt;- <span class="st">&quot;&quot;</span>
-lookup$order_final[i] &lt;- res</code></pre>
+lookup$order[i] &lt;- res</code></pre>
 <p>Add order level to info, which also contains per-genus counts.</p>
-<pre class="sourceCode r"><code class="sourceCode r">info$order &lt;- lookup$order_final[<span class="kw">match</span>(info$family, 
-    lookup$family_final)]
+<pre class="sourceCode r"><code class="sourceCode r">info$order &lt;- lookup$order[<span class="kw">match</span>(info$family, lookup$family)]
 info$order[<span class="kw">is.na</span>(info$order) | info$order == <span class="st">&quot;&quot;</span>] &lt;- <span class="st">&quot;UnknownOrder&quot;</span></code></pre>
 <p>Extract genus for each observation to match against the 'info' table.</p>
 <pre class="sourceCode r"><code class="sourceCode r">genus &lt;- <span class="kw">sub</span>(<span class="st">&quot; .+&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">names</span>(x))</code></pre>
@@ -76,8 +73,8 @@ genus &lt;- <span class="kw">factor</span>(genus, <span class="dt">levels =</spa
 <p>'dat.g' is grouped by genus, and contains known numbers of species (N), and numbers known to be woody (W) and herbacious (H).</p>
 <pre class="sourceCode r"><code class="sourceCode r">dat.g &lt;- <span class="kw">as.data.frame</span>(<span class="kw">unclass</span>(<span class="kw">table</span>(genus, x)))
 idx &lt;- <span class="kw">match</span>(<span class="kw">rownames</span>(dat.g), info$genus)
-dat.g &lt;- <span class="kw">cbind</span>(<span class="dt">order =</span> info$order[idx], <span class="dt">family =</span> info$family[idx], 
-    <span class="dt">genus =</span> <span class="kw">rownames</span>(dat.g), <span class="dt">N =</span> info$species[idx], dat.g)
+dat.g &lt;- <span class="kw">cbind</span>(<span class="dt">order =</span> info$order[idx], <span class="dt">family =</span> info$family[idx], <span class="dt">genus =</span> <span class="kw">rownames</span>(dat.g), 
+    <span class="dt">N =</span> info$species[idx], dat.g)
 dat.g &lt;- dat.g[<span class="kw">order</span>(dat.g$order), ]
 <span class="kw">rownames</span>(dat.g) &lt;- <span class="ot">NULL</span></code></pre>
 <p>For some species, we know about more states than we know about species; increase the species count in this case.</p>
@@ -90,11 +87,11 @@ dat.g$N[fix] &lt;- <span class="kw">with</span>(dat.g[fix, ], H + W)</code></pre
     i &lt;- <span class="kw">is.na</span>(x$p)
     w &lt;- <span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="kw">nrow</span>(x), nrep)
     n.unk &lt;- <span class="kw">sum</span>(i)
-    w[!i, ] &lt;- <span class="kw">t</span>(<span class="kw">sapply</span>(<span class="kw">which</span>(!i), function(j) <span class="kw">rhyper2</span>(nrep, 
-        x$H[j], x$W[j], x$N[j])))
+    w[!i, ] &lt;- <span class="kw">t</span>(<span class="kw">sapply</span>(<span class="kw">which</span>(!i), function(j) <span class="kw">rhyper2</span>(nrep, x$H[j], x$W[j], 
+        x$N[j])))
     w[i, ] &lt;- <span class="kw">apply</span>(w[!i, , <span class="dt">drop =</span> <span class="ot">FALSE</span>]/x$N[!i], <span class="dv">2</span>, function(y) <span class="kw">rbinom</span>(n.unk, 
         x$N[i], <span class="kw">quantile</span>(y, <span class="kw">runif</span>(n.unk))))
-
+    
     ## This is surprisingly convoluted:
     fam &lt;- <span class="kw">as.character</span>(x$family)
     ret &lt;- <span class="kw">t</span>(<span class="kw">sapply</span>(<span class="kw">split</span>(<span class="kw">as.data.frame</span>(w), fam), colSums))
@@ -104,12 +101,10 @@ dat.g$N[fix] &lt;- <span class="kw">with</span>(dat.g[fix, ], H + W)</code></pre
 <p>Sample the fraction 1000 times. This takes a while - currently about 1.5 minutes.</p>
 <pre class="sourceCode r"><code class="sourceCode r">nrep &lt;- <span class="dv">1000</span>
 dat.g.split &lt;- <span class="kw">split</span>(dat.g, dat.g$order)
-simulated.counts &lt;- <span class="kw">mclapply</span>(dat.g.split, sim, 
-    nrep)</code></pre>
+simulated.counts &lt;- <span class="kw">mclapply</span>(dat.g.split, sim, nrep)</code></pre>
 <p>Next, build collapsed sets of data by family and by order.</p>
 <pre class="sourceCode r"><code class="sourceCode r">tot.f &lt;- <span class="kw">do.call</span>(rbind, simulated.counts)
-tot.o &lt;- <span class="kw">do.call</span>(rbind, <span class="kw">lapply</span>(simulated.counts, 
-    colSums))</code></pre>
+tot.o &lt;- <span class="kw">do.call</span>(rbind, <span class="kw">lapply</span>(simulated.counts, colSums))</code></pre>
 <p>Number of species per family and order:</p>
 <pre class="sourceCode r"><code class="sourceCode r">n.f &lt;- <span class="kw">tapply</span>(dat.g$N, dat.g$family, sum)[<span class="kw">rownames</span>(tot.f)]
 n.o &lt;- <span class="kw">tapply</span>(dat.g$N, dat.g$order, sum)[<span class="kw">rownames</span>(tot.o)]</code></pre>
@@ -128,13 +123,13 @@ p.all &lt;- <span class="kw">mean</span>(prop.all)</code></pre>
 }</code></pre>
 <p>Histogram of woodiness</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="fl">4.1</span>, <span class="fl">4.1</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>))
-<span class="kw">hist</span>(prop.all, <span class="dt">xlab =</span> <span class="st">&quot;Percent woody&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;&quot;</span>, 
-    <span class="dt">yaxt =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;&quot;</span>, <span class="dt">col =</span> <span class="kw">cols</span>(p.all))</code></pre>
+<span class="kw">hist</span>(prop.all, <span class="dt">xlab =</span> <span class="st">&quot;Percent woody&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;&quot;</span>, <span class="dt">yaxt =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;&quot;</span>, 
+    <span class="dt">col =</span> <span class="kw">cols</span>(p.all))</code></pre>
 <div class="figure">
 <img src="figure/unnamed-chunk-17.png" alt="Estimated fraction of woodiness over vascular plants" /><p class="caption">Estimated fraction of woodiness over vascular plants</p>
 </div>
 <p>Plot the tree with a distribution of fractions of woodiness per family around the outside.</p>
-<pre class="sourceCode r"><code class="sourceCode r">phy.f &lt;- <span class="kw">get</span>(<span class="kw">load</span>(<span class="st">&quot;phy.f.Rdata&quot;</span>))</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">phy.f &lt;- <span class="kw">build.family.tree</span>()</code></pre>
 <p>This tree has order information:</p>
 <pre class="sourceCode r"><code class="sourceCode r">phy.f.ord &lt;- phy.f$class</code></pre>
 <p>Drop tips with no woodiness estimates (due to taxonomic differences)</p>
@@ -143,14 +138,14 @@ phy.f &lt;- diversitree:::<span class="kw">drop.tip.fixed</span>(phy.f, to.drop)
 <p>And sort the order information by the current taxon labels:</p>
 <pre class="sourceCode r"><code class="sourceCode r">phy.f.ord &lt;- <span class="kw">unname</span>(phy.f.ord[phy.f$tip.label])</code></pre>
 <p>Identify the nodes corresponding to orders, and plot the internal ones.</p>
-<pre class="sourceCode r"><code class="sourceCode r">plt &lt;- <span class="kw">trait.plot.cont</span>(phy.f, p.f, <span class="kw">list</span>(cols), 
-    <span class="dt">class =</span> phy.f.ord, <span class="dt">w =</span> <span class="dv">1</span>/<span class="dv">30</span>, <span class="dt">font =</span> <span class="dv">1</span>)
-mrca.tipset &lt;- diversitree:::mrca.tipset
-nd &lt;- <span class="kw">sapply</span>(<span class="kw">sort</span>(<span class="kw">unique</span>(phy.f.ord)), function(x) <span class="kw">mrca.tipset</span>(phy.f, 
-    phy.f$tip.label[phy.f.ord == x &amp; !<span class="kw">is.na</span>(phy.f.ord)]))
+<pre class="sourceCode r"><code class="sourceCode r">plt &lt;- <span class="kw">trait.plot.cont</span>(phy.f, p.f, <span class="kw">list</span>(cols), <span class="dt">class =</span> phy.f.ord, <span class="dt">w =</span> <span class="dv">1</span>/<span class="dv">30</span>, 
+    <span class="dt">font =</span> <span class="dv">1</span>)</code></pre>
+<pre><code>## Warning: Collapsing non-monophyletic groups: Malpighiales, Arecacales</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">mrca.tipset &lt;- diversitree:::mrca.tipset
+nd &lt;- <span class="kw">sapply</span>(<span class="kw">sort</span>(<span class="kw">unique</span>(phy.f.ord)), function(x) <span class="kw">mrca.tipset</span>(phy.f, phy.f$tip.label[phy.f.ord == 
+    x &amp; !<span class="kw">is.na</span>(phy.f.ord)]))
 nd.int &lt;- nd[nd &gt; <span class="kw">length</span>(phy.f$tip.label)]
-<span class="kw">points</span>(plt$xy$xx[nd.int], plt$xy$yy[nd.int], <span class="dt">pch =</span> <span class="dv">19</span>, 
-    <span class="dt">cex =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="kw">cols</span>(p.o[<span class="kw">names</span>(nd.int)]))</code></pre>
+<span class="kw">points</span>(plt$xy$xx[nd.int], plt$xy$yy[nd.int], <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">cex =</span> <span class="dv">2</span>, <span class="dt">col =</span> <span class="kw">cols</span>(p.o[<span class="kw">names</span>(nd.int)]))</code></pre>
 <div class="figure">
 <img src="figure/unnamed-chunk-22.png" alt="Estimated per-family and per-order woodiness proportions" /><p class="caption">Estimated per-family and per-order woodiness proportions</p>
 </div>
