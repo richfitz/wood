@@ -2,6 +2,7 @@
 \usepackage{ms}
 \usepackage{natbib}
 \usepackage{lineno}
+\usepackage{graphicx}
 \modulolinenumbers[5]
 \linenumbers
 
@@ -18,6 +19,10 @@ $^*$ These authors contributed equally}
 \mstitlepage
 \parindent=1.5em
 \addtolength{\parskip}{.3em}
+
+\begin{abstract}
+  This is not very abstract --- almost concrete you might say.
+\end{abstract}
 
 \section{Introduction}
 
@@ -86,6 +91,83 @@ Details on survey analysis here [Will]
 
 We received 293 responses from 31 countries. The mean estimate for the proportion of woodiness was 31.7\% and a median estimate of 30\%. The standard deviation of the estimates was 17.7. The respondent's degree of training in botany had no effect on their estimate (Fig XX). There was a significant effect ($p<0.01$) of the respondent's  familiarity with plants on the estimates they gave though this effect seemed to be driven primarily by respondent's with very little familiarity with plants (the ``What's a Plant?'' category), whose estimates tended to be the lower (less woody) than the respondent's as a whole.
 
+\subsection{Estimating the fraction of species that are woody}
+
+% RGF: I've put the entire results part here.  I think that the paper
+% is going to be too short to justify a methods/results split,
+% probably.
+
+[Describe the database collection, and give a few summary statistics
+about the database here]
+
+We cannot simply use the fraction of species within our trait
+data set (21,743 / 36,238 = 60\%) as these records may represent a
+biased sample of vascular plants.
+% sum(dat.g$W) # woody
+% sum(dat.g$K) # known
+% sum(dat.g$W) / sum(dat.g$K) # fraction
+For example, most Orchidaceae are probably herbaceous; we have only
+two records of woodiness among the 1,574 species for which we have
+data.
+% i.orc <- dat.g$family == "Orchidaceae"
+% sum(dat.g$K[i.orc]) # known Orchidaceae
+% sum(dat.g$W[i.orc]) # woody Orchidaceae
+However, the fraction of Orcidaceae with known data (1,574 / 27,104 =
+6\%)
+% sum(dat.g$K[i.orc]) # known Orchidaceae
+% sum(dat.g$N[i.orc]) # number of Orchidaceae
+% sum(dat.g$K[i.orc]) / sum(dat.g$N[i.orc]) # knowledge rate of Orchidaceae
+is much lower than the overall rate of knowledge over all vascular
+plants (36,238 / 274,141 = 13\%), which will downwardly bias the
+global estimate of woodiness.
+% sum(dat.g$K) # known vascular
+% sum(dat.g$N) # total vascular
+% sum(dat.g$K) / sum(dat.g$N) # knowlege rate for all vascular plants
+%
+Conversely, systematic undersampling of tropical species, believed to
+be more woody than temperate species (REF: Jeremy's paper?), will bias
+the global woodiness estimate downwards.
+
+Most genera are either all-woody or all-hebacious.  Among the 748
+genera with at least 10 records, 392 are entirely woody, 248 are
+entirely herbaceous, and only 50 have between 10\% and 90\% woody
+species.  As a result, knowing the state of a handful of species
+within a genus can give a reasonable guess at the remaining species.
+% tmp <- dat.g$p[dat.g$K >= 10] # genera with 10 records
+% sum(tmp == 1) # 100% woody
+% sum(tmp == 0) # 100% herbaceous
+
+To impute the state of the species with unknown states, we used a
+simple procedure where we assumed that known species were sampled
+without replacement a pool of species, and then sampled the
+composition of this pool (see appendix).  For genera with no known
+states, we sampled a woodiness fraction from the empirical
+distribution of woodiness fractions for other genera within a family.
+
+% RGF: I'm going to start with the results tomorrow.
+\begin{figure}[p]
+  \centering
+  \includegraphics{fraction-by-genus}
+  \caption{Distribution of the fraction of woodiness among genera.
+    The distribution of the fraction of species that are woody within
+    a genus (among genera) is strongly bimodal (panel a -- showing
+    genera with at least 10 species only).
+    % 
+    The two different sampling approaches generate distributions that
+    differ in their bimodality (panel b).  When assuming species are
+    sampled with replacement from some pool, but having no prior on
+    the fraction of woodiness within the pool generates a broad
+    distribution with many polymorphic genera (blue bars), while
+    sampling with replacement assuming that species are drawn from a
+    pool of species that has a fraction of woody species equal to the
+    observed fraction of woodiness generates a strongly bimodal
+    distribution.}
+  \label{fig:distribution-genera}
+\end{figure}
+
+
+
+
 \section{Discussion}
 
 A global picture of biodiversity requires taxonomic, genetic and functional components.  In many ways research into function is the oldest of these lines of research, but today our functional understanding of global biodiversity is not as developed as our taxonomic and genetic understanding. Woodiness is a fundamental plant trait for many reasons: the presence or absence of wood  structures the main difference between terrestrial biomes; woody and herbaceous species also evolve at different rates \citep{SmithDonoghue};  there are also important evolutionary interactions with climate (Zanne); and wood itself has crucial effects on the global carbon cycle \citep{Cornwellwood}.  The question this paper asks---how many of the world's plant species are woody---is an extremely basic global description of global functional diversity.
@@ -97,6 +179,75 @@ We acknowledge that conducting a poll of the research community is certainly unc
 Whatever the reason for the discordance between the survey results and our data analysis, the fact that such a discordance exists further supports our claim that this most basic of plant natural history facts is not generally known.   
 
 
+\clearpage
+\setcounter{secnumdepth}{1}
+\appendix
+\section{Sampling proceedure}
+
+Suppose that for some genus there is a true number of woody species
+$N_w$ among the $N$ species in the genus, and that we have randomly
+sampled $n_w$ woody and $n_h$ species from this pool.
+%
+For example, with the genus \textit{Microcoelia} (Orchidaceae) all 13
+species with known state are herbaceous ($n_w = 0$, $n_h = 13$, but we
+we do not know the state of the remaining 17 species in the genus ($N
+= 30$).  In general, we can't assume that these species are all
+herbacious, even though odds are that most of them will be, so the
+true number of woody species may lie between 0 and 17.
+
+We used two different approaches for imputing the values of these
+missing species.  First, we assumed that the ``known'' species were
+sampled without replacement from a pool of species with $N_w$ woody
+and $N_h$ herbaceous species ($N_w + N_h = N$).  The probability that
+$x$ of the species woody ($x = 0, 1, \ldots, N
+- n_w - n_h$) is proportional to
+\begin{equation}
+  \Pr(N_w = x) \propto {n_w + x \choose n_w}
+  {N - (n_w + x) \choose n_h}
+\end{equation}
+For \textit{Microcoelia} this gives a 45\% probability that all
+species are herbacious, and a 92\% chance that at most three species
+are woody.
+
+This approach probably overestimates the number of woody species in
+this case, and in other cases (such as XXX where all YYY species with
+known states are woody) will understimate the fraction of species that
+are woody.  This corresponds to a very weak prior knowledge of the
+shape of the distribution of the fraction of woody species within a
+genus.  However, this distribution is strongly bimodal (FIGURE).  To
+model the other extreme of sampling, we used an approch where we
+computed the observed fraction of woody species ($p = n_w / (n_w +
+n_h)$) and sampled the state of the unobserved species using a
+binomial distribution, where the probability that $y$ of the $N - n_w
+- n_h$ species with no known state are woody is
+\begin{equation}
+  \Pr(y = k) = {N - n_w - n_h \choose k} p^k (1-p)^{N - n_w - n_h - k}.
+\end{equation}
+In cases where all known species are woody (or herbaceous) this will
+assign all unknown species to be woody (or herbaceous).  In
+polymorphic cases this will give similar results method above.  This
+approach corresponds to a very strong prior on the shape of the
+distribution of woodiness among genera.
+% RGF: This is really vague and I will think about it more when I'm
+% less braindead.
+While neither of these approaches is ``correct'', they probably
+span the range of possible outcomes.
+
+% RGF: This paragraph is the hardest to write for the sampling.  You
+% may have to help here.
+For genera where there was no information on woodiness for any
+species, we sampled a fraction of species that might be woody from the
+empirical distribution of woodiness fractions \textit{among genera}
+within the same order.  We did this after imputing the missing species
+values within those other genera.  So, if a genus is found in an order
+with genera that had woodiness fractions of $[0, 0, .1, 1]$ we would
+have approximately a 50\% chance of sampling a 0\% woodiness fraction
+for a genus.  Given this woodiness fraction, we then sampled the
+number of species that are woody from a binomial distribution with
+this fraction as it's parameter.
+
+We repeated the above sampling approach 1,000 times and report means
+and confidence intervals over this distribution.
 
 \bibliographystyle{ecology}
 \bibliography{wood.bib}
