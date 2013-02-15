@@ -182,3 +182,82 @@ c(88850, 88850+81560) / sum(dat.g$N)
 ## its range.
 dat.g.p$p <- dat.g.p$W / dat.g.p$K
 hist(dat.g.p$p)
+
+###########################################################################
+
+## Continuing on and doing this with the hypergeometric distribution
+## as before (but with the new taxonomy and count information):
+
+idx <- match(dat.g$genus, lookup$genus)
+dat.g$family <- lookup$family[idx]
+dat.g$order <- lookup$order[idx]
+
+dat.g$N <- as.integer(dat.g$N)
+dat.g$p <- dat.g$W / dat.g$K
+
+source("functions.R")
+
+## Here is the simulator.  For each genus, sample unknown species from
+## a hypergeometric distribution with parameters sampled from the
+## known number of woody, herbacious and known species.  With this
+## sampled data, sample proportions of woody species for the genera
+## with nothing known from the empirical distribution of woodiness,
+## and sample woody/herbacious species from a binomial.
+sim <- function(x, nrep) {
+  i <- is.na(x$p)
+  w <- matrix(NA, nrow(x), nrep)
+  n.unk <- sum(i)
+
+  if ( any(!i) ) {
+    w[!i,] <- t(sapply(which(!i), function(j)
+                       rhyper2(nrep, x$H[j], x$W[j], x$N[j])))
+    w[i,] <- apply(w[!i,,drop=FALSE] / x$N[!i], 2, function(y)
+                   rbinom(n.unk, x$N[i], quantile(y, runif(n.unk))))
+  } else {
+    ## This is different to the other version, as this case never
+    ## triggers there.
+    w[] <- NA
+  }
+
+  ## This is surprisingly convoluted:
+  fam <- as.character(x$family)
+  ret <- t(sapply(split(as.data.frame(w), fam), colSums))
+  colnames(ret) <- NULL
+  ret
+}
+
+nrep <- 1000
+dat.g.split <- split(dat.g, dat.g$order)
+simulated.counts <- mclapply(dat.g.split, sim, nrep)
+
+## Next, build collapsed sets of data by family and by order.
+tot.f <- do.call(rbind, simulated.counts)
+tot.o <- do.call(rbind, lapply(simulated.counts, colSums))
+
+## Number of species per family and order:
+n.f <- tapply(dat.g$N, dat.g$family, sum)[rownames(tot.f)]
+n.o <- tapply(dat.g$N, dat.g$order, sum)[rownames(tot.o)]
+
+## From this, compute the per-family and per-order fraction
+prop.f <- tot.f / rep(n.f, nrep)
+prop.o <- tot.o / rep(n.o, nrep)
+## Dropping the NA cases here.
+prop.all <- colSums(tot.o, na.rm=TRUE) / sum(n.o, na.rm=TRUE)
+
+## And the mean fraction woody per family and order:
+p.f <- rowMeans(prop.f)
+p.o <- rowMeans(prop.o)
+p.all <- mean(prop.all)
+
+## Here is a function that converts a value on 0..1 to increasingly
+## dark blues.
+cols <- function(x) {
+  tmp <- colorRamp(brewer.pal(9, "Blues"))(x)
+  rgb(tmp[,1], tmp[,2], tmp[,3], max=255)
+}
+
+## Histogram of woodiness
+##+ fig.cap="Estimated fraction of woodiness over vascular plants"
+par(mar=c(4.1, 4.1, .5, .5))
+hist(prop.all, xlab="Percent woody", ylab="",
+     yaxt="n", bty="n", main="", col=cols(p.all))
