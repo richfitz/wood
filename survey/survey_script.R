@@ -1,4 +1,8 @@
-d <- read.csv(file="Woodyness_survey.csv", as.is=TRUE)
+
+
+if (Sys.getenv("USER")=='wcornwell') setwd("/Users/wcornwell/Documents/data/howMuchWoodiness/wood/survey/")
+d <- read.csv(file="Plant_survey_final.csv", as.is=TRUE)
+
 
 # remove timestamp column
 d <- d[,-c(1,5)]
@@ -6,6 +10,10 @@ d <- d[,-c(1,5)]
 # change the colnames
 colnames(d) <- c("Estimate", "Familiarity", "Training", "Country")
 
+levels(factor(d$Estimate))
+as.numeric(d$Estimate)
+
+d$Estimate
 # change descriptions to numerical
 
 lvl.familiarity <- c("Very Familiar", "Familiar", "Somewhat Familiar",
@@ -20,7 +28,9 @@ lvl.training <-
 d$Familiarity <- factor(d$Familiarity, lvl.familiarity, ordered=TRUE)
 d$Training <- factor(d$Training, lvl.training, ordered=TRUE)
 
-d$Estimate[d$Estimate < 1] <- d$Estimate[d$Estimate < 1] * 100
+#d$Estimate[d$Estimate < 1] <- d$Estimate[d$Estimate < 1] * 100
+
+d$Estimate
 
 # get mean
 m <- mean(d$Estimate)
@@ -36,5 +46,7 @@ res <- lm(Estimate.logit ~ Training + Familiarity, data=d)
 
 
 summary(res)
+anova(res)
+plot(d$Estimate~d$Familiarity)
 
 
