@@ -4,4 +4,10 @@ how-much-wood.Rmd
 how-much-wood.md
 how-much-wood.html
 old
-phy.f.Rdata
+phy.f.rds
+
+doc/wood.tex
+doc/*.pdf
+heir
+
+
