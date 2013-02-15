@@ -114,14 +114,16 @@ setdiff(lookup$genus, spp$genus[spp$valid])
 
 ## Here are the 1700 genera that are in the lookup table that are not
 ## in the valid species list.
-tmp <- lookup[lookup$genus %in% setdiff(lookup$genus, spp$genus[spp$valid]),]
+tmp <- lookup[lookup$genus %in%
+              setdiff(lookup$genus, spp$genus[spp$valid]),]
 
 ## If we allow for invalid species (i.e., the genus-family-order
 ## relationships are known for genera that are only known as synonyms,
 ## which is reasonable) then there are 934 genera that aren't in the
 ## species list but that we have order information for.  These include
 ## Lamiales, etc so the problem is not non-flowering plants again.
-tmp <- lookup[lookup$genus %in% setdiff(lookup$genus, spp$genus.synonym),]
+tmp <- lookup[lookup$genus %in%
+              setdiff(lookup$genus, spp$genus.synonym),]
 
 ## Pressing on anyway.  All of the *data* genera are present in all
 ## cases.
