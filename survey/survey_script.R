@@ -67,3 +67,7 @@ abline(h=47.5,col="red",lty=1)
 polygon(x=c(0,0,6,6),y=c(46,49,49,46),col=rgb(red=1,green=0,blue=0,alpha=0.2),border=NA)
 
 dev.off()
+
+
+
+unique(d$In.what.country.did.you.receive.your.biology.botany.training.)
