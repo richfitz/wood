@@ -151,3 +151,6 @@ to.pdf("doc/fraction-by-genus.pdf", 6, 6,
 
 to.pdf("doc/fraction-on-phylogeny.pdf", 6, 6,
        fig.fraction.on.phylogeny(res.strong))
+
+to.pdf("doc/fraction-on-phylogeny-supp.pdf", 6, 6,
+       fig.fraction.on.phylogeny(res.weak))
