@@ -82,11 +82,11 @@ global estimate of woodiness.
 % sum(dat.g$N) # total vascular
 % sum(dat.g$K) / sum(dat.g$N) # knowlege rate for all vascular plants
 %
-Conversely, systematic undersampling of tropical species, believed to
+Conversely, systematic under-sampling of tropical species, believed to
 be more woody than temperate species \citep{Molesheihgt}, will bias
 the global woodiness estimate downwards.
 
-Most genera are either all-woody or all-hebacious.  Among the 748
+Most genera are either all-woody or all-herbacious.  Among the 748
 genera with at least 10 records, 392 are entirely woody, 248 are
 entirely herbaceous, and only 50 have between 10\% and 90\% woody
 species.  As a result, knowing the state of a handful of species
@@ -194,7 +194,7 @@ For example, with the genus \textit{Microcoelia} (Orchidaceae) all 13
 species with known state are herbaceous ($n_w = 0$, $n_h = 13$, but we
 we do not know the state of the remaining 17 species in the genus ($N
 = 30$).  In general, we can't assume that these species are all
-herbacious, even though odds are that most of them will be, so the
+herbaceous, even though odds are that most of them will be, so the
 true number of woody species may lie between 0 and 17.
 
 We used two different approaches for imputing the values of these
@@ -213,11 +213,11 @@ are woody.
 
 This approach probably overestimates the number of woody species in
 this case, and in other cases (such as XXX where all YYY species with
-known states are woody) will understimate the fraction of species that
+known states are woody) will underestimate the fraction of species that
 are woody.  This corresponds to a very weak prior knowledge of the
 shape of the distribution of the fraction of woody species within a
 genus.  However, this distribution is strongly bimodal (FIGURE).  To
-model the other extreme of sampling, we used an approch where we
+model the other extreme of sampling, we used an approach where we
 computed the observed fraction of woody species ($p = n_w / (n_w +
 n_h)$) and sampled the state of the unobserved species using a
 binomial distribution, where the probability that $y$ of the $N - n_w
