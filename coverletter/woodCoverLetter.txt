@@ -1,0 +1,15 @@
+
+
+
+We are writing to see if you may be interested in our paper entitled "How much of the world is woody?"  This might be seen as an unconventional paper, but on the other hand this is a very basic question in global functional plant ecology.  
+
+This project actually began at NESCent when, during a working group, we needed the global proportion of woody species for an evolutionary analysis.  We were very surprised when we were completely unable to find that information anywhere in the literature.  We then surveyed a number of plant experts who were at NESCent at that time, and the wide variance of answers led us to conclude that there was really a research problem to be solved.
+
+To solve the problem we used a recently assembled database and a stochastic gap--filling approach.  This allows us to estimate both the global proportion of species that are woody, along with uncertainty in the estimate.  The answer is 47+/- 2, which is much higher than the conventional wisdom.  
+
+In many ways we feel this paper is the functional analog to the series of papers making statistical estimates on the number of species in the world.  Like those papers, we feel that the simplicity of the question posed in this paper may lead to wide interest in the result.   
+
+We hope that you will consider our work for publication.  
+
+All the best,
+Rich FitzJohn et al.
