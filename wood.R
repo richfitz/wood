@@ -9,7 +9,7 @@ source("wood-functions.R")
 ## Data at the level of genus: has taxonomic information and counts of
 ## number of species that are woody, herbaceous, known, and known to
 ## exist.
-dat.g <- load.clean.data()
+dat.g <- load.clean.data(TRUE)
 
 ## Here is the simulator.  For each genus, sample unknown species from
 ## a hypergeometric distribution with parameters sampled from the
@@ -57,74 +57,97 @@ rhyper2 <- function(nn, s0, s1, xn, fraction=FALSE) {
 ##+ simulate,cache=TRUE
 nrep <- 1000
 dat.g.split <- split(dat.g, dat.g$order)
-## simulated.counts <- lapply(dat.g.split, sim, nrep)
-
-## Drop one problem case entirely for now:
-nok <- which(sapply(dat.g.split, function(x) all(is.nan(x$p))))
-dat.g.split <- dat.g.split[-nok]
 
 ## "Weak prior" sampling with replacement
 sim.weak <- lapply(dat.g.split, sim, nrep)
 ## "Strong prior" sampling based on the number of species
 sim.strong <- lapply(dat.g.split, sim, nrep, "no-replacement")
 
-## RGF: There is a bunch of repetition here and I'll try and clean it
-## up soon.
+## Need to process the simulated data to produce some summary
+## statistics.  We care about:
+##
+## * overall woodiness fraction
+## * per family woodiness fraction
+## * per order woodiness fraction
+process <- function(samples, dat.g) {
+  samples.f <- do.call(rbind, samples)
+  ## Temporary for now:
+  samples.f <- samples.f[!duplicated(rownames(samples.f)),]
+  samples.o <- do.call(rbind, lapply(samples, colSums))
 
-## Next, build collapsed sets of data by family and by order.
-tot.weak.f <- do.call(rbind, sim.weak)
-tot.weak.o <- do.call(rbind, lapply(sim.weak, colSums))
+  n.f <- tapply(dat.g$N, dat.g$family, sum)
+  n.o <- tapply(dat.g$N, dat.g$order, sum)
 
-tot.strong.f <- do.call(rbind, sim.strong)
-tot.strong.o <- do.call(rbind, lapply(sim.strong, colSums))
+  ## From this, compute the per-family and per-order fraction
+  prop.f <- samples.f / rep(n.f[rownames(samples.f)], nrep)
+  prop.o <- samples.o / rep(n.o[rownames(samples.o)], nrep)
+  prop.all <- colSums(samples.o) / sum(n.o)
 
-## Number of species per family and order:
-n.f <- tapply(dat.g$N, dat.g$family, sum)[rownames(tot.strong.f)]
-n.o <- tapply(dat.g$N, dat.g$order, sum)[rownames(tot.strong.o)]
+  ## And the mean fraction woody per family and order:
+  f <- function(x) {
+    ret <- c(mean(x), quantile(x, c(1, 39)/40))
+    names(ret) <- c("mean", "lower", "upper")
+    ret
+  }
 
-## From this, compute the per-family and per-order fraction
-prop.weak.f <- tot.weak.f / rep(n.f, nrep)
-prop.weak.o <- tot.weak.o / rep(n.o, nrep)
-prop.weak.all <- colSums(tot.weak.o) / sum(n.o)
-
-prop.strong.f <- tot.strong.f / rep(n.f, nrep)
-prop.strong.o <- tot.strong.o / rep(n.o, nrep)
-prop.strong.all <- colSums(tot.strong.o) / sum(n.o)
-
-## And the mean fraction woody per family and order:
-p.weak.f <- rowMeans(prop.weak.f)
-p.weak.o <- rowMeans(prop.weak.o)
-p.weak.all <- mean(prop.weak.all)
-
-p.strong.f <- rowMeans(prop.strong.f)
-p.strong.o <- rowMeans(prop.strong.o)
-p.strong.all <- mean(prop.strong.all)
-
-## Now, look at the distributions of woodiness among families:
-label <- function(px, py, lab, ..., adj=c(0, 1)) {
-  usr <- par("usr")
-  text(usr[1] + px*(usr[2] - usr[1]),
-       usr[3] + py*(usr[4] - usr[3]),
-       lab, adj=adj, ...)
+  list(overall=f(prop.all),
+       family=as.data.frame(t(apply(prop.f, 1, f))),
+       order=as.data.frame(t(apply(prop.o, 1, f))))
 }
 
-## RGF: I will tidy this tomorrow.
-pdf("doc/fraction-by-genus.pdf", height=6, width=6)
-par(mfrow=c(2, 1), mar=c(2, 1, .5, .5), oma=c(2, 0, 0, 0))
+res.strong <- process(sim.strong, dat.g)
+res.weak   <- process(sim.weak,   dat.g)
 
-tmp <- dat.g$p[dat.g$K >= 10] # genera with 10 records
-h <- hist(tmp, 50, main="", xaxt="n", yaxt="n", lab="")
-mtext("Probability density", 2)
-axis(1, tick=TRUE, label=FALSE)
-label(.02, .96, "a)")
-    
-cols <- c("#ff0000ff", "#0000ff66")
-hist(p.strong.f, col=cols[1], n=50, freq=FALSE, main="", yaxt="n",
-     ylab="", xlab="% woody species in genus")
-mtext("Probability density", 2)
-hist(p.weak.f, col=cols[2], n=50, freq=FALSE, add=TRUE)
-legend("topleft", c("No replacement (strong prior)",
-                    "Replacement (weak prior)"),
-       fill=cols, bty="n", cex=.75, inset=c(.1, 0))
-label(.02, .96, "b)")
-dev.off()
+## Now, look at the distributions of woodiness among families:
+fig.fraction.by.genus <- function(res.strong, res.weak) {
+  par(mfrow=c(2, 1), mar=c(2, 1, .5, .5), oma=c(2, 0, 0, 0))
+
+  tmp <- dat.g$p[dat.g$K >= 10] # genera with 10 records
+  h <- hist(tmp, 50, main="", xaxt="n", yaxt="n", lab="")
+  mtext("Probability density", 2)
+  axis(1, tick=TRUE, label=FALSE)
+  label(.02, .96, "a)")
+  
+  cols <- c("#ff0000ff", "#0000ff66")
+  hist(res.strong$family$mean, col=cols[1], n=50, freq=FALSE,
+       main="", yaxt="n", xlab="", ylab="")
+  mtext("Probability density", 2)
+  mtext("% woody species in genus", 1, outer=TRUE, line=.5)
+  hist(res.weak$family$mean, col=cols[2], n=50, freq=FALSE, add=TRUE)
+  legend("topleft", c("No replacement (strong prior)",
+                      "Replacement (weak prior)"),
+         fill=cols, bty="n", cex=.75, inset=c(.1, 0))
+  label(.02, .96, "b)")
+}
+
+fig.fraction.on.phylogeny <- function(res) {
+  phy.f <- build.family.tree()
+
+  ## This tree has order information:
+  phy.f.ord <- phy.f$class
+
+  ## Drop tips with no woodiness estimates (due to taxonomic
+  ## differences)
+  to.drop <- setdiff(phy.f$tip.label, rownames(res$family))
+  phy.f <- diversitree:::drop.tip.fixed(phy.f, to.drop)
+
+  ## And sort the order information by the current taxon labels:
+  phy.f.ord <- unname(phy.f.ord[phy.f$tip.label])
+
+  cols <- make.col.function(brewer.pal(9, "Blues")[-1])
+  plt <- trait.plot.cont(phy.f, res$family["mean"], list(cols),
+                         class=phy.f.ord, w=1/30, font=1, margin=1/3)
+  mrca.tipset <- diversitree:::mrca.tipset
+  nd <- sapply(sort(unique(phy.f.ord)), function(x)
+               mrca.tipset(phy.f, phy.f$tip.label[phy.f.ord==x &
+                                                  !is.na(phy.f.ord)]))
+  nd.int <- nd[nd > length(phy.f$tip.label)]
+  points(plt$xy$xx[nd.int], plt$xy$yy[nd.int], pch=19, cex=2,
+         col=cols(res$order[names(nd.int),]$mean))
+}
+
+to.pdf("doc/fraction-by-genus.pdf", 6, 6,
+       fig.fraction.by.genus(res.strong, res.weak))
+
+to.pdf("doc/fraction-on-phylogeny.pdf", 6, 6,
+       fig.fraction.on.phylogeny(res.strong))

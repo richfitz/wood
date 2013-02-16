@@ -9,16 +9,22 @@ load.clean.data <- function(regenerate=FALSE) {
   ## Start by getting the woodiness information from the database
   dat <- read.forest.csv("export/speciesTraitData.csv")
 
-  ## Score the 633 species with no known information as NA
-  dat$woodiness[!(dat$woodiness %in% c("H", "W")) &
-                !is.na(dat$woodiness)] <- NA
-
   ## Only the columns we care about:
   dat <- data.frame(species=sub(" ", "_", dat$gs),
                     woodiness=dat$woodiness,
                     stringsAsFactors=FALSE)
+
   ## Filtered by whether or not they have woodiness information
-  dat <- dat[!is.na(dat$woodiness),]
+  to.drop.wood.NA <- is.na(dat$woodiness)
+  message(sprintf("Dropping %d species with NA woodiness values",
+                  sum(to.drop.wood.NA)))
+  dat <- dat[!to.drop.wood.NA,]
+
+  ## Score the 633 species with no known information as NA
+  to.drop.variable <- !(dat$woodiness %in% c("H", "W"))
+  message(sprintf("Dropping %d species with variable woodiness",
+                  sum(to.drop.variable)))
+  dat <- dat[!to.drop.variable,]
 
   ## Next, normalise the species names.
   spp <-
@@ -27,11 +33,17 @@ load.clean.data <- function(regenerate=FALSE) {
 
   ## Locate the species names within the Plant List lookup table,
   ## dropping all species that do not exist.
-  dat <- dat[dat$species %in% spp$synonym,]
-  idx <- match(dat$species, spp$synonym) 
+  to.drop.no.name <- !dat$species %in% spp$synonym
+  message(sprintf("Dropping %d species not in Plant List",
+                  sum(to.drop.no.name)))
+  dat <- dat[!to.drop.no.name,]
+
+  ## Match the species names against the plant list
+  idx <- match(dat$species, spp$synonym)
 
   ## About 90% of names are valid:
-  mean(spp$valid[idx])
+  message(sprintf("%2.1f%% of species have a valid name",
+                  100*mean(spp$valid[idx])))
 
   ## Assign the correct/current species name and adding the genus
   dat$species <- spp$species[idx]
@@ -40,9 +52,8 @@ load.clean.data <- function(regenerate=FALSE) {
   ## And look to see which species have now got duplicated records due
   ## to synonomy resolution:
   dups <- unique(sort(dat$species[duplicated(dat$species)]))
-
-  ## 1436 species with more than one entry now.
-  length(dups)
+  message(sprintf("After synonym correction, %d duplicated entries",
+                  length(dups)))
 
   ## Most duplicated species are of a single type (good) but a few
   ## aren't:
@@ -56,8 +67,10 @@ load.clean.data <- function(regenerate=FALSE) {
   dups.fixed$genus <- spp$genus[match(dups.fixed$species, spp$species)]
 
   ## These species had conflicting records and will be dropped:
-  dups.fixed[is.na(dups.fixed$woodiness),]
-  dups.fixed <- dups.fixed[!is.na(dups.fixed$woodiness),]
+  to.drop.conflict <- is.na(dups.fixed$woodiness)
+  message(sprintf("Dropping %d species due to trait confict after synonym",
+                  sum(to.drop.conflict)))
+  dups.fixed <- dups.fixed[!to.drop.conflict,]
 
   ## Drop the duplicated records from the original vector, and add in
   ## the resolved entries here:
@@ -78,8 +91,11 @@ load.clean.data <- function(regenerate=FALSE) {
 
   ## All of the genera with data are present in the lookup table:
   ## cases.
-  all(dat$genus %in% spp$genus)
-  all(dat$genus %in% lookup$genus)
+  if ( !all(dat$genus %in% spp$genus) ) # should *never* fail
+    stop("Genera in data not known from Plant List")
+  if ( !all(dat$genus %in% lookup$genus) )
+    warning("Genera in data not known from lookup table",
+            immediate.=TRUE)
 
   ## Collapse these to get counts for all the genera that we know about.
   dat.g <- table(factor(dat$genus, sort(unique(spp$genus[spp$valid]))),
@@ -105,9 +121,128 @@ load.clean.data <- function(regenerate=FALSE) {
   ## 1600    Benthamia 0 0 0 35   <NA>  <NA> NaN
   ## 7424 Lepidostemon 0 0 0  6   <NA>  <NA> NaN
   ## 8533     Monniera 0 0 0  2   <NA>  <NA> NaN
-  dat.g <- dat.g[!is.na(dat.g$order),]
-
+  to.drop.no.order <- is.na(dat.g$order)
+  message(sprintf("Dropping %d genera (%d species, %d data) due to taxon fail",
+                  sum(to.drop.no.order),
+                  sum(dat.g$N[to.drop.no.order]),
+                  sum(dat.g$K[to.drop.no.order])))
+  dat.g <- dat.g[!to.drop.no.order,]
   rownames(dat.g) <- NULL
 
+  to.drop.no.family <- dat.g$family == ""
+  message(sprintf("Dropping %d genera (%d species, %d data) due to taxon fail (family)",
+                  sum(to.drop.no.family),
+                  sum(dat.g$N[to.drop.no.family]),
+                  sum(dat.g$K[to.drop.no.family])))
+  dat.g <- dat.g[!to.drop.no.family,]
+  rownames(dat.g) <- NULL
+  
+  to.drop.no.data.order <-
+    which(tapply(dat.g$p, dat.g$order, function(x) all(is.nan(x))))
+  warning(sprintf("Dropping %d orders because they have no data:\n\t%s",
+                  length(to.drop.no.data.order),
+                  paste(names(to.drop.no.data.order), collapse=", ")),
+          immediate.=TRUE)
+  dat.g <- dat.g[!(dat.g$order %in% names(to.drop.no.data.order)),]
+
+  message(sprintf("Final set: %d genera, %d with data, %d species known",
+                  nrow(dat.g), sum(dat.g$K > 0), sum(dat.g$K)))
+
   saveRDS(dat.g, filename)
+  dat.g
+}
+
+to.pdf <- function(filename, width, height, expr,
+                   ..., pointsize=12, cairo=FALSE, verbose=TRUE) {
+  if ( verbose )
+    cat(sprintf("Creating %s\n", filename))
+  if ( cairo ) require(Cairo)
+  dev <- if ( cairo ) CairoPDF else pdf
+  dev(filename, width=width, height=height, pointsize=pointsize, ...)
+  on.exit(dev.off())
+  eval.parent(substitute(expr))
+}
+
+label <- function(px, py, lab, ..., adj=c(0, 1)) {
+  usr <- par("usr")
+  text(usr[1] + px*(usr[2] - usr[1]),
+       usr[3] + py*(usr[4] - usr[3]),
+       lab, adj=adj, ...)
+}
+
+## This will roll into trait.plot soon.
+trait.plot.cont <- function(tree, dat, cols, lab=names(cols), str=0:1,
+                            class=NULL, type="f", w=1/50,
+                            legend=length(cols) > 1, cex.lab=.5,
+                            font.lab=3, cex.legend=.75, margin=1/4,
+                            check=TRUE, quiet=FALSE) {
+  if ( type != "f" )
+    stop("type != f not yet implemented")
+  if ( !is.null(class) && length(class) != length(tree$tip.label) )
+    stop("'class' must be a vector along tree$tip.label")
+  n <- length(cols)
+  if ( n < 1 )
+    stop("Need some colours")
+  if ( !is.data.frame(dat) ) {
+    if ( is.vector(dat) && n == 1 ) {
+      nm <- names(dat)
+      dat <- matrix(dat)
+      rownames(dat) <- nm
+    } else {
+      stop("dat must be a matrix")
+    }
+  }
+  if ( !all(tree$tip.label %in% rownames(dat)) )
+    stop("All taxa must have entries in 'dat' (rownames)")
+  if ( n > 1 ) {
+    if ( !all(names(cols) %in% names(dat)) )
+      stop("Not all colours have data")
+    if ( is.null(names(cols)) )
+      stop("'cols' must be named")
+    dat <- dat[names(cols)]
+  }
+
+  dat <- dat[tree$tip.label,,drop=FALSE]
+
+  par(mar=rep(0, 4))
+  t <- max(branching.times(tree))
+  w <- w * t
+
+  plot2.phylo <- diversitree:::plot2.phylo
+  group.label.tip <- diversitree:::group.label.tip
+  filled.arcs <- diversitree:::filled.arcs
+  if ( is.null(class) ) {
+    plt <- plot2.phylo(tree, type="f", show.tip.label=TRUE,
+                       label.offset=(n+2)*w, cex=cex.lab)
+  } else {
+    plt <- plot2.phylo(tree, type="f", show.tip.label=FALSE,
+                       label.offset=t*margin)
+    group.label.tip(plt, class, "black", "black",
+                    offset.bar=w*(n+2), offset.lab=w*(n+3), lwd=1.5,
+                    cex=cex.lab, font=font.lab,
+                    check=check, quiet=quiet)
+  }
+
+  xy <- plt$xy
+  theta <- xy$theta[seq_along(tree$tip.label)]
+  dt <- diff(sort(theta))[1]/2
+
+  for ( i in seq_along(cols) ) {
+    filled.arcs(theta - dt, theta + dt, max(xy$x) + i * w, w,
+                cols[[i]](dat[,i]))
+  }
+  invisible(plt)
+}
+
+## Here is a function that converts a value on 0..1 to increasingly
+## dark blues.
+make.col.function <- function(cols) {
+  ramp <- colorRamp(cols)  
+  function(x) {
+    i <- !is.na(x)
+    tmp <- ramp(x[i])
+    ret <- rep(NA_character_, length(x))
+    ret[i] <- rgb(tmp[,1], tmp[,2], tmp[,3], max=255)
+    ret
+  }
 }
