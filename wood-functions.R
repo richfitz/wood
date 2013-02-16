@@ -136,7 +136,7 @@ load.clean.data <- function(regenerate=FALSE) {
                   sum(dat.g$K[to.drop.no.family])))
   dat.g <- dat.g[!to.drop.no.family,]
   rownames(dat.g) <- NULL
-  
+
   to.drop.no.data.order <-
     which(tapply(dat.g$p, dat.g$order, function(x) all(is.nan(x))))
   warning(sprintf("Dropping %d orders because they have no data:\n\t%s",
