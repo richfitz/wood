@@ -3,6 +3,7 @@
 \usepackage{natbib}
 \usepackage{lineno}
 \usepackage{graphicx}
+\usepackage{caption}
 \modulolinenumbers[5]
 \linenumbers
 
@@ -123,6 +124,38 @@ distribution of woodiness fractions for other genera within a family. This proce
   \label{fig:distribution-genera}
 \end{figure}
 
+\begin{figure}[p]
+  \centering
+  \includegraphics{fraction-on-phylogeny}
+  \caption{Distribution of the fraction of woodiness among families
+    (tips) and orders (nodes) on a phylogeny of vascular plants.
+    Darker colours have a higher proportion of woody species,
+    estimated using the ``strong prior'' (sampling without
+    replacement) approach.  Using the ``weak prior'' approach
+    generally adjusts(?) estimates fractions towards 50\% (see
+    Supplementary Figure X and Figure \ref{fig:distribution-genera}).
+  }
+\label{fig:phylogeny}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics{fraction-on-phylogeny-supp}
+
+  \caption{
+    \textit{This is Figure \ref{fig:phylogeny} using the alternative
+      sampling approach.}\\
+    %
+    Distribution of the fraction of woodiness among families
+    (tips) and orders (nodes) on a phylogeny of vascular plants.
+    Darker colours have a higher proportion of woody species,
+    estimated using the ``weak prior'' (sampling with
+    replacement) approach.  Using the ``strong prior'' approach
+    generally adjusts(?) estimates fractions away 50\% (see Figure
+    \ref{fig:phylogeny} and \ref{fig:distribution-genera}).
+    }
+\label{fig:phylogeny-supp}
+\end{figure}
 
 
 \subsection{Survey}
