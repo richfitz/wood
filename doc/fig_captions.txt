@@ -1,0 +1,12 @@
+
+
+Figure 3. Box plots representing the responses to the survey question ``What percentage of the world's vascular plant species are woody?''. Responses are broken up by familiarity with plants (left panel) and formal training in botany or a related discipline (right panel). The mean and 95\% confidence intervals for our estimates of the proportion of woody species from the empirical data are depicted by the coloured polygons; the red polygon represents the estimates from sampling without replacement and the blue polygon represents the estimates from sampling with replacement (See Appendix for details). 
+
+Supplemental Figure 1. The posterior probability distribution for the proportion of the world's flora that is woody as estimated using the sampling without replacement (strong prior) method (See Appendix for details).
+
+Supplemental Figure 2. The posterior probability distribution for the proportion of the world's flora that is woody as estimated using the sampling with replacement (weak prior) method (See Appendix for details).
+
+Supplemental Figure 3. English-language version of the survey we distributed.
+
+Supplemental Figure 4. Distribution of all responses to the survey question ``What percentage of the world's vascular plant species are woody?''.
+
