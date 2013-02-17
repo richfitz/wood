@@ -282,68 +282,6 @@ and confidence intervals over this distribution.
 %
 This procedure is described in detail in the appendix to this paper.
 
-% RGF: I'm going to start with the results tomorrow.
-\begin{figure}[p]
-  \centering
-  \includegraphics{fraction-by-genus}
-  \caption{Distribution of the fraction of woodiness among genera.
-    The distribution of the fraction of species that are woody within
-    a genus (among genera) is strongly bimodal (panel a -- showing
-    genera with at least 10 species only).
-    % 
-    The two different sampling approaches generate distributions that
-    differ in their bimodality (panel b).  When assuming species are
-    sampled with replacement from some pool, but having no prior on
-    the fraction of woodiness within the pool generates a broad
-    distribution with many polymorphic genera (blue bars), while
-    sampling with replacement assuming that species are drawn from a
-    pool of species that has a fraction of woody species equal to the
-    observed fraction of woodiness generates a strongly bimodal
-    distribution.}
-  \label{fig:distribution-genera}
-\end{figure}
-
-\begin{figure}[p]
-  \centering
-  \includegraphics{fraction-on-phylogeny}
-  \caption{Distribution of the fraction of woodiness among families
-    (tips) and orders (nodes) on a phylogeny of vascular plants.
-    Darker colours have a higher proportion of woody species,
-    estimated using the ``strong prior'' (sampling without
-    replacement) approach.  Using the ``weak prior'' approach
-    generally adjusts(?) estimates fractions towards 50\% (see
-    Supplementary Figure X and Figure \ref{fig:distribution-genera}).
-  }
-\label{fig:phylogeny}
-\end{figure}
-
-\begin{figure}[p]
-  \centering
-  \includegraphics{survey-results}
-  \caption{Survey results}
-  \label{fig:survey}
-\end{figure}
-
-\begin{figure}[p]
-  \centering
-  \includegraphics{fraction-on-phylogeny-supp}
-
-  \caption{
-    \textit{This is Figure \ref{fig:phylogeny} using the alternative
-      sampling approach.}\\
-    %
-    Distribution of the fraction of woodiness among families
-    (tips) and orders (nodes) on a phylogeny of vascular plants.
-    Darker colours have a higher proportion of woody species,
-    estimated using the ``weak prior'' (sampling with
-    replacement) approach.  Using the ``strong prior'' approach
-    generally adjusts(?) estimates fractions away 50\% (see Figure
-    \ref{fig:phylogeny} and \ref{fig:distribution-genera}).
-    }
-\label{fig:phylogeny-supp}
-\end{figure}
-
-
 \subsection{Survey}
 
 % RGF: I've tried to motivate the survey a bit more.  It's still
@@ -364,7 +302,7 @@ We created an English-language survey asking for an estimate of the
 fraction of species that are woody.  We also asked respondants to
 indicate their level of familiarity with plants, level of formal
 training, and the country in which they recieved their training (see
-supplementary material for details).
+supplementary material \ref{fig:survey-text} for details).
 % Were other lists used?  I've assumed that it is and changed the
 % language.  I'd be inclined to drop mention of the departmental
 % lists, as that's a similar level to just bugging people in the
@@ -522,10 +460,63 @@ it deeply surpsiging that this most basic aspect of plant natural
 history was not generally known.  Global plant functional diversity is
 much woodier than we thought.
 
+\bibliographystyle{ecology}
+\bibliography{wood.bib}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics{figs/fraction-by-genus}
+  \caption{Distribution of the fraction of woodiness among genera.
+    The distribution of the fraction of species that are woody within
+    a genus (among genera) is strongly bimodal (panel a -- showing
+    genera with at least 10 species only).
+    % 
+    The two different sampling approaches generate distributions that
+    differ in their bimodality (panel b).  When assuming species are
+    sampled with replacement from some pool, but having no prior on
+    the fraction of woodiness within the pool generates a broad
+    distribution with many polymorphic genera (blue bars), while
+    sampling with replacement assuming that species are drawn from a
+    pool of species that has a fraction of woody species equal to the
+    observed fraction of woodiness generates a strongly bimodal
+    distribution.}
+  \label{fig:distribution-genera}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics{figs/fraction-on-phylogeny}
+  \caption{Distribution of the fraction of woodiness among families
+    (tips) and orders (nodes) on a phylogeny of vascular plants.
+    Darker colours have a higher proportion of woody species,
+    estimated using the ``strong prior'' (sampling without
+    replacement) approach.  Using the ``weak prior'' approach
+    generally adjusts(?) estimates fractions towards 50\% (see Figures
+    \ref{fig:distribution-genera} and \ref{fig:distribution-raw}).}
+\label{fig:phylogeny}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics{figs/survey-results}
+  \caption{
+    Distribution of responses to the survey question ``What percentage
+    of the world's vascular plant species are woody?''. Responses are
+    broken up by familiarity with plants (left panel) and formal
+    training in botany or a related discipline (right panel). The mean
+    and 95\% confidence intervals for our estimates of the proportion
+    of woody species from the empirical data are depicted by the horizontal
+    shaded rectangles; the upper polygon corresponds to the ``weak
+    prior'' approach and the lower polygon corresponds to the ``strong
+    prior'' approach (see Appendix for details).}
+  \label{fig:survey}
+\end{figure}
+
 \clearpage
-\setcounter{secnumdepth}{1}
+\renewcommand\thefigure{S.\arabic{figure}}
 \appendix
-\section{Sampling proceedure}
+\section{Appendix: Sampling proceedure}
+\setcounter{figure}{0}    
 
 Here, we describe our algorithm for sampling the states of species
 that lack information on woodiness.  We treat each genus separately,
@@ -607,55 +598,51 @@ spread.  Given this woodiness fraction, we then sampled the number of
 species that are woody from a binomial distribution with this fraction
 and the number of species in the genus as its parameters.
 
-\section{Survey}
-\label{sec:survey}
+\begin{figure}[p]
+  \centering
+  \includegraphics{figs/fraction-on-phylogeny-supp}
 
+  \caption{(Supplementary)
+    \textit{This is Figure \ref{fig:phylogeny} using the alternative
+      sampling approach.}\\
+    %
+    Distribution of the fraction of woodiness among families
+    (tips) and orders (nodes) on a phylogeny of vascular plants.
+    Darker colours have a higher proportion of woody species,
+    estimated using the ``weak prior'' (sampling with
+    replacement) approach.  Using the ``strong prior'' approach
+    generally adjusts(?) estimates fractions away 50\% (see Figure
+    \ref{fig:phylogeny} and \ref{fig:distribution-genera}).
+    }
+\label{fig:phylogeny-supp}
+\end{figure}
 
+\begin{figure}[p]
+  \centering
+  
+  \caption{(Supplementary) The posterior probability distribution for
+    the proportion of the world's flora that is woody as estimated
+    using a) the sampling with replacement (weak prior) and b) without
+    replacement (strong prior) method (See Appendix for details).}
+  \label{fig:distribution-raw}
+\end{figure}
 
-questions:
+\begin{figure}[p]
+  \centering
+  
+  \caption{(Supplementary) English-language version of the survey we
+    distributed}
+  \label{fig:survey-text}
+\end{figure}
 
-\begin{enumerate}
+\begin{figure}[p]
+  \centering
 
-\item What percentage of the world's vascular plant species are woody?
-
-\item How would you rate your familiarity with plants?
-
-	\begin{itemize}
-	
-		\item Very Familiar
-	
-		\item Familiar
-	
-		\item Somewhat Familiar
-	
-		\item What's a Plant?
-	
-	\end{itemize}
-	
-\item How much formal training have you received in botany?
-
-	\begin{itemize}
-	
-		\item Postgraduate degree in botany or a related field
-		
-		\item Partially complete postgraduate degree in botany or a related field
-		
-		\item Undergraduate degree in botany or a related field
-		
-		\item Some botany courses at either an undergraduate or postgraduate level
-		
-		\item No formal training in botany
-		
-	\end{itemize}
-	
-\item In what country did you receive your biology/botany training?
-\end{enumerate}
-
-This survey was created using google docs (original survey included as
-Supplementary Material)
-
-\bibliographystyle{ecology}
-\bibliography{wood.bib}
+  \caption{(Supplementary) Distribution of all responses to the survey
+    question ``What percentage of the world's vascular plant species
+    are woody?''.}
+  \label{fig:survey-distribution}
+\end{figure}
 
 \end{document}
 
