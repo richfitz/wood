@@ -186,15 +186,15 @@ fig.survey.results <- function(d.survey, res.strong, res.weak) {
   abline(h=ci["mean",], lty=c(1, 2)) 
 }
 
-to.pdf("doc/fraction-by-genus.pdf", 6, 6,
+to.pdf("doc/figs/fraction-by-genus.pdf", 6, 6,
        fig.fraction.by.genus(res.strong, res.weak))
 
-to.pdf("doc/fraction-on-phylogeny.pdf", 6, 6,
+to.pdf("doc/figs/fraction-on-phylogeny.pdf", 6, 6,
        fig.fraction.on.phylogeny(res.strong))
 
-to.pdf("doc/fraction-on-phylogeny-supp.pdf", 6, 6,
+to.pdf("doc/figs/fraction-on-phylogeny-supp.pdf", 6, 6,
        fig.fraction.on.phylogeny(res.weak))
 
-to.pdf("doc/survey-results.pdf", 6, 4,
+to.pdf("doc/figs/survey-results.pdf", 6, 4,
        fig.survey.results(d.survey, res.strong, res.weak))
 
