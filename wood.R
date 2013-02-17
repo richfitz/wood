@@ -3,9 +3,8 @@ library(multicore)
 library(diversitree)
 library(RColorBrewer)
 path.forest <- readLines("~/.forest_path")
-source("build-family-tree.R")
-
 source("wood-functions.R")
+
 ## Data at the level of genus: has taxonomic information and counts of
 ## number of species that are woody, herbaceous, known, and known to
 ## exist.
