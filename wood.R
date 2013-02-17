@@ -91,7 +91,8 @@ process <- function(samples, dat.g) {
 
   list(overall=f(prop.all),
        family=as.data.frame(t(apply(prop.f, 1, f))),
-       order=as.data.frame(t(apply(prop.o, 1, f))))
+       order=as.data.frame(t(apply(prop.o, 1, f))),
+       distribution=prop.all)
 }
 
 res.strong <- process(sim.strong, dat.g)
@@ -108,11 +109,11 @@ fig.fraction.by.genus <- function(res.strong, res.weak) {
   label(.02, .96, "a)")
   
   cols <- c("#ff0000ff", "#0000ff66")
-  hist(res.strong$family$mean, col=cols[1], n=50, freq=FALSE,
+  hist(100*res.strong$family$mean, col=cols[1], n=50, freq=FALSE,
        main="", yaxt="n", xlab="", ylab="")
   mtext("Probability density", 2)
   mtext("% woody species in genus", 1, outer=TRUE, line=.5)
-  hist(res.weak$family$mean, col=cols[2], n=50, freq=FALSE, add=TRUE)
+  hist(100*res.weak$family$mean, col=cols[2], n=50, freq=FALSE, add=TRUE)
   legend("topleft", c("No replacement (strong prior)",
                       "Replacement (weak prior)"),
          fill=cols, bty="n", cex=.75, inset=c(.1, 0))
@@ -164,7 +165,7 @@ fig.survey.results <- function(d.survey, res.strong, res.weak) {
   axis(2, las=1)
   text(1:4, -5, levels(d.survey$Familiarity),
        srt=-55, xpd=NA, adj=c(0, NA), cex=.85)
-  mtext("Estimate of proportion woodiness", 2, line=2.75)
+  mtext("Estimate of percentage woodiness", 2, line=2.75)
   label(.02, .96, "a)")
 
   usr <- par("usr")
@@ -186,6 +187,36 @@ fig.survey.results <- function(d.survey, res.strong, res.weak) {
   abline(h=ci["mean",], lty=c(1, 2)) 
 }
 
+fig.distribution.raw <- function(res.strong, res.weak) {
+  r <- range(res.strong$distribution, res.weak$distribution)
+  br <- seq(r[1], r[2], length.out=30)*100
+
+  h.strong <- hist(100*res.strong$distribution, br, plot=FALSE)
+  h.weak   <- hist(100*res.weak$distribution,   br, plot=FALSE)
+
+  xlim <- c(42, 50)
+  ylim <- range(h.strong$density, h.weak$density)
+  
+  par(mar=c(4.1, 4.1, .5, .5))
+  plot(h.strong, col="red", xlim=xlim, ylim=ylim, freq=FALSE, yaxt="n",
+       ylab="", xlab="% woody species", main="")
+  box(bty="l")
+  lines(h.weak, col="blue", freq=FALSE)
+  mtext("Probability density", 2, line=.5)
+}
+
+fig.survey.distribution <- function(d.survey, res.strong, res.weak) {
+  ci <- 100*cbind(res.strong$overall, res.weak$overall)
+  par(mar=c(4.1, 4.1, .5, .5), mgp=c(2.5, 1, 0))
+  hist(d.survey$Estimate, xlim=c(0, 100), las=1, col="lightgrey",
+       xlab="Estimate of percentage woodiness", main="")
+  usr <- par("usr")
+  rect(ci["lower",], usr[3], ci["upper",], usr[4],
+       col=c("#ff000066", "#0000ff66"), border=NA)
+  abline(v=ci["mean",], col=c("red", "blue"))
+}
+
+
 to.pdf("doc/figs/fraction-by-genus.pdf", 6, 6,
        fig.fraction.by.genus(res.strong, res.weak))
 
@@ -195,6 +226,12 @@ to.pdf("doc/figs/fraction-on-phylogeny.pdf", 6, 6,
 to.pdf("doc/figs/fraction-on-phylogeny-supp.pdf", 6, 6,
        fig.fraction.on.phylogeny(res.weak))
 
+to.pdf("doc/figs/distribution-raw.pdf", 6, 4,
+       fig.distribution.raw(res.strong, res.weak))
+
 to.pdf("doc/figs/survey-results.pdf", 6, 4,
        fig.survey.results(d.survey, res.strong, res.weak))
+
+to.pdf("doc/figs/survey-distribution.pdf", 6, 6,
+       fig.survey.distribution(d.survey, res.strong, res.weak))
 

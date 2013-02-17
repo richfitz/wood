@@ -6,8 +6,7 @@ how-much-wood.html
 old
 phy.f.rds
 
-doc/wood.tex
-doc/*.pdf
+doc/wood-ms.pdf
 heir
 
 woodiness.rds
@@ -16,3 +15,4 @@ coverletter/wood-coverletter.pdf
 
 wood-ms-prev.tex
 wood-ms-diff.tex
+wood-ms-diff.pdf
