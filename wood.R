@@ -146,6 +146,47 @@ fig.fraction.on.phylogeny <- function(res) {
          col=cols(res$order[names(nd.int),]$mean))
 }
 
+d.survey <- load.survey()
+
+## Convert estimates to normal using logit transformation
+d.survey$Estimate.logit <- boot::logit(d.survey$Estimate / 100)
+res <- lm(Estimate.logit ~ Training + Familiarity, d.survey)
+summary(res)
+anova(res)
+
+fig.survey.results <- function(d.survey, res.strong, res.weak) {
+  ci <- 100*cbind(res.strong$overall, res.weak$overall)
+
+  layout(rbind(1:2), widths=c(4, 5))
+  par(mar=c(6.5, 2, .5, .5), oma=c(0, 2, 0, 0))
+  plot(Estimate ~ Familiarity, d.survey, col="lightgrey", axes=FALSE,
+       xlab="", ylab="", bty="l",
+       ylim=c(0, 100))
+  axis(2, las=1)
+  text(1:4, -5, levels(d.survey$Familiarity),
+       srt=-55, xpd=NA, adj=c(0, NA), cex=.85)
+  mtext("Estimate of proportion woodiness", 2, line=2.75)
+  label(.02, .96, "a)")
+
+  usr <- par("usr")
+  rect(usr[1], ci["lower",], usr[2], ci["upper",], col="#77777777",
+       border=NA)
+  abline(h=ci["mean",], lty=c(1, 2))
+
+  plot(Estimate ~ Training, d.survey, col="lightgrey", axes=FALSE,
+       xlab="", ylab="", bty="l", ylim=c(0, 100))
+  axis(2, las=1)
+  xl <- c("Postgrad","Part postgrad","Undergrad","Part undergrad", "None")
+  text(1:5, -5, xl,
+       srt=-55, xpd=TRUE, adj=c(0, NA), cex=.85) 
+  label(.02, .96, "b)") 
+
+  usr <- par("usr")
+  rect(usr[1], ci["lower",], usr[2], ci["upper",], col="#77777777",
+       border=NA)
+  abline(h=ci["mean",], lty=c(1, 2)) 
+}
+
 to.pdf("doc/fraction-by-genus.pdf", 6, 6,
        fig.fraction.by.genus(res.strong, res.weak))
 
@@ -154,3 +195,7 @@ to.pdf("doc/fraction-on-phylogeny.pdf", 6, 6,
 
 to.pdf("doc/fraction-on-phylogeny-supp.pdf", 6, 6,
        fig.fraction.on.phylogeny(res.weak))
+
+to.pdf("doc/survey-results.pdf", 6, 4,
+       fig.survey.results(d.survey, res.strong, res.weak))
+

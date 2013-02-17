@@ -246,3 +246,29 @@ make.col.function <- function(cols) {
     ret
   }
 }
+
+load.survey <- function() {
+  d <- read.csv(file="survey/Plant_survey_final.csv",
+                stringsAsFactors=TRUE)
+  ## Remove timestamp column and continent column:
+  d <- d[-c(1,5)]
+
+  ## change the colnames
+  colnames(d) <- c("Estimate", "Familiarity", "Training", "Country")
+
+  ## Here are the different familiarity and training categories from
+  ## "best" to "worst".
+  lvl.familiarity <- c("Very Familiar", "Familiar", "Somewhat Familiar",
+                       "What's a Plant?")
+  lvl.training <-
+    c("Postgraduate degree in botany or a related field",
+      "Partially complete postgraduate degree in botany or a related field",
+      "Undergraduate degree in botany or a related field",
+      "Some botany courses at either an undergraduate or postgraduate level",
+      "No formal training in botany")             
+
+  d$Familiarity <- factor(d$Familiarity, lvl.familiarity, ordered=TRUE)
+  d$Training <- factor(d$Training, lvl.training, ordered=TRUE)
+
+  d
+}
