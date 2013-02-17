@@ -1,4 +1,5 @@
 \documentclass[12pt]{article}
+\usepackage[osf]{mathpazo}
 \usepackage{ms}
 \usepackage{natbib}
 \usepackage{lineno}
@@ -14,6 +15,8 @@ Richard G. FitzJohn$^{*,1}$\\ Matthew W. Pennell$^{*,2,3}$,\\ Amy E. Zanne$^{4}$
 \date{}
 \affiliation{\noindent
 $^*$ These authors contributed equally}
+% RGF: Why have a different running head to the main title?  They have
+% the same number of characters!
 \runninghead{The proportion of woody species}
 
 \begin{document}
@@ -22,42 +25,220 @@ $^*$ These authors contributed equally}
 \addtolength{\parskip}{.3em}
 
 \begin{abstract}
+% RGF: Not sure if I'll get to it, but the first part of the abstract
+% is too long.  It's nice though, and could be rolled into the main
+% text.
 The woody/herbaceous divide is perhaps the most fundamental axis of functional diversity among plants. The importance of variation in this trait was recognized over two thousand years ago by the Greek philosopher Theophrastus who classified the plants in his garden as either woody or herbaceous. Though our knowledge of global diversity's taxonomic structure  has increased tremendously since the era of Theophrastus, some very rudimentary questions regarding functional diversity remain. Here, we sought to address perhaps the most basic of all of these questions: how many of the world's species are woody? Surprisingly this question has never been comprehensively addressed.  We address this question by combining the largest plant functional trait data base to date with knowledge of the taxonomic distribution of diversity to account for the many species for which we do not have data. Using data combined with gap--filling approaches, we estimate the proportion ``woodiness'' among the world's vascular plants to be between 46\% and 48\%.  We sought to determine whether a consensus answer to our question existed among botanists---even if not formally documented in the peer-reviewed literature. To investigate this we took the unconventional approach of coupling our analysis of the data with a survey in which we posed our question to the broader community of botanists and other biologists.  We found that no such consensus existed and that on average researchers underestimated the proportion of the world's flora that was woody; that true was regardless of the respondents' training or familiarity with plants. The results of our survey highlight just how global datasets can show patterns at odds with conventional wisdom.  Global plant functional diversity is much woodier than we thought.  
 \end{abstract}
 
 \section{Introduction}
 
-Some species produce aboveground stems that persist for multiple years, others do not, and this represents perhaps the most profound contrast among terrestrial plants and ecosystems: the difference between a forest and a grassland is the presence or absence of wood. The recognition of the fundamental importance of this divide dates back at least to \textit{Enquiry into Plants} by Theophrastus of Eresus (371 - 287 BC) a student of Plato and Aristolte, who began his investigation into plant form and function by classifying the hundreds of plants in his garden into woody and herbaceous categories \citep{theophrastus1916enquiry}.  
+% RGF: This seems like a weaker opening sentence than we'd like.
+% Perhaps ignore the distinction between wood and pseudo wood for now
+% an introduce this later.
+%
+% Was thinking about something along the lines of "It is trivial to
+% observe that some species are woody and others are not, yet..."
+The distinction between a woody and non-woody growth-form of plants is
+probably the most profound contrast among terrestrial plants and
+ecosystems: the difference between a forest and a grassland is the
+presence or absence of wood. The recognition of the fundamental
+importance of this divide dates back at least to \textit{Enquiry into
+  Plants} by Theophrastus of Eresus (371 -- 287 BC), a student of
+Plato and Aristolte, who began his investigation into plant form and
+function by classifying the hundreds of plants in his garden into
+woody and herbaceous categories \citep{theophrastus1916enquiry}.
+% 
+[this is just a sketch of the scope of what is needed] Functionally,
+not all wood is ``true wood'' (i.e., secondary xylem, etc).  Palms are
+``functionally'' woody, having a trunk and a tree-like growth form.
 
+% An alternative here would be to structure this like (I've just
+% arbitrarily jotted things down here).  Also may depend on a
+% definition of "true" woodiness in the preceeding paragraph.  
+The last two thousand years of research into wood since Theophrastus
+classified his garden have uncovered its origin in the early Devonian
+\citep[$\sim$~400 mya;][]{gerrienne2011simple}; that prevelance of
+woodiness varies with climate \citep{judd1994}; that wood has been
+lost many times in diverse groups (both extant and extinction); that
+many different ways of pseudo-woody growth habit have appeared across
+groups that have lost true woodiness (or diverged before true
+woodiness evolved).  We know about its mechanical properties and
+developmental pathways, its patterns of decomposition and their
+effects on ecosystem function \citep{Cornwellwood}.  Woody and
+herbaceous species have different rates of morphological evolution and
+may diversify at different rates \citep{SmithDonoghue}.
+%
+However, surprisingly we have no idea about what proportion of species
+are actually woody.
 
-We now know a bit more about wood than Theophrastus: wood is thought to have originated in the early Devonian \citep[~400 mya;][]{gerrienne2011simple}, and the evolution of woodiness across the phylogenetic tree depends on climate and differs among the major plant clades (Zanne/ Beaulieu et al.), but basic questions still remain. [NOTE: We should fix this sentence as well as add a more thorough description of what exactly wood is]
+% Here was the previous version (please delete if you prefer the
+% above, merge the ideas, or delete the above and fix this one).
+% 
+% We now know a bit more about wood than Theophrastus: wood is thought
+% to have originated in the early Devonian \citep[~400
+% mya;][]{gerrienne2011simple}, and the evolution of woodiness across
+% the phylogenetic tree depends on climate and differs among the major
+% plant clades \citep{judd1994}, but basic questions still
+% remain. [NOTE: We should fix this sentence as well as add a more
+% thorough description of what exactly wood is]
 
-[NEED TRANSITION] Now in the age of global bioinformatics, building a global picture of biodiversity has become possible.  One important question that attracted a great deal of interest is the quest to estimate the number of species on the planet \citep{may1988many,erwin1991many, stork1993many, mora2011plos}.  These statistical estimates have gotten better with time, narrowing in most recently on a number around 8.7 million species with around 300,000 of those plants \citep{mora2011plos}.  It is also becoming clear that in a world with 8.7 million species, the clear next step toward a systematic understanding of that diversity is a system to understand the structure of that diversity. There are two complementary approaches to address this problem: a phylogenetic approach, in which diversity is structured according to shared ancestry and a functional approach, following Theophrastus \citep[more recently in the tradition of][]{grime1979plant, weiher2009challenging, westoby2002plant}, that essentially asks how many different ways do species make their living and how many species are in each category?
+% The transition to the next paragraph should now be clearer.
 
-Global taxonomic and phylogenetic efforts, although still not perfect, are much closer to being globally complete compared to the functional approach.   There has been a great deal of progress is assembling both taxonomies and phylogenies for the huge numbers of species including plants \citep[e.g.][]{smith2011understanding}. But despite their importance for understanding ecosystem services and making conservation decisions, we are only just beginning to assemble analogous databases that describe the functional characteristics of those species \citep{Kattge2011TRY}. The fact that phylogenetic efforts are a good deal more advanced than functional ones is surprising given the 2000-year history of the functional approach and the 250-year history of the taxonomic approach.  
+% Probably also should cite this:
+% http://rspb.royalsocietypublishing.org/content/early/2010/07/07/rspb.2010.1004.short
+% Though as far as I can see it spectacularly fails to even address
+% the question in the title.
+%
+% You may also want to cite
+% http://sysbio.oxfordjournals.org/content/early/2011/08/18/sysbio.syr080.abstract
+% But this strongly contraticts the joppa one (coming up with 1.8-2.0
+% million species).  So we probably have to adjust the text to note
+% that the most recent estimates still differ by a factor of 4.
+%
+% Also see here
+% http://iphylo.blogspot.ca/2011/10/how-many-species-are-there-and-why-do.html
+% for some nice discussion of the differences between the Mora and
+% Costello papers (do look into the comments at the bottom).
 
-%Interestingly, because taxonomic efforts are ahead of functional efforts, they can be used in combination with functional database to formulate estimates of the global structure of functional biodiversity.
+With the rise of bioinformatics, the similar biodiversity question of
+``how many species are there on earth'' finally appears solvable
+\citep{may1988many,erwin1991many, stork1993many, joppa2010,
+  costello2011, mora2011plos}.  These statistical estimates are
+improved , narrowing in most recently on a number around 8.7 million
+species with around 300,000 of those plants \citep{joppa2010,
+  costello2011, mora2011plos}.
+% 
+% --------------------------------------------------------------------
+% RGF: I'm really not convinced about what this 1/2 para and the
+% following paragraph add.  First, I don't think that a phylogenetic
+% approach and a functional approach are alternatives (you could look
+% at functional traits in a phylogenetic context, for example).  I'm
+% not sure that investigating species' strategies depends on there
+% being 8.7 million species -- is that a large number or a small
+% number?  What is the contrast?  If there were only 4000 species it
+% would be interesting (that's probably about as many species as there
+% are in NZ, for example).
+%
+% The second paragraph seems to be trying to justify one method over
+% another when I don't feel that they are necessarily alternatives.
+%
+% You had a really nice link that these two paragraph fell between, so
+% I've stitched them together that way.
+% --------------------------------------------------------------------
+% 
+% My preference would probably be to drop these, and I've commented
+% them out accordingly.  If there are points in here that I've missed
+% then we should work out more clearly what they are and what they add
+% and put them in the right place.  Perhaps discussion?  
+% It is also becoming clear that in a world with 8.7 million species,
+% the clear next step toward a systematic understanding of that
+% diversity is a system to understand the structure of that
+% diversity. There are two complementary approaches to address this
+% problem: a phylogenetic approach, in which diversity is structured
+% according to shared ancestry and a functional approach, following
+% Theophrastus \citep[more recently in the tradition
+% of][]{grime1979plant, weiher2009challenging, westoby2002plant}, that
+% essentially asks how many different ways do species make their living
+% and how many species are in each category?
+% 
+% Global taxonomic and phylogenetic efforts, although still not perfect,
+% are much closer to being globally complete compared to the functional
+% approach.  There has been a great deal of progress is assembling both
+% taxonomies and phylogenies for the huge numbers of species including
+% plants \citep[e.g.][]{smith2011understanding}. But despite their
+% importance for understanding ecosystem services and making
+% conservation decisions, we are only just beginning to assemble
+% analogous databases that describe the functional characteristics of
+% those species \citep{Kattge2011TRY}. The fact that phylogenetic
+% efforts are a good deal more advanced than functional ones is
+% surprising given the 2000-year history of the functional approach and
+% the 250-year history of the taxonomic approach.
+% 
+% Interestingly, because taxonomic efforts are ahead of functional
+% efforts, they can be used in combination with functional database to
+% formulate estimates of the global structure of functional
+% biodiversity.
+Here, we aim to use similar tools to re-ask Theophrastus' 2000 year
+old question at the global scale: how many of the world's plant
+species are woody?
+% 
+We felt that such a basic question would be essentially known.  But
+upon consulting the literature, we discovered that surprisingly little
+had been written on this topic. We then posed the question to several
+taxonomic experts and received a tremendous variety of answers in
+response suggesting that this fundamental aspect of plant functional
+diversity was surprisingly poorly understood. 
 
-Now in the age of global bio-informatics, we were interested in simply re-asking Theophrastus' 2000 year old question at the global scale: how many of the world's plant species are woody? At the outset, we assumed that the answer to such a rudimentary question would likely be generally known. But upon consulting the literature, we discovered that surprisingly little had been written on this topic. We then posed the question to several taxonomic experts and received a tremendous variety of answers in response suggesting that this fundamental aspect of plant functional diversity was surprisingly poorly understood. Here we undertake the first attempt, to our knowledge, to try and quantify the proportion of woodiness across the world's flora. We also took the unconventional approach of coupling our analysis of the data with a survey in which we asked our question to the broader community of botanists and other biologists. The motivation for this was to determine whether a consensus answer did exist---even if not formalized in the literature---and if so, whether it was consistent with the data.
+Here we undertake the first attempt, to our knowledge, to try and
+quantify the proportion of woodiness across the world's flora. We also
+took the unconventional approach of coupling our analysis of the data
+with a survey in which we asked our question to the broader community
+of botanists and other biologists. The motivation for this was to
+determine whether a consensus answer did exist---even if not
+formalized in the literature---and if so, whether it was consistent
+with the data.
 
-Though the experimental design of our survey was not ideal (e.g. we relied on voluntary response) and certainly biased in terms of who responded, we were none-the-less able to demonstrate the novelty of this project. Not only was there a huge variance in responses but the mean and median estimates from the survey were far from our those estimate obtained from analyzing available data. This evidence suggests that researchers' intuitions regarding the proportion of woody plants may be severely misinformed. [THE END OF THE INTRODUCTION IS WEAK]
+% I think this is a strong end to the intro, and the paragraph that
+% followed it is better suited in the methods, results and/or discussion.
+
+% Though the experimental design of our survey was not ideal (e.g. we
+% relied on voluntary response) and certainly biased in terms of who
+% responded, we were none-the-less able to demonstrate the novelty of
+% this project. Not only was there a huge variance in responses but
+% the mean and median estimates from the survey were far from our
+% those estimate obtained from analyzing available data. This evidence
+% suggests that researchers' intuitions regarding the proportion of
+% woody plants may be severely misinformed. [THE END OF THE
+% INTRODUCTION IS WEAK]
 
 \section{Methods and Materials}
 
 \subsection{Dataset}
 
-We used a recently assembled database with growth--form data for 48062 species, which is the largest database assembled to date.  In this dataset woodiness is defined as the persistence of a perennial above--ground stem, which includes palms and tree ferns as woody---species that are excluded by alternate definitions of ``wood''.  There are a number of species which are intermediate in form Beaulieu et al. (in revision); in this dataset 633 species (1.3\%) were coded as variable.  For the formal analysis we excluded these species.  Because the effort to organize plant taxonomy, especially synonymy, is on-going, there was uncertainty regarding the status of many of these plant names.  We matched this database with the accepted names from the plant list leading to 36664 records with documented taxonomy---14833 herbs and 21831 woody species.  
+We used a recently assembled database with growth--form data for
+49,064 species, which is the largest database assembled to date.  
+% Which number do we want to use here?  The number of rows in the raw
+% data when ignoring issues such as "variable" and synonymy?
+%   path.forest <- readLines("~/.forest_path")
+%   dat <- read.csv(file.path(path.forest, "export/speciesTraitData.csv"), stringsAsFactors=FALSE)
+%   sum(!is.na(dat$woodiness))
+% which gives 49,064 species.
+% 
+% Alternatively, we could use the fully processed number 
+%   sum(dat.g$K)
+% which gives 37,488 species.
+% 
+% I've gone with the former for now.
+In this dataset, we defined woodiness as the persistence of a
+perennial above--ground stem, which includes palms and tree ferns as
+woody---species that are excluded by strict anatomical definitions of
+``wood''.  
+% This is a bit confusing as this "intermediate" is different to
+% non-strict woody, but the sentence follows along.
+There are a number of species which are intermediate in form Beaulieu
+et al. (in revision); in this dataset 633 species (1.3\%) were coded
+as variable.  For the formal analysis we excluded these species.
+Because the effort to organize plant taxonomy, especially synonymy, is
+on-going, there was uncertainty regarding the status of many of these
+plant names.  We matched this database with the accepted names from
+the plant list (REF) leading to 37,488 records with documented
+taxonomy---15,657 herbs and 21,831 woody species.
+% sum(dat.g$K) # known species
+% sum(dat.g$H) # herbs
+% sum(dat.g$W) # 
+
+% RGF: Describe how we sorted out fern synonomy and got the accepted
+% number of species?  Or was that just the allies?  Or just the higher
+% order taxonomy.
 
 %WKC:  compare family sampling to total number of families? Somehow show the dataset is comprehensive?
 
 \subsection{Estimating the fraction of species that are woody}
 
-[Describe the database collection, and give a few summary statistics
-about the database here]
-
-We cannot simply use the fraction of species within our trait
-data set (21,743 / 36,238 = 60\%) as these records may represent a
-biased sample of vascular plants.
+We cannot simply use the fraction of species within our trait database
+(21,831 / 37,488 = 58\%) as these records represent a biased sample of
+vascular plants.
 % sum(dat.g$W) # woody
 % sum(dat.g$K) # known
 % sum(dat.g$W) / sum(dat.g$K) # fraction
@@ -138,6 +319,13 @@ This procedure is described in detail in the appendix to this paper.
 
 \begin{figure}[p]
   \centering
+  \includegraphics{survey-results}
+  \caption{Survey results}
+  \label{fig:survey}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
   \includegraphics{fraction-on-phylogeny-supp}
 
   \caption{
@@ -157,60 +345,182 @@ This procedure is described in detail in the appendix to this paper.
 
 
 \subsection{Survey}
-In order to determine if a consensus existed and whether estimates were correlated with general familiarity with plants, professional training or geographic region, we created an English-language survey consisting of the following questions:
 
-\begin{enumerate}
+% RGF: I've tried to motivate the survey a bit more.  It's still
+% pretty sketchy, but I think it puts the emphasis in a better place.
+We were surprised to find little consensus within our working group
+[\textit{or among taxonomic experts --- that's how you introduced it
+  earlier}] so investigated if there is a general consensus among
+biologists.
+% 
+% RGF: I've put folk knowledge here, but it's the wrong term and needs
+% replacing.
+\citet{joppa2010} found that taxonomic experts generally predicted the
+total number of species within plant groups, and we were interested in
+whether there was similar folk-knowledge of the relative prevance of
+this key trait.
+%
+We created an English-language survey asking for an estimate of the
+fraction of species that are woody.  We also asked respondants to
+indicate their level of familiarity with plants, level of formal
+training, and the country in which they recieved their training (see
+supplementary material for details).
+% Were other lists used?  I've assumed that it is and changed the
+% language.  I'd be inclined to drop mention of the departmental
+% lists, as that's a similar level to just bugging people in the
+% department, which is what I did.
+We distributed the survey to the community via several electronic
+mailing lists with wide circulation among biologists: \emph{EvolDir},
+\emph{ECOLOG}, \emph{r-sig-phylo}, \emph{Taxacom}, \emph{Herbaria}, as
+well as local departmental mailing lists (e.g. Institute for
+Bioinformatics and Evolutionary Studies, University of Idaho). We also
+posted links on the social-networking platforms \textsc{google+},
+\textsc{twitter} and \textsc{facebook} to reach as broad an audience
+as we could.
+% RGF: can we be specific about the Brazilian mailing lists?
+In order to increase representation of survey responses from Latin
+America, we translated the survey into Portugese (thanks to Rafael
+Maia) and distributed it to various Brazilian biology
+\textsc{facebook} groups and university mailing lists.
 
-\item What percentage of the world's vascular plant species are woody?
-
-\item How would you rate your familiarity with plants?
-
-	\begin{itemize}
-	
-		\item Very Familiar
-	
-		\item Familiar
-	
-		\item Somewhat Familiar
-	
-		\item What's a Plant?
-	
-	\end{itemize}
-	
-\item How much formal training have you received in botany?
-
-	\begin{itemize}
-	
-		\item Postgraduate degree in botany or a related field
-		
-		\item Partially complete postgraduate degree in botany or a related field
-		
-		\item Undergraduate degree in botany or a related field
-		
-		\item Some botany courses at either an undergraduate or postgraduate level
-		
-		\item No formal training in botany
-		
-	\end{itemize}
-	
-\item In what country did you receive your biology/botany training?
-
-\end{enumerate}
-
-This survey was created using google docs (original survey included as Supplementary Material) and distributed to the community via several electronic mailing lists with wide circulation among biologists. These included \emph{EvolDir}, \emph{ECOLOG}, \emph{r-sig-phylo}, \emph{Taxacom}, \emph{Herbaria}, and local departmental mailing lists (e.g. Institute for Bioinformatics and Evolutionary Studies, University of Idaho). We also leveraged social-networking platforms such as \textsc{google+}, \textsc{twitter} and \textsc{facebook} to reach as broad an English-language audience as we could. In order to increase representation of survey responses from Latin American, we translated the survey into Portugese (thanks to Rafael Maia) and distributed it to various Brazilian biology \textsc{facebook} groups and university mailing lists. (The survey we sent out is included as Online Supplementary Material.)
-
+% RGF: A logistic transform is different to a logistic regression.
 To analyze the survey data, we performed logistic regression, with the percent woodiness as the response variable \citep[for discussion as to why we used logistic regression, see][]{wartonarcsine} and treating the various levels of familiarity and education as ordered factors.
 
 
 \section{Results and Discussion}
 
-A global picture of biodiversity requires taxonomic, genetic and functional components.  In many ways research into function is the oldest of these lines of research, but today our functional understanding of global biodiversity is not as developed as our taxonomic and genetic understanding. Woodiness is a fundamental plant trait for many reasons: the presence or absence of wood  structures the main difference between terrestrial biomes; woody and herbaceous species also evolve at different rates \citep{SmithDonoghue};  there are also important evolutionary interactions with climate (Zanne); and wood itself has crucial effects on the global carbon cycle \citep{Cornwellwood}.  The question we ask in this paper---how many of the world's plant species are woody---is an extremely basic global description of global functional diversity.
+% RGG: The paragraph that was here largely rehashed the first
+% paragraph of the paper, and is not needed in such a short paper I
+% think (commented below for reference).
 
-[DISCUSS RESULTS OF ANALYSIS]
+% A global picture of biodiversity requires taxonomic, genetic and
+% functional components.  In many ways research into function is the
+% oldest of these lines of research, but today our functional
+% understanding of global biodiversity is not as developed as our
+% taxonomic and genetic understanding. Woodiness is a fundamental
+% plant trait for many reasons: the presence or absence of wood
+% structures the main difference between terrestrial biomes; woody and
+% herbaceous species also evolve at different rates
+% \citep{SmithDonoghue}; there are also important evolutionary
+% interactions with climate (Zanne); and wood itself has crucial
+% effects on the global carbon cycle \citep{Cornwellwood}.  The
+% question we ask in this paper---how many of the world's plant
+% species are woody---is an extremely basic global description of
+% global functional diversity.
 
-We acknowledge that conducting a poll of the research community is certainly unconventional for a scientific research paper; the a priori predictions of other researchers in the field are often considered irrelevant. However, as the question we sought to answer was so basic, we were interested in whether a general consensus existed as to the answer, even if it did not appear in the peer-reviewed literature. In response to our survey, we received 293 responses from 31 countries. The mean estimate for the proportion of woodiness was 31.7\% and a median estimate of 30\%. The standard deviation of the estimates was 17.7. The respondent's degree of training in botany had no effect on their estimate (Fig XX). There was a significant effect ($p<0.01$) of the respondent's  familiarity with plants on the estimates they gave though this effect seemed to be driven primarily by respondent's with very little familiarity with plants (the ``What's a Plant?'' category), whose estimates tended to be the lower (less woody) than the estimates from other categories. Taken as a whole, this is perhaps surprising. Not only did a broad consensus not exist (there was a large variance in the estimates) but researchers systematically underestimated the proportion of the world's flora that is woody. This perceptual bias was present in researchers with all manner of formal education and familiarity with plants. We have a number of admittedly speculative hypotheses as to why this may the case. One is that researchers may have a temperate bias; we know that the proportion of woody plants is greater in the tropics than in the temperate regions \citep{Molesheihgt}. However, in our informal survey, respondents from tropical countries were no more accurate in their predictions than their temperate colleagues (results not shown). Another possible cause for our herb-centric view of the world is that many common cultivated plants are herbaceous---this is true wherever we are in the world. We are much more likely to spend time in the garden than the rainforest. Whatever the reason for the discordance between the survey results and our data analysis, the fact that such a discordance exists further supports our claim that this most basic of plant natural history facts was not generally known.   
+% The three paragraphs below probably can be spliced together in a
+% more convincing order.  The middle paragraph might be a better
+% concluding paragraph?
 
-[CONCLUDING THOUGHTS]
+Across all vascular plants, we estimated the fraction woody species to
+be between 45\% to 48\%.
+% round(100*res.strong$overall, 1)
+% round(100*res.weak$overall, 1)
+Specifically, using our ``strong prior'' sampling approach we
+estimated 45.0\% (95\% CI of 44.7--45.3\%) and with the ``weak prior''
+approach we estimated 47.2\% (95\% CI of 46.6--47.8\%).  
+% 
+The different approaches generate different distributions of the
+per-genus fraction of woodiness (Figure
+\ref{fig:distribution-genera}~b), with a less strongly bimodal
+distribution using the ``weak prior'' approach, as we describe in the
+appendix.
+%
+This difference in the predicted distribution drives the difference in
+the estimates of woodiness.  Genera that are primarily herbacous
+(fraction of woody species less than 10\% for genera with at least 10
+records) were on average larger than primarily woody genera (more than
+90\% woody species), with 202 species rather than 138.
+%
+
+Higher order classifications are at least as much a product of human
+pattern matching as any biological pattern.  Genera probably
+correspond to the classification differences that humans deem
+important.  The relative paucity of genera with significant numbers of
+both woody and herbaceous species (Figure
+\ref{fig:distribution-genera}) reinforces the importance of this
+trait.
+
+Because the observed distribution of woodiness fraction among genera
+is itself very bimodal, we are inclined to believe that the true
+result lies closer to 45\% than to 47\%.  A more sophisticated
+heirarchical modelling approach could probably lead to a more precice
+answer, but we feel that our values probably span the range of
+estimates that such a modelling approach would generate.  
+%
+Probably a larger problem is that undiscovered species are unlikely to
+be random with respect to woodiness.  In principle, rarefaction
+analysis could estimate the number of species remaining to be
+discovered in different groups, but this is not possible for many
+plant clades \citep{costello2011}.
+%
+In any case, such a simple question as this deserves a simple answer.
+
+% RGF: Given the discussion I had with Amy yesterday, we might want to
+% swap out the phylogeny for the one I did for Jeremy's paper.  Or at
+% least move to having the bars around the outside.  I can have a look
+% at that if you'd like.  Might be nicer than the spots that we
+% currently have.  I'm not sure we can realistically get the families
+% around the outside of the tree with diversity information though;
+% they're about as packed in as we can take it.  However, the tree
+% does look really quite ugly and I'd like to see what this looks like
+% trimmed down.  Anyone up for looking at how easy it will be to
+% anchor orders against one of the time trees and see how it looks
+% when pruned that way?
+
+% RGF: Not sure what we could possibly write here that would be
+% interesting.  If we're not going to add anything interesting in
+% here, then should we simply drop the phylogeny figures?
+The distribution of woodiness varies widely among different taxonomic
+groups (Figure \ref{fig:phylogeny}).  There are two major clades that
+are primarily herbaceous --- the monocots and Monilophyte (ferns).
+However, there are many primarily herbaceous clades nested within
+woody clades, and vice versa.  [Do we honestly have anything new to
+add here?]
+
+% RGF: I didn't like how this immediately started with the apology for
+% being different.  I've rewritten this quite a bit.  The next
+% paragraph starts with "We have a number of admittedly speculative
+% hypotheses as to why this may the case", which is also much more
+% carefully hedged than necessary.
+In contrast with the very small range in our estimate of the number of
+woody species in the world, there is strikingly little consensus among
+researchers.  We received 293 responses from 31 countries, which
+ranged from estimates of 1\% to 90\% with a mean of 31.7\%.  The vast
+majority (81\%) of the responses were less than even our smallest
+estimate.
+% nrow(d.survey)
+% range(d.survey$Estimate)
+% mean(d.survey$Estimate < 45)
+We found little effect of a respondant's degree of training on their
+estimate (Figure \ref{fig:survey}).  There was a significany effect of
+the respondant's familiarity with plants on thei estimates, primarily
+driven by people with very little familiarity with plants (the
+``What's a Plant?'' category), whose estimates tended to be the lower
+(less woody) than the estimates from other categories.
+% 
+Before carrying out the survey, we had hypothesised that researchers
+from tropical regions may percieve the world as woodier than
+researchers from more temperate regions due to the latitudinal
+gradient in woodiness \citep{Molesheihgt}.  However, in our informal
+survey, respondents who trained in tropical countries were no more
+accurate in their predictions than their temperate colleagues (results
+not shown).
+% RGF: Is the code for doing the classification handy anywhere?  The
+% country list is rather long.
+
+We conclude with two observations.  
+%
+First, most people percieve there to be substantially fewer woody
+species in the world than there probably are.  This herb-centric
+version of the world may arise from the importance of our (mostly
+herbaceous) cultivated crops, or the fact that researchers likely to
+spend more time in the garden than in the rainforest.
+%
+Second, there is no consensus as to how woody the world is.  We find
+it deeply surpsiging that this most basic aspect of plant natural
+history was not generally known.  Global plant functional diversity is
+much woodier than we thought.
 
 \clearpage
 \setcounter{secnumdepth}{1}
@@ -296,6 +606,53 @@ for a genus, with probabilities from 0.1 to 1 being fairly evenly
 spread.  Given this woodiness fraction, we then sampled the number of
 species that are woody from a binomial distribution with this fraction
 and the number of species in the genus as its parameters.
+
+\section{Survey}
+\label{sec:survey}
+
+
+
+questions:
+
+\begin{enumerate}
+
+\item What percentage of the world's vascular plant species are woody?
+
+\item How would you rate your familiarity with plants?
+
+	\begin{itemize}
+	
+		\item Very Familiar
+	
+		\item Familiar
+	
+		\item Somewhat Familiar
+	
+		\item What's a Plant?
+	
+	\end{itemize}
+	
+\item How much formal training have you received in botany?
+
+	\begin{itemize}
+	
+		\item Postgraduate degree in botany or a related field
+		
+		\item Partially complete postgraduate degree in botany or a related field
+		
+		\item Undergraduate degree in botany or a related field
+		
+		\item Some botany courses at either an undergraduate or postgraduate level
+		
+		\item No formal training in botany
+		
+	\end{itemize}
+	
+\item In what country did you receive your biology/botany training?
+\end{enumerate}
+
+This survey was created using google docs (original survey included as
+Supplementary Material)
 
 \bibliographystyle{ecology}
 \bibliography{wood.bib}
