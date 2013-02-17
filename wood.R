@@ -113,7 +113,7 @@ fig.fraction.by.genus <- function(res.strong, res.weak) {
   axis(1, tick=TRUE, label=FALSE)
   label(.02, .96, "a)")
   
-  cols <- c("red", "blue")
+  cols <- c("#a63813", "#4d697f") # red, blue
 
   h.strong <- hist(100*res.strong$family$mean, n=50, plot=FALSE)
   h.weak   <- hist(100*res.weak$family$mean, n=50, plot=FALSE)
@@ -132,9 +132,8 @@ fig.fraction.by.genus <- function(res.strong, res.weak) {
   label(.02, .96, "b)")
 }
 
-phy.o <- build.order.tree(dat.g)
-
-fig.fraction.on.phylogeny <- function(phy.o, res) {
+fig.fraction.on.phylogeny <- function(res) {
+  phy.o <- build.order.tree(dat.g)
   ## Higher level taxonomy
   hlt <- read.csv("high-level-taxonomy.csv", stringsAsFactors=FALSE)
   phy.group <- hlt$Group[match(phy.o$tip.label, hlt$Order)]
@@ -217,7 +216,9 @@ anova(res)
 
 fig.survey.results <- function(d.survey, res.strong, res.weak) {
   ci <- 100*cbind(res.strong$overall, res.weak$overall)
-
+  cols <- c("#a63813", "#4d697f") # red, blue
+  cols.tr <- diversitree:::add.alpha(cols, .5)
+  
   layout(rbind(1:2), widths=c(4, 5))
   par(mar=c(6.5, 2, .5, .5), oma=c(0, 2, 0, 0))
   plot(Estimate ~ Familiarity, d.survey, col="lightgrey", axes=FALSE,
@@ -230,9 +231,9 @@ fig.survey.results <- function(d.survey, res.strong, res.weak) {
   label(.02, .96, "a)")
 
   usr <- par("usr")
-  rect(usr[1], ci["lower",], usr[2], ci["upper",], col="#77777777",
+  rect(usr[1], ci["lower",], usr[2], ci["upper",], col=cols.tr,
        border=NA)
-  abline(h=ci["mean",], lty=c(1, 2))
+  abline(h=ci["mean",], col=cols)
 
   plot(Estimate ~ Training, d.survey, col="lightgrey", axes=FALSE,
        xlab="", ylab="", bty="l", ylim=c(0, 100))
@@ -243,9 +244,9 @@ fig.survey.results <- function(d.survey, res.strong, res.weak) {
   label(.02, .96, "b)") 
 
   usr <- par("usr")
-  rect(usr[1], ci["lower",], usr[2], ci["upper",], col="#77777777",
+  rect(usr[1], ci["lower",], usr[2], ci["upper",], col=cols.tr,
        border=NA)
-  abline(h=ci["mean",], lty=c(1, 2)) 
+  abline(h=ci["mean",], col=cols)
 }
 
 fig.distribution.raw <- function(res.strong, res.weak) {
@@ -257,12 +258,14 @@ fig.distribution.raw <- function(res.strong, res.weak) {
 
   xlim <- c(42, 50)
   ylim <- range(h.strong$density, h.weak$density)
+
+  cols <- c("#a63813", "#4d697f") # red, blue
   
   par(mar=c(4.1, 4.1, .5, .5))
-  plot(h.strong, col="red", xlim=xlim, ylim=ylim, freq=FALSE, yaxt="n",
+  plot(h.strong, col=cols[1], xlim=xlim, ylim=ylim, freq=FALSE, yaxt="n",
        ylab="", xlab="% woody species", main="")
   box(bty="l")
-  lines(h.weak, col="blue", freq=FALSE)
+  lines(h.weak, col=cols[2], freq=FALSE)
   mtext("Probability density", 2, line=.5)
 }
 
@@ -272,9 +275,12 @@ fig.survey.distribution <- function(d.survey, res.strong, res.weak) {
   hist(d.survey$Estimate, xlim=c(0, 100), las=1, col="lightgrey",
        xlab="Estimate of percentage woodiness", main="")
   usr <- par("usr")
+
+  cols <- c("#a63813", "#4d697f") # red, blue  
+  
   rect(ci["lower",], usr[3], ci["upper",], usr[4],
-       col=c("#ff000066", "#0000ff66"), border=NA)
-  abline(v=ci["mean",], col=c("red", "blue"))
+       col=diversitree:::add.alpha(cols, .5), border=NA)
+  abline(v=ci["mean",], col=cols)
 }
 
 

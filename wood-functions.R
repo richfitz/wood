@@ -398,6 +398,7 @@ build.order.tree <- function(dat.g, regenerate=FALSE) {
     phy.o <- ladderize(phy.o)
 
     phy.o$n.taxa <- tapply(dat.g$N, dat.g$order, sum)[phy.o$tip.label]
+    saveRDS(phy.o, filename)
   }
   
   phy.o
