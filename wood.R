@@ -100,23 +100,34 @@ res.weak   <- process(sim.weak,   dat.g)
 
 ## Now, look at the distributions of woodiness among families:
 fig.fraction.by.genus <- function(res.strong, res.weak) {
-  par(mfrow=c(2, 1), mar=c(2, 1, .5, .5), oma=c(2, 0, 0, 0))
+  par(mfrow=c(2, 1), mar=c(2, 2, .5, .5), oma=c(2, 0, 0, 0))
 
   tmp <- dat.g$p[dat.g$K >= 10] # genera with 10 records
+  ## TODO: Do we want the distribution of % woody-per-family here too?
+  ## Is that something that can actually be easily computed (probably
+  ## not).
   h <- hist(tmp, 50, main="", xaxt="n", yaxt="n", lab="")
-  mtext("Probability density", 2)
+  box(bty="l")
+  mtext("Probability density", 2, line=.5)
   axis(1, tick=TRUE, label=FALSE)
   label(.02, .96, "a)")
   
-  cols <- c("#ff0000ff", "#0000ff66")
-  hist(100*res.strong$family$mean, col=cols[1], n=50, freq=FALSE,
-       main="", yaxt="n", xlab="", ylab="")
-  mtext("Probability density", 2)
+  cols <- c("red", "blue")
+
+  h.strong <- hist(100*res.strong$family$mean, n=50, plot=FALSE)
+  h.weak   <- hist(100*res.weak$family$mean, n=50, plot=FALSE)
+  ylim <- range(h.strong$density, h.weak$density)
+  plot(NA, xlim=c(0, 100), ylim=ylim,
+       xlab="", ylab="", yaxt="n", bty="n", bty="l")
+  mtext("Probability density", 2, line=.5)
   mtext("% woody species in genus", 1, outer=TRUE, line=.5)
-  hist(100*res.weak$family$mean, col=cols[2], n=50, freq=FALSE, add=TRUE)
+
+  diversitree:::add.profile.outline(h.strong, cols[1])
+  diversitree:::add.profile.outline(h.weak,   cols[2])
+  
   legend("topleft", c("No replacement (strong prior)",
                       "Replacement (weak prior)"),
-         fill=cols, bty="n", cex=.75, inset=c(.1, 0))
+         col=cols, lty=1, bty="n", cex=.75, inset=c(.1, 0))
   label(.02, .96, "b)")
 }
 
