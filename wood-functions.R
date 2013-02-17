@@ -315,6 +315,7 @@ build.family.tree <- function(regenerate=FALSE) {
   if ( !regenerate && file.exists(filename) ) {
     phy.f <- readRDS(filename)
   } else {
+    browser()
     phy <- read.tree(file.path(path.forest,
                                "taxonomic/trees/spLevelApgBackbone.tre"))
     i <- phy$node.label == ""
@@ -338,4 +339,66 @@ build.family.tree <- function(regenerate=FALSE) {
     saveRDS(phy.f, filename)
   }
   phy.f
+}
+
+descendants.spp <- function(node, phy) {
+  i <- diversitree:::descendants(node, phy$edge)
+  phy$tip.label[i[i <= length(phy$tip.label)]]
+}
+
+build.order.tree <- function(dat.g, regenerate=FALSE) {
+  filename <- "phy.o.rds"
+  if ( !regenerate && file.exists(filename) ) {
+    phy.o <- readRDS(filename)
+  } else {
+    phy <- read.tree("large-phylogeny.tre")
+    phy.genus <- sub("_.+$", "", phy$tip.label)
+
+    missing.orders <- setdiff(dat.g$order, c(phy$node.label, ""))  
+
+    mrca.tipset <- diversitree:::mrca.tipset
+    f <- function(x) {
+      spp.x <- phy$tip.label[phy.genus %in% dat.g$genus[dat.g$order == x]]
+      if ( length(spp.x) > 0 ) {
+        node <- mrca.tipset(phy, spp.x)
+        desc.x <- descendants.spp(node, phy)
+        gen.x <- unique(phy.genus[match(desc.x, phy$tip.label)])
+        ret <- unique(dat.g$order[dat.g$genus %in% gen.x])
+        attr(ret, "node") <- node
+        ret
+      } else {
+        character(0)
+      }
+    }
+
+    tmp <- lapply(missing.orders, f)
+    n <- sapply(tmp, length)
+
+    tmp.ok <- tmp[n == 1]
+    nd <- sapply(tmp.ok, attr, "node")
+    names(nd) <- sapply(tmp.ok, "[[", 1)
+    n <- length(phy$tip.label)
+    i <- nd > n
+    phy$node.label[nd[i]] <- names(nd[i])
+
+    tmp.nok <- tmp[sapply(tmp, length) > 1]
+    ## TODO: Missing the Polypodiales and Cyatheales here (just pick
+    ## nodes).  Also missing Ophioglossales but that's OK.
+
+    nodes <- intersect(unique(dat.g$order), phy$node.label)
+    to.keep <- sapply(match(nodes, phy$node.label), function(x)
+                      descendants.spp(x, phy)[[1]])
+    names(to.keep) <- nodes
+
+    to.keep <- to.keep[-grep("UnknownOrder", names(to.keep))]
+
+    to.drop <- setdiff(phy$tip.label, to.keep)
+    phy.o <- diversitree:::drop.tip.fixed(phy, to.drop)
+    phy.o$tip.label <- names(to.keep)[match(phy.o$tip.label, to.keep)]
+    phy.o <- ladderize(phy.o)
+
+    phy.o$n.taxa <- tapply(dat.g$N, dat.g$order, sum)[phy.o$tip.label]
+  }
+  
+  phy.o
 }

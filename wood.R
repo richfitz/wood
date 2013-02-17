@@ -57,6 +57,7 @@ rhyper2 <- function(nn, s0, s1, xn, fraction=FALSE) {
 nrep <- 1000
 dat.g.split <- split(dat.g, dat.g$order)
 
+set.seed(1)
 ## "Weak prior" sampling with replacement
 sim.weak <- lapply(dat.g.split, sim, nrep)
 ## "Strong prior" sampling based on the number of species
@@ -131,30 +132,79 @@ fig.fraction.by.genus <- function(res.strong, res.weak) {
   label(.02, .96, "b)")
 }
 
-fig.fraction.on.phylogeny <- function(res) {
-  phy.f <- build.family.tree()
+phy.o <- build.order.tree(dat.g)
 
-  ## This tree has order information:
-  phy.f.ord <- phy.f$class
+fig.fraction.on.phylogeny <- function(phy.o, res) {
+  ## Higher level taxonomy
+  hlt <- read.csv("high-level-taxonomy.csv", stringsAsFactors=FALSE)
+  phy.group <- hlt$Group[match(phy.o$tip.label, hlt$Order)]
+  tmp <- 
+    lapply(seq_len(max(phy.o$edge)), function(x)
+           if ( x <= length(phy.o$tip.label) ) phy.group[[x]] else
+           unique(phy.group[get.descendants(x, phy.o, TRUE)]))
+  grp <- sapply(tmp, function(x) if (length(x) == 1) x else "Rest")
+  cols <- c(Fern="#a63813",       # reddish brown
+            Gymnosperm="#533d0c", # dark brown
+            Angiosperm="#eeb911", # yellow (basal)
+            Monocots="#799321",   # green
+            Eudicots="#4d697f",    # light blue
+            Rest="gray15")
+  col <- unname(cols[grp])
+  col2 <- col[match(phy.o$edge[,2], seq_along(grp))]
 
-  ## Drop tips with no woodiness estimates (due to taxonomic
-  ## differences)
-  to.drop <- setdiff(phy.f$tip.label, rownames(res$family))
-  phy.f <- diversitree:::drop.tip.fixed(phy.f, to.drop)
+  p <- structure(res$order[["mean"]], names=rownames(res$order))
+  p <- p[phy.o$tip.label]
 
-  ## And sort the order information by the current taxon labels:
-  phy.f.ord <- unname(phy.f.ord[phy.f$tip.label])
+  t <- max(branching.times(phy.o))
+  offset <- .15
 
-  cols <- make.col.function(brewer.pal(9, "Blues")[-1])
-  plt <- trait.plot.cont(phy.f, res$family["mean"], list(cols),
-                         class=phy.f.ord, w=1/30, font=1, margin=1/3)
-  mrca.tipset <- diversitree:::mrca.tipset
-  nd <- sapply(sort(unique(phy.f.ord)), function(x)
-               mrca.tipset(phy.f, phy.f$tip.label[phy.f.ord==x &
-                                                  !is.na(phy.f.ord)]))
-  nd.int <- nd[nd > length(phy.f$tip.label)]
-  points(plt$xy$xx[nd.int], plt$xy$yy[nd.int], pch=19, cex=2,
-         col=cols(res$order[names(nd.int),]$mean))
+  plt <- 
+    diversitree:::plot2.phylo(phy.o, type="fan", cex=.5, no.margin=TRUE,
+                              label.offset=t * .15, font=1,
+                              edge.col=col2,
+                              n.taxa=log1p(phy.o$n.taxa))
+  xy <- plt$xy
+
+  r <- max(xy$r)*(1+offset)
+  n.tip <- length(phy.o$tip.label)
+  xy <- plt$xy[seq_len(n.tip),]
+  xy.lab <- data.frame(x=cos(xy$theta)*r,
+                       y=sin(xy$theta)*r)
+  xrad <- .5 * diff(par("usr")[1:2])/50
+  pie <- cbind(p, 1 - p)
+  pie.col <- c("#21313b", "#ea7518")
+
+  r <- 3/4
+  r0 <- max(xy$r) * (1 + offset * (1-r)/2)
+  r2 <- max(xy$r) * (1 + offset * (1 - (1-r)/2))
+  r1 <- r0 * p + r2 * (1-p)
+
+  w <- 3
+
+  xx1 <- c(rbind(r0 * cos(xy$theta) + w * cos(xy$theta + pi/2),
+                 r0 * cos(xy$theta) - w * cos(xy$theta + pi/2),
+                 r1 * cos(xy$theta) - w * cos(xy$theta + pi/2),
+                 r1 * cos(xy$theta) + w * cos(xy$theta + pi/2),
+                 NA))
+  yy1 <- c(rbind(r0 * sin(xy$theta) + w * sin(xy$theta + pi/2),
+                 r0 * sin(xy$theta) - w * sin(xy$theta + pi/2),
+                 r1 * sin(xy$theta) - w * sin(xy$theta + pi/2),
+                 r1 * sin(xy$theta) + w * sin(xy$theta + pi/2),
+                 NA))
+  
+  xx2 <- c(rbind(r2 * cos(xy$theta) + w * cos(xy$theta + pi/2),
+                 r2 * cos(xy$theta) - w * cos(xy$theta + pi/2),
+                 r1 * cos(xy$theta) - w * cos(xy$theta + pi/2),
+                 r1 * cos(xy$theta) + w * cos(xy$theta + pi/2),
+                 NA))
+  yy2 <- c(rbind(r2 * sin(xy$theta) + w * sin(xy$theta + pi/2),
+                 r2 * sin(xy$theta) - w * sin(xy$theta + pi/2),
+                 r1 * sin(xy$theta) - w * sin(xy$theta + pi/2),
+                 r1 * sin(xy$theta) + w * sin(xy$theta + pi/2),
+                 NA))
+
+  polygon(xx1, yy1, border=NA, col=pie.col[2])
+  polygon(xx2, yy2, border=NA, col=pie.col[1])
 }
 
 d.survey <- load.survey()
@@ -245,4 +295,6 @@ to.pdf("doc/figs/survey-results.pdf", 6, 4,
 
 to.pdf("doc/figs/survey-distribution.pdf", 6, 6,
        fig.survey.distribution(d.survey, res.strong, res.weak))
+
+
 
