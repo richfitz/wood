@@ -354,12 +354,37 @@ build.order.tree <- function(dat.g, regenerate=FALSE) {
   if ( !regenerate && file.exists(filename) ) {
     phy.o <- readRDS(filename)
   } else {
+    mrca.tipset <- diversitree:::mrca.tipset
+    drop.tip <- diversitree:::drop.tip.fixed
+
     phy <- read.tree("large-phylogeny.tre")
+
+    ## Two phylogenetic errors in ferns need fixing:
+    phy.order <- dat.g$order[match(sub("_.+$", "", phy$tip.label),
+                                   dat.g$genus)]
+
+    ## The Cyatheales and Polypodiales are hopelessly intertwined.
+    ## I'm fixing this by dropping all Cyatheales except for
+    ## Dicksonia_antarctica (arbitrarily).  According to APWEB, these
+    ## groups are reciprocally monophyletic, but the tree does not
+    ## resolve this and we didn't enforce it as a constraint.
+    to.drop1 <-
+      phy$tip.label[which(phy.order == "Cyatheales" &
+                          phy$tip.label != "Dicksonia_antarctica")]
+
+    ## Same with Ophioglossales, but using Ophioglossum_lusitanicum as
+    ## the placeholder.
+    to.drop2 <-
+      phy$tip.label[which(phy.order == "Ophioglossales" &
+                          phy$tip.label != "Ophioglossum_lusitanicum")]
+    
+    phy <- drop.tip(phy, c(to.drop1, to.drop2))
+
+    ## Get the genera from this new tree.
     phy.genus <- sub("_.+$", "", phy$tip.label)
 
-    missing.orders <- setdiff(dat.g$order, c(phy$node.label, ""))  
+    missing.orders <- setdiff(dat.g$order, c(phy$node.label, ""))
 
-    mrca.tipset <- diversitree:::mrca.tipset
     f <- function(x) {
       spp.x <- phy$tip.label[phy.genus %in% dat.g$genus[dat.g$order == x]]
       if ( length(spp.x) > 0 ) {
@@ -377,26 +402,34 @@ build.order.tree <- function(dat.g, regenerate=FALSE) {
     tmp <- lapply(missing.orders, f)
     n <- sapply(tmp, length)
 
+    ## These are going to be dropped.
+    dropped.orders <- missing.orders[n == 0]
+    dropped.orders <- dropped.orders[-grep("^Unknown", dropped.orders)]
+    if (  length(dropped.orders) > 0 )
+      warning("Dropping orders: %s", paste(dropped.orders,
+                                           collapse=", "))
+
     tmp.ok <- tmp[n == 1]
     nd <- sapply(tmp.ok, attr, "node")
     names(nd) <- sapply(tmp.ok, "[[", 1)
-    n <- length(phy$tip.label)
-    i <- nd > n
+    n.tip <- length(phy$tip.label)
+    i <- nd > n.tip
     phy$node.label[nd[i]] <- names(nd[i])
+    phy$tip.label[nd[!i]] <- names(nd[!i])
 
-    tmp.nok <- tmp[sapply(tmp, length) > 1]
-    ## TODO: Missing the Polypodiales and Cyatheales here (just pick
-    ## nodes).  Also missing Ophioglossales but that's OK.
+    if ( any(n > 1) )
+      warning("Dropping some orders!")
 
     nodes <- intersect(unique(dat.g$order), phy$node.label)
     to.keep <- sapply(match(nodes, phy$node.label), function(x)
                       descendants.spp(x, phy)[[1]])
     names(to.keep) <- nodes
-
+    to.keep <- c(to.keep, structure(phy$tip.label[nd[!i]],
+                                    names=names(nd[!i])))
     to.keep <- to.keep[-grep("UnknownOrder", names(to.keep))]
 
     to.drop <- setdiff(phy$tip.label, to.keep)
-    phy.o <- diversitree:::drop.tip.fixed(phy, to.drop)
+    phy.o <- drop.tip(phy, to.drop)
     phy.o$tip.label <- names(to.keep)[match(phy.o$tip.label, to.keep)]
     phy.o <- ladderize(phy.o)
 
