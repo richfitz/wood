@@ -288,7 +288,8 @@ fig.survey.distribution <- function(d.survey, res.strong, res.weak) {
   ci <- 100*cbind(res.strong$overall, res.weak$overall)
   par(mar=c(4.1, 4.1, .5, .5), mgp=c(2.5, 1, 0))
   hist(d.survey$Estimate, xlim=c(0, 100), las=1, col="#eeb911",
-       xlab="Estimate of percentage woodiness", main="")
+       xlab="Estimate of percentage woodiness", main="",
+       ylab="Number of responses")
 
   box(bty="l")
 

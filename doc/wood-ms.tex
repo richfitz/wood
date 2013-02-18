@@ -52,18 +52,19 @@ $^9$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Nether
   functional diversity among plants.  We sought to address a very
   basic question: what percentage of the world's species are woody?
   Surprisingly, this question has never been comprehensively
-  addressed.  We combined a plant functional trait database to date
-  with two gap--filling approaches.  We estimate the proportion
-  ``woodiness'' among the world's vascular plants to be between 45\%
-  and 48\%.  We sought to determine whether a consensus answer to our
-  question existed among botanists---even if not formally documented
-  in the peer-reviewed literature.  To investigate this, we coupled
-  our analysis with a survey in which we posed our question to the
-  broader community of botanists and other biologists.  We found that
-  no expert consensus existed and that, on average, researchers
-  underestimated the proportion of the world's flora that was woody.
-  The results of our survey highlight that global datasets can show
-  patterns at odds with conventional wisdom.
+  addressed.  We assembled a database of woodiness for 49,064 species
+  of vascular plants, and estimated the status of the remaining
+  225,077 species using two Monte Carlo approaches.  We estimate the
+  proportion ``woodiness'' among the world's vascular plants to be
+  between 45\% and 48\%.  We sought to determine whether a consensus
+  answer to our question existed among botanists --- even if not
+  formally documented in the peer-reviewed literature.  To investigate
+  this, we coupled our analysis with a survey in which we posed our
+  question to the broader community of botanists and other biologists.
+  We found that no expert consensus existed and that, on average,
+  researchers underestimated the proportion of the world's flora that
+  was woody.  The results of our survey highlight that global datasets
+  can show patterns at odds with conventional wisdom.
 \end{abstract}
 
 \newpage
@@ -104,26 +105,23 @@ statistical estimates are improved, narrowing in most recently on a
 number around 8.7 million species with around 300,000 of those plants
 \citep{mora2011plos}, although considerable variation still exists
 among estimates \citep{costello2011}.
-%
+
 Here, we aim to use similar tools to re-ask Theophrastus' 2000 year
 old question at the global scale: how many of the world's plant
 species are woody?
-% 
-We felt that such a basic question would be essentially known.  But
-upon consulting the literature, we discovered that surprisingly little
-had been written on this topic. We then posed the question to several
-botanical experts and received a tremendous variety of answers in
-response suggesting that this fundamental aspect of plant functional
-diversity was surprisingly poorly understood. 
-
-Here we undertake the first attempt, to our knowledge, to try and
-quantify the percentage of woodiness across the world's flora. We also
-took the unconventional approach of coupling our analysis of the data
-with a survey in which we asked our question to the broader community
-of botanists and other biologists. The motivation for this was to
-determine whether a consensus answer did exist---even if not
-formalized in the literature---and if so, whether it was consistent
+%
+We felt that such a basic question would be essentially known.
+However, because we found little research that addresses this question
+we took the unconventional approach of coupling our analysis of the
+data with a survey in which we asked our question to the broader
+community of botanists and other biologists.  The motivation for this
+was to determine whether a consensus answer did exist --- even if not
+formalized in the literature --- and if so, whether it was consistent
 with the data.
+% 
+The tremendous variety of answers in response suggesting that this
+fundamental aspect of plant functional diversity was surprisingly
+poorly understood.
 
 \section{Methods and Materials}
 
@@ -145,14 +143,20 @@ with the data.
 
 We used a recently assembled database with growth-form data for
 49,064 species, which is the largest database assembled to date.
+% RGF: Alternatively: "49,064 species, representing almost 18\% of
+% known the 274,141 vascular plant species."
 %
 % path.forest <- readLines("~/.forest_path")
 % dat <- read.csv(file.path(path.forest, "export/speciesTraitData.csv"), stringsAsFactors=FALSE)
 % sum(!is.na(dat$woodiness))
+% 
+% RGF: Will -- can you please fill something in here:
 We collected data from XXX, YYY, ZZZ, \textit{etc and other methods}.
+% RGF: Based on the previous sentence(s), this might move elsewhere or
+% change.
 Taxonomically, we included vascular plants (i.e., ferns and fern
 allies, gymnosperms, and angiosperms).
-%
+
 In this dataset we take a ``functional'' view of woodiness, which we
 define as the presence of a perennial above-ground stem.  In addition
 to species producing true wood (i.e., consisting of secondary xylem),
@@ -235,12 +239,24 @@ This procedure is described in detail in the appendix to this paper.
 
 \subsection{Survey}
 
+% RGF: As someone else mentioned -- this is a bit odd, as it's the
+% first mention of the working group (this sentence is my fault).
+% 
+% In the introduction, we motivated this by saying that we thought
+% there might be consensus already.  Another way of framing this could
+% be to say that the reason why there is no published work on this
+% question is that everyone knows the answer; given we didn't we
+% wanted to find out if that was actually the case.
+%
+% Anyway, I suspect that everyone else will pick up on this, so I'd
+% like to see what the other suggestions are before adding another
+% version.
 We were surprised to find little consensus within the members of our
 NESCent working group, so proceeded to investigate if a general
 consensus among biologists existed.
 % 
-In contrast, botanical experts accurately predicted the
-model--estimated total number of species within plant groups
+In a similar study, botanical experts largely agreed with the
+model--estimated number of species in several Angiosperm groups
 \citep{joppa2010}, and we were interested in whether there was similar
 anecdotal knowledge for the relative prevalence of this key trait.
 %
@@ -266,33 +282,10 @@ Maia) and distributed it to various Brazilian biology
 To analyze the survey data, we used linear regression on
 logit-transformed percent woodiness as (for discussion as to why we
 used logit--transform, see ref \citep{wartonarcsine}) and treated the
-self-reported level of botanical familiarity and education as
-factors.  All analyses were conducted with R \citep{R}.
+self-reported level of botanical familiarity and education as factors.
+All analyses were conducted with R \citep{R}.
 
 \section{Results and Discussion}
-
-% RGG: The paragraph that was here largely rehashed the first
-% paragraph of the paper, and is not needed in such a short paper I
-% think (commented below for reference).
-
-% A global picture of biodiversity requires taxonomic, genetic and
-% functional components.  In many ways research into function is the
-% oldest of these lines of research, but today our functional
-% understanding of global biodiversity is not as developed as our
-% taxonomic and genetic understanding. Woodiness is a fundamental
-% plant trait for many reasons: the presence or absence of wood
-% structures the main difference between terrestrial biomes; woody and
-% herbaceous species also evolve at different rates
-% \citep{SmithDonoghue}; there are also important evolutionary
-% interactions with climate (Zanne); and wood itself has crucial
-% effects on the global carbon cycle \citep{Cornwellwood}.  The
-% question we ask in this paper---how many of the world's plant
-% species are woody---is an extremely basic global description of
-% global functional diversity.
-
-% The three paragraphs below probably can be spliced together in a
-% more convincing order.  The middle paragraph might be a better
-% concluding paragraph?
 
 Across all vascular plants, we estimated the fraction of woody species
 to be between 45\% to 48\%.
@@ -394,19 +387,28 @@ much woodier than we thought.
 
 \section{Acknowledgments}
 
+We also thank the members of the Tempo and Mode of Plant Trait
+Evolution working group for contributing to project development and
+members of the broader community who took the time to fill out and
+comment on our survey and Rafael Maia for translating our survey and
+helping us to distribute it.
+% RGF: Hiding this down here a bit:
 We thank Dales Indian Cuisine in Durham, NC for providing the buffet
-lunch over which this project was brought to life. We also thank the
-members of the Tempo and Mode of Plant Trait Evolution working group
-for contributing to project development and members of the broader
-community who took the time to fill out and comment on our survey and
-Rafael Maia for translating our survey and helping us to distribute
-it. This work was supported by the National Evolutionary Synthesis
-Center (NESCent), NSF \#EF- 0905606, Macquarie University Genes to
-Geoscience Research Centre through the working group. WKC was
-financially supported by Netherlands Organisation for Scientific
-Research (NWO) through its Open Competition Program of the section
-Earth and Life Sciences (ALW) grant nr. 820.01.016. MWP was also
-supported by a NESCent graduate fellowship.
+lunch over which this project was brought to life.
+%
+This work was supported by the National Evolutionary Synthesis Center
+(NESCent), NSF \#EF- 0905606, Macquarie University Genes to Geoscience
+Research Centre through the working group.
+%
+RGF was supported by a Vanier Commonwealth Graduate Scholarship from
+the Natural Sciences and Engineering Research Council of Canada
+(NSERC).
+% RGF: Don't you have NSERC as well, Matt?
+MWP was also supported by a NESCent graduate fellowship.
+%
+WKC was financially supported by Netherlands Organisation for
+Scientific Research (NWO) through its Open Competition Program of the
+section Earth and Life Sciences (ALW) grant nr. 820.01.016.
 
 \bibliographystyle{prsb}
 \bibliography{wood.bib}
