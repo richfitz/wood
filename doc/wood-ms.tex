@@ -20,8 +20,8 @@ Richard G. FitzJohn$^{*,1,2}$, Matthew W. Pennell$^{*,3,4}$, Amy E. Zanne$^{5,6}
 \affiliation{\noindent
 $^*$ These authors contributed equally\\
 $^1$ Biodiversity Research Centre and Department of Zoology,
-University of British Columbia, Vancouver, BC, V6G 1Z4, Canada \\
-$^2$ Department of Biological Sciences Macquarie University, Sydney, NSW 2109, Australia \\
+University of British Columbia, Vancouver, BC V6G 1Z4, Canada \\
+$^2$ Department of Biological Sciences, Macquarie University, Sydney, NSW 2109, Australia \\
 $^3$ Institute for Bioinformatics and Evolutionary Studies, University of Idaho, Moscow, ID 83844, U.S.A.\\
 $^4$ National Evolutionary Synthesis Center, Durham, NC 27705, U.S.A.\\
 $^5$ Department of Biological Sciences, George Washington University, Washington, D.C. 20052, U.S.A.\\
@@ -52,11 +52,12 @@ $^9$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Nether
   functional diversity among plants.  We sought to address a very
   basic question: what percentage of the world's species are woody?
   Surprisingly, this question has never been comprehensively
-  addressed.  We assembled a database of woodiness for 49,064 species
-  of vascular plants, and estimated the status of the remaining
+  addressed.  With a database of woodiness for 49,064 species
+  of vascular plants we estimated the status of the remaining
+  %is this number correct?  I thought it should add up to ~290,000
   225,077 species using two Monte Carlo approaches.  We estimate the
   proportion ``woodiness'' among the world's vascular plants to be
-  between 45\% and 48\%.  We sought to determine whether a consensus
+  between 45\% and 48\%.  We also sought to determine whether a consensus
   answer to our question existed among botanists --- even if not
   formally documented in the peer-reviewed literature.  To investigate
   this, we coupled our analysis with a survey in which we posed our
@@ -75,7 +76,7 @@ probably the most profound contrast among terrestrial plants and
 ecosystems: the difference between a forest and a grassland is the
 presence or absence of wood. The recognition of the fundamental
 importance of this divide dates back at least to \textit{Enquiry into
-  Plants} by Theophrastus of Eresus (371 -- 287 BC), a student of
+ Plants} by Theophrastus of Eresus (371 -- 287 BC), a student of
 Plato and Aristolte, who began his investigation into plant form and
 function by classifying the hundreds of plants in his garden into
 woody and herbaceous categories \citep{theophrastus1916enquiry}.
@@ -91,10 +92,9 @@ diverged before true woodiness evolved \citep{Cornwellwood}.  We know
 about its mechanical properties and developmental pathways, its
 patterns of decomposition and their effects on ecosystem function
 \citep{Cornwellwood}.  Woody and herbaceous species have different
-rates of molecular evolution and may diversify at different rates
-\citep{SmithDonoghue}.
-%
-Surprisingly, we have no idea about what proportion of species are
+rates of molecular evolution \citep{SmithDonoghue}.
+% wkc: changed smith donoghue ref to be more precise
+However, we have no idea about what proportion of species are
 actually woody.
 
 With the rise of bioinformatics, the similar biodiversity question of
@@ -111,7 +111,7 @@ old question at the global scale: how many of the world's plant
 species are woody?
 %
 We felt that such a basic question would be essentially known.
-However, because we found little research that addresses this question
+However, because we found little research that addressed this question
 we took the unconventional approach of coupling our analysis of the
 data with a survey in which we asked our question to the broader
 community of botanists and other biologists.  The motivation for this
@@ -141,6 +141,9 @@ poorly understood.
 % RGF: The issues here mean that this paragraph probably still needs a
 % bit of work.
 
+%WKC:yes, still need to finalize some decisions about this related to Amy/Jeremy
+%I have re-written this again
+
 We used a recently assembled database with growth-form data for
 49,064 species, which is the largest database assembled to date.
 % RGF: Alternatively: "49,064 species, representing almost 18\% of
@@ -151,19 +154,13 @@ We used a recently assembled database with growth-form data for
 % sum(!is.na(dat$woodiness))
 % 
 % RGF: Will -- can you please fill something in here:
-We collected data from XXX, YYY, ZZZ, \textit{etc and other methods}.
+The core of the data is a growth form dataset from Kew Botanic Gardens (REF?) with major additions from \citep{Molesheihgt} and  \cite{apweb}.    This dataset takes a ``functional'' view of woodiness, which is defined as the presence of a prominent, perennial, above-ground stem.  In addition to species producing true wood (i.e., consisting of secondary xylem), this definition includes palms, tree ferns, and bamboo as woody.  The complete implementation of the ``woody'' definition and its mapping to the Kew growth form categories is in SUPPLEMENTAL TABLE CSV?.  The full dataset is %% will be 
+ available via Dryad (REF NUMBER).  Taxonomically, we included vascular plants (i.e., ferns, fern allies, gymnosperms, and angiosperms).
+
 % RGF: Based on the previous sentence(s), this might move elsewhere or
 % change.
-Taxonomically, we included vascular plants (i.e., ferns and fern
-allies, gymnosperms, and angiosperms).
+% WKC: I deleted it for now...and re-wrote the above paragraph
 
-In this dataset we take a ``functional'' view of woodiness, which we
-define as the presence of a perennial above-ground stem.  In addition
-to species producing true wood (i.e., consisting of secondary xylem),
-this definition includes palms, tree ferns, and bamboo as woody.
-%
-We use this definition as species such as palms are ``functionally
-woody'', having a long-lived above-ground stem and a tall stature.
 %
 Theophrastus both recognized the fundamental importance of the
 distinction between woody and herbaceous plants, and that this
@@ -177,7 +174,7 @@ matched this database with the accepted names from the plant list
 \citep{ThePlantList} leading to 37,488 records with documented
 taxonomy---15,657 herbs and 21,831 woody species.  This included
 records from all plant orders currently accepted by APG-III
-\citep{APG3}.
+\citep{APG3} along with the ferns taxonomy from ref \cite{apweb}.
 % sum(dat.g$K) # known species
 % sum(dat.g$H) # herbs
 % sum(dat.g$W) # woody species
@@ -261,7 +258,7 @@ model--estimated number of species in several Angiosperm groups
 anecdotal knowledge for the relative prevalence of this key trait.
 %
 We created an English-language survey asking for an estimate of the
-percentage of species that are woody.  We also asked respondents to
+percentage of species that are woody according to the above definition.  We also asked respondents to
 indicate their level of familiarity with plants, level of formal
 training, and the country in which they received their training (see
 supplementary material \ref{fig:survey-text} for details).
@@ -271,12 +268,13 @@ mailing lists with wide circulation among biologists: \emph{EvolDir},
 \emph{ECOLOG}, \emph{r-sig-phylo}, \emph{Taxacom}, \emph{Herbaria}, as
 well as local lists. We also posted links on the social-networking
 platforms \textsc{google+}, \textsc{twitter} and \textsc{facebook} to
-reach as broad an audience as we could.
+reach a broad audience.
 % RGF: can we be specific about the Brazilian mailing lists?
-% "Various" sounds vague and practically begs for clarification.
+% WKC: Matt says it was passed on from Buddy to Buddy 
+% via Brazilian social networks
 In order to increase representation of survey responses from Latin
 America, we translated the survey into Portuguese (thanks to Rafael
-Maia) and distributed it to various Brazilian biology
+Maia) and distributed it to Brazilian biology
 \textsc{facebook} groups and university mailing lists.
 
 To analyze the survey data, we used linear regression on
@@ -320,7 +318,7 @@ trait.
 Because the observed distribution of woodiness fraction among genera
 is itself very bimodal, we are inclined to believe that the true
 result lies closer to 45\% than to 47\%.  A more sophisticated
-hierarchical modeling approach could probably lead to a more precise
+hierarchical modeling approach could lead to a more precise
 answer, but we feel that our values probably span the range of
 estimates that such an approach would generate.
 %
@@ -387,8 +385,8 @@ much woodier than we thought.
 
 \section{Acknowledgments}
 
-We also thank the members of the Tempo and Mode of Plant Trait
-Evolution working group for contributing to project development and
+We thank the members of the Tempo and Mode of Plant Trait
+Evolution working group for contributing to project development,
 members of the broader community who took the time to fill out and
 comment on our survey and Rafael Maia for translating our survey and
 helping us to distribute it.
@@ -404,9 +402,9 @@ RGF was supported by a Vanier Commonwealth Graduate Scholarship from
 the Natural Sciences and Engineering Research Council of Canada
 (NSERC).
 % RGF: Don't you have NSERC as well, Matt?
-MWP was also supported by a NESCent graduate fellowship.
+MWP was supported by a NESCent graduate fellowship.
 %
-WKC was financially supported by Netherlands Organisation for
+WKC was supported by Netherlands Organisation for
 Scientific Research (NWO) through its Open Competition Program of the
 section Earth and Life Sciences (ALW) grant nr. 820.01.016.
 
@@ -480,7 +478,7 @@ For example, the genus \textit{Microcoelia} (Orchidaceae) has 30
 species in total, and we know that 13 are herbaceous and none are
 known to be woody ($N = 30$, $n_w = 0$, $n_h = 13$). We do not know
 the state of the remaining 17 species, so the true number of woody
-species, $N_w$, must lie between 0 and 17. In general, we can't
+species, $N_w$, must lie between 0 and 17. In general, we cannot
 assume that these species are all herbaceous, even though both
 biological and mathematical intuition suggest that most of them will
 be.
