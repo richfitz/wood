@@ -39,13 +39,15 @@ $^9$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Nether
 
 \begin{abstract}
   % RGF: Not sure about the first lines of this -- could/should be
-  % more grabby.
-
-%WKC: needs to be 200 words
-%
+  % more grabby.  Is the first sentence really a better lead than the
+  % second?  Alternatively, can we start with the question (What
+  % percentage of species are woody?).  Otherwise it's probably good.
+  % 
+  % WKC: needs to be 200 words
+  % 
   Through large databases and synthetic research, a picture of global
   biodiversity is beginning to emerge, but especially with regard to
-  global functional diversity, basic questions remain. The
+  global functional diversity, basic questions remain.  The
   woody/herbaceous divide is perhaps the most fundamental axis of
   functional diversity among plants.  We sought to address a very
   basic question: what percentage of the world's species are woody?
@@ -59,10 +61,9 @@ $^9$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Nether
   our analysis with a survey in which we posed our question to the
   broader community of botanists and other biologists.  We found that
   no expert consensus existed and that, on average, researchers
-  underestimated the proportion of the world's flora that was
-  woody. The results of our survey highlight that global datasets can
-  show patterns at odds with conventional wisdom.  Global plant
-  functional diversity is much woodier than we thought.
+  underestimated the proportion of the world's flora that was woody.
+  The results of our survey highlight that global datasets can show
+  patterns at odds with conventional wisdom.
 \end{abstract}
 
 \newpage
@@ -220,12 +221,12 @@ states.  We either assumed that (a) the observed species were drawn
 with no replacement from a pool of species while making no assumption
 about the distribution of states within the pool (``weak prior'') or
 (b) that the observed species were drawn from a very large pool of
-species with a fraction of woody species equal to the fraction of
+species with a proportion of woody species equal to the proportion of
 woodiness among known species within the genus (``strong prior'').
 %
-For genera with no known states, we sampled a woodiness fraction from
-the empirical distribution of woodiness fractions for other genera
-within the same order.
+For genera with no known states, we sampled a woodiness proportion
+from the empirical distribution of woodiness proportion for other
+genera within the same order.
 %
 We repeated the above sampling approach 1,000 times and report means
 and confidence intervals over this distribution.
@@ -293,8 +294,8 @@ factors.  All analyses were conducted with R \citep{R}.
 % more convincing order.  The middle paragraph might be a better
 % concluding paragraph?
 
-Across all vascular plants, we estimated the fraction woody species to
-be between 45\% to 48\%.
+Across all vascular plants, we estimated the fraction of woody species
+to be between 45\% to 48\%.
 % round(100*res.strong$overall, 1)
 % round(100*res.weak$overall, 1)
 Specifically, using our ``strong prior'' sampling approach we
@@ -310,9 +311,9 @@ appendix.
 %
 This difference in the predicted distribution drives the difference in
 the estimates of woodiness.  Genera that are primarily herbaceous
-(fraction of woody species less than 10\% for genera with at least 10
-records) were on average larger than primarily woody genera (more than
-90\% woody species), with 202 species rather than 138.
+(percentage of woody species less than 10\% for genera with at least
+10 records) were on average larger than primarily woody genera (more
+than 90\% woody species), with 202 species rather than 138.
 
 Higher--order classifications are at least as much a product of human
 pattern matching as any biological process.  Genera probably
@@ -413,9 +414,9 @@ supported by a NESCent graduate fellowship.
 \begin{figure}[p]
   \centering
   \includegraphics{figs/fraction-by-genus}
-  \caption{Distribution of the fraction of woodiness among genera.
-    The distribution of the fraction of species that are woody within
-    a genus (among genera) is strongly bimodal (panel a -- showing
+  \caption{Distribution of the pertange of woodiness among genera.
+    The distribution of the percentage of species that are woody within
+    a genus is strongly bimodal among genera (panel a -- showing
     genera with at least 10 species only).
     % 
     The two different sampling approaches generate distributions that
@@ -433,17 +434,16 @@ supported by a NESCent graduate fellowship.
 \begin{figure}[p]
   \centering
   \includegraphics{figs/fraction-on-phylogeny}
-  \caption{Distribution of the fraction of woodiness among orders of
-    vascular plants.  Each tip represents an order, with the fraction
-    of circumference proportional to the log number of recognised
-    species in that order (data from accepted names in ref
-    \citep{ThePlantList}).  The bars around the perimeter indicate the
-    percentage of woody (blue) and herbaceous (orange) species,
-    estimated using the ``strong prior'' (sampling without
-    replacement) approach.  Using the ``weak prior'' approach
-    generally leads to an estimated percentage that is closer to 50\%
-    (see Figures \ref{fig:phylogeny-supp} and
-    \ref{fig:distribution-genera}).}
+  \caption{Distribution of the percentage of woodiness among orders of
+    vascular plants.  Each tip represents an order, with the width of
+    the sector proportional to the log number of recognised species in
+    that order (data from accepted names in ref \citep{ThePlantList}).
+    The bars around the perimeter indicate the percentage of woody
+    (blue) and herbaceous (orange) species, estimated using the
+    ``strong prior'' (sampling without replacement) approach.  Using
+    the ``weak prior'' approach generally leads to an estimated
+    percentage that is closer to 50\% (see Figures
+    \ref{fig:phylogeny-supp} and \ref{fig:distribution-genera}).}
 \label{fig:phylogeny}
 \end{figure}
 
@@ -500,7 +500,7 @@ are woody.
 This approach probably overestimates the number of woody species in
 this case, and in other cases where all known species are woody (e.g.,
 \textit{Actinidia} [Ericaceae]) it will probably underestimate the
-fraction of species that are woody. We see this as corresponding to a
+number of species that are woody. We see this as corresponding to a
 very weak prior on the shape of the distribution of the fraction of
 woody species within a genus.
 
@@ -529,10 +529,10 @@ are woody is
 \end{equation}
 
 In cases where all known species are woody (or herbaceous) this will
-assign all unknown species to be woody (or herbaceous). In
-polymorphic cases this will give similar results to the method described above. This
-approach corresponds to a very strong prior on the shape of the
-distribution of woodiness among genera.
+assign all unknown species to be woody (or herbaceous). In polymorphic
+cases this will give similar results to the hypergeometric sampling
+approach above. This approach corresponds to a very strong prior on
+the shape of the distribution of woodiness among genera.
 % RGF: This is really vague and I will think about it more when I'm
 % less braindead.
 While neither of these approaches is ``correct'', they probably

@@ -37,7 +37,7 @@ sim <- function(x, nrep, mode="weak") {
   ret
 }
 
-## Sample from the hyper geometric distribution.  For R's rhyper, we
+## Sample from the hypergeometric distribution.  For R's rhyper, we
 ## have to provide the number of white and black balls from the urn,
 ## and it samples them.  However, we don't know what this is.
 
@@ -87,6 +87,7 @@ process <- function(samples, dat.g) {
   n.o <- tapply(dat.g$N, dat.g$order, sum)
 
   ## From this, compute the per-family and per-order fraction
+  nrep <- ncol(samples[[1]])
   prop.f <- samples.f / rep(n.f[rownames(samples.f)], nrep)
   prop.o <- samples.o / rep(n.o[rownames(samples.o)], nrep)
   prop.all <- colSums(samples.o) / sum(n.o)
@@ -110,16 +111,19 @@ res.weak   <- process(sim.weak,   dat.g)
 ## Now, look at the distributions of woodiness among families:
 fig.fraction.by.genus <- function(res.strong, res.weak) {
   par(mfrow=c(2, 1), mar=c(2, 2, .5, .5), oma=c(2, 0, 0, 0))
+  lwd <- 1.5
 
   tmp <- dat.g$p[dat.g$K >= 10] # genera with 10 records
   ## TODO: Do we want the distribution of % woody-per-family here too?
   ## Is that something that can actually be easily computed (probably
   ## not).
-  h <- hist(tmp, 50, main="", xaxt="n", yaxt="n", lab="")
-  box(bty="l")
+  h <- hist(100*tmp, 50, plot=FALSE)
+  plot(NA, xlim=c(0, 100), ylim=range(0, h$density),
+       xaxt="n", yaxt="n", bty="l", xlab="", ylab="")
   mtext("Probability density", 2, line=.5)
   axis(1, tick=TRUE, label=FALSE)
   label(.02, .96, "a)")
+  hist.outline(h, "black", lwd=lwd)  
   
   cols <- c("#a63813", "#4d697f") # red, blue
 
@@ -129,14 +133,15 @@ fig.fraction.by.genus <- function(res.strong, res.weak) {
   plot(NA, xlim=c(0, 100), ylim=ylim,
        xlab="", ylab="", yaxt="n", bty="n", bty="l")
   mtext("Probability density", 2, line=.5)
-  mtext("% woody species in genus", 1, outer=TRUE, line=.5)
+  mtext("Percentage of woody species in genus", 1, outer=TRUE,
+        line=.5)
 
-  diversitree:::add.profile.outline(h.strong, cols[1])
-  diversitree:::add.profile.outline(h.weak,   cols[2])
+  hist.outline(h.strong, cols[1], lwd=lwd)
+  hist.outline(h.weak,   cols[2], lwd=lwd)
   
   legend("topleft", c("No replacement (strong prior)",
                       "Replacement (weak prior)"),
-         col=cols, lty=1, bty="n", cex=.75, inset=c(.1, 0))
+         col=cols, lty=1, bty="n", cex=.85, inset=c(.1, 0), lwd=lwd)
   label(.02, .96, "b)")
 }
 
@@ -271,7 +276,9 @@ fig.distribution.raw <- function(res.strong, res.weak) {
   
   par(mar=c(4.1, 4.1, .5, .5))
   plot(h.strong, col=cols[1], xlim=xlim, ylim=ylim, freq=FALSE, yaxt="n",
-       ylab="", xlab="% woody species", main="")
+       ylab="",
+       xlab="Percentage of woody species among all vascular plants",
+       main="")
   box(bty="l")
   lines(h.weak, col=cols[2], freq=FALSE)
   mtext("Probability density", 2, line=.5)

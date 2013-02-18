@@ -403,3 +403,11 @@ build.order.tree <- function(dat.g, regenerate=FALSE) {
   
   phy.o
 }
+
+hist.outline <- function(h, col, ...) {
+  dx <- diff(h$mids[1:2])
+  xx <- rep(with(h, c(mids - dx/2, mids[length(mids)] + 
+                      dx/2)), each = 2)
+  yy <- c(0, rep(h$density, each = 2), 0)
+  lines(xx, yy, col = col, ...)
+}
