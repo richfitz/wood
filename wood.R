@@ -8,7 +8,7 @@ source("wood-functions.R")
 ## Data at the level of genus: has taxonomic information and counts of
 ## number of species that are woody, herbaceous, known, and known to
 ## exist.
-dat.g <- load.clean.data(TRUE)
+dat.g <- load.clean.data()
 
 ## Here is the simulator.  For each genus, sample unknown species from
 ## a hypergeometric distribution with parameters sampled from the
@@ -16,11 +16,11 @@ dat.g <- load.clean.data(TRUE)
 ## sampled data, sample proportions of woody species for the genera
 ## with nothing known from the empirical distribution of woodiness,
 ## and sample woody/herbacious species from a binomial.
-sim <- function(x, nrep, mode="replacement") {
+sim <- function(x, nrep, mode="weak") {
   i <- is.na(x$p)
   w <- matrix(NA, nrow(x), nrep)
   n.unk <- sum(i)
-  if ( mode == "replacement" ) {
+  if ( mode == "weak" ) {
     w[!i,] <- t(sapply(which(!i), function(j)
                        rhyper2(nrep, x$H[j], x$W[j], x$N[j])))
   } else {
@@ -53,15 +53,23 @@ rhyper2 <- function(nn, s0, s1, xn, fraction=FALSE) {
 
 ## Sample the fraction 1000 times.  This takes a while - currently
 ## about 1.5 minutes.
-##+ simulate,cache=TRUE
-nrep <- 1000
-dat.g.split <- split(dat.g, dat.g$order)
 
-set.seed(1)
+## Caching simulation run:
+do.simulation <- function(type, nrep, regenerate=FALSE) {
+  filename <- sprintf("sim.%s.rds", type)
+  if ( !regenerate && file.exists(filename) )
+    return(readRDS(filename))
+  dat.g.split <- split(dat.g, dat.g$order)
+  set.seed(1) # repeatable seed
+  sim <- lapply(dat.g.split, sim, nrep, type)
+  saveRDS(sim, filename)
+  sim
+}
+
 ## "Weak prior" sampling with replacement
-sim.weak <- lapply(dat.g.split, sim, nrep)
-## "Strong prior" sampling based on the number of species
-sim.strong <- lapply(dat.g.split, sim, nrep, "no-replacement")
+sim.weak <- do.simulation("weak", 1000)
+## "Strong prior" sampling based on observed fractions of species.
+sim.strong <- do.simulation("strong", 1000)
 
 ## Need to process the simulated data to produce some summary
 ## statistics.  We care about:
