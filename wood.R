@@ -221,7 +221,7 @@ fig.survey.results <- function(d.survey, res.strong, res.weak) {
   
   layout(rbind(1:2), widths=c(4, 5))
   par(mar=c(6.5, 2, .5, .5), oma=c(0, 2, 0, 0))
-  plot(Estimate ~ Familiarity, d.survey, col="lightgrey", axes=FALSE,
+  plot(Estimate ~ Familiarity, d.survey, col="#eeb911", axes=FALSE,
        xlab="", ylab="", bty="l",
        ylim=c(0, 100))
   axis(2, las=1)
@@ -235,7 +235,7 @@ fig.survey.results <- function(d.survey, res.strong, res.weak) {
        border=NA)
   abline(h=ci["mean",], col=cols)
 
-  plot(Estimate ~ Training, d.survey, col="lightgrey", axes=FALSE,
+  plot(Estimate ~ Training, d.survey, col="#eeb911", axes=FALSE,
        xlab="", ylab="", bty="l", ylim=c(0, 100))
   axis(2, las=1)
   xl <- c("Postgrad","Part postgrad","Undergrad","Part undergrad", "None")
@@ -272,12 +272,14 @@ fig.distribution.raw <- function(res.strong, res.weak) {
 fig.survey.distribution <- function(d.survey, res.strong, res.weak) {
   ci <- 100*cbind(res.strong$overall, res.weak$overall)
   par(mar=c(4.1, 4.1, .5, .5), mgp=c(2.5, 1, 0))
-  hist(d.survey$Estimate, xlim=c(0, 100), las=1, col="lightgrey",
+  hist(d.survey$Estimate, xlim=c(0, 100), las=1, col="#eeb911",
        xlab="Estimate of percentage woodiness", main="")
-  usr <- par("usr")
 
-  cols <- c("#a63813", "#4d697f") # red, blue  
-  
+  box(bty="l")
+
+  cols <- c("#a63813", "#4d697f") # red, blue
+
+  usr <- par("usr")
   rect(ci["lower",], usr[3], ci["upper",], usr[4],
        col=diversitree:::add.alpha(cols, .5), border=NA)
   abline(v=ci["mean",], col=cols)
