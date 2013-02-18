@@ -30,7 +30,7 @@ $^7$Department of Biology, University of Missouri, St. Louis, MO 63166, U.S.A.\\
 $^8$ Forest, Rangeland, and Fire Sciences Department and Stillinger Herbarium, College of Natural Resources, University of Idaho, Moscow, ID 83844, U.S.A.\\
 $^9$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Netherlands
 }
-\runninghead{The percentage of woody species}
+\runninghead{How much of the world is woody?}
 
 \begin{document}
 \mstitlepage
@@ -54,8 +54,9 @@ $^9$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Nether
   Surprisingly, this question has never been comprehensively
   addressed.  With a database of woodiness for 49,064 species
   of vascular plants we estimated the status of the remaining
-  %is this number correct?  I thought it should add up to ~290,000
-  225,077 species using two Monte Carlo approaches.  We estimate the
+  % RGF: Number was incorrect: now should add up to 284,732
+  % (284732 - 49064 == 235668)
+  235,668 species using two Monte Carlo approaches.  We estimate the
   proportion ``woodiness'' among the world's vascular plants to be
   between 45\% and 48\%.  We also sought to determine whether a consensus
   answer to our question existed among botanists --- even if not
@@ -94,6 +95,9 @@ patterns of decomposition and their effects on ecosystem function
 \citep{Cornwellwood}.  Woody and herbaceous species have different
 rates of molecular evolution \citep{SmithDonoghue}.
 % wkc: changed smith donoghue ref to be more precise
+% RGF: Any reason for dropping the diversification?  It's in the same
+% paper, from memory (sister clade contrast), and a pair of facts
+% there helps the flow.
 However, we have no idea about what proportion of species are
 actually woody.
 
@@ -132,17 +136,10 @@ poorly understood.
 % woody, then it's not surprising that this is the largest such
 % database.  If we just want to say that it's a really large database,
 % we could say that this includes information on XX% of all extant
-% species, perhaps?
+% species, perhaps? (this point still pending)
 
-% RGF: Need to describe the sources for the database!  Where did this
-% information come from?  I suspect we can pull much of this straight
-% out of the PNAS paper?
-
-% RGF: The issues here mean that this paragraph probably still needs a
-% bit of work.
-
-%WKC:yes, still need to finalize some decisions about this related to Amy/Jeremy
-%I have re-written this again
+% WKC:yes, still need to finalize some decisions about this related to
+% Amy/Jeremy I have re-written this again
 
 We used a recently assembled database with growth-form data for
 49,064 species, which is the largest database assembled to date.
@@ -154,14 +151,19 @@ We used a recently assembled database with growth-form data for
 % sum(!is.na(dat$woodiness))
 % 
 % RGF: Will -- can you please fill something in here:
-The core of the data is a growth form dataset from Kew Botanic Gardens (REF?) with major additions from \citep{Molesheihgt} and  \cite{apweb}.    This dataset takes a ``functional'' view of woodiness, which is defined as the presence of a prominent, perennial, above-ground stem.  In addition to species producing true wood (i.e., consisting of secondary xylem), this definition includes palms, tree ferns, and bamboo as woody.  The complete implementation of the ``woody'' definition and its mapping to the Kew growth form categories is in SUPPLEMENTAL TABLE CSV?.  The full dataset is %% will be 
- available via Dryad (REF NUMBER).  Taxonomically, we included vascular plants (i.e., ferns, fern allies, gymnosperms, and angiosperms).
+The core of the data is a growth form dataset from Kew Botanic Gardens
+(REF?) with major additions from \citep{Molesheihgt} and \cite{apweb}.
+This dataset takes a ``functional'' view of woodiness, which is
+defined as the presence of a prominent, perennial, above-ground stem.
+In addition to species producing true wood (i.e., consisting of
+secondary xylem), this definition includes palms, tree ferns, and
+bamboo as woody.  The complete implementation of the ``woody''
+definition and its mapping to the Kew growth form categories is in
+SUPPLEMENTAL TABLE CSV?.  The full dataset is %% will be
+available via Dryad (reference to be added).  Taxonomically, we
+included vascular plants (i.e., ferns, fern allies, gymnosperms, and
+angiosperms).
 
-% RGF: Based on the previous sentence(s), this might move elsewhere or
-% change.
-% WKC: I deleted it for now...and re-wrote the above paragraph
-
-%
 Theophrastus both recognized the fundamental importance of the
 distinction between woody and herbaceous plants, and that this
 distinction is in some cases difficult to make.  There are a number of
@@ -269,9 +271,7 @@ mailing lists with wide circulation among biologists: \emph{EvolDir},
 well as local lists. We also posted links on the social-networking
 platforms \textsc{google+}, \textsc{twitter} and \textsc{facebook} to
 reach a broad audience.
-% RGF: can we be specific about the Brazilian mailing lists?
-% WKC: Matt says it was passed on from Buddy to Buddy 
-% via Brazilian social networks
+%
 In order to increase representation of survey responses from Latin
 America, we translated the survey into Portuguese (thanks to Rafael
 Maia) and distributed it to Brazilian biology
