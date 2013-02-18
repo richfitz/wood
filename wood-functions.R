@@ -83,6 +83,9 @@ load.clean.data <- function(regenerate=FALSE) {
   ## that we have in the plant list.
   lookup <- read.forest.csv("taxonomic/genus_order_lookup.csv")
   lookup <- lookup[c("genus", "family", "order")]
+  ## TODO: I've made this change here, because I want to confirm
+  ## before changing the lookup table.
+  lookup$order[lookup$family == "Adiantaceae"] <- "Polypodiales"
 
   ## There are a handful of essentially unplaced families.  For now,
   ## these get their own pseudo-family
@@ -115,35 +118,35 @@ load.clean.data <- function(regenerate=FALSE) {
   dat.g$family <- lookup$family[idx]
   dat.g$order <- lookup$order[idx]
 
-  ## TODO: Hack for now.  what is actually up with these rows
-  ## dat.g[which(is.na(dat.g$order)),]
-  ##             genus W H K  N family order   p
-  ## 1600    Benthamia 0 0 0 35   <NA>  <NA> NaN
-  ## 7424 Lepidostemon 0 0 0  6   <NA>  <NA> NaN
-  ## 8533     Monniera 0 0 0  2   <NA>  <NA> NaN
   to.drop.no.order <- is.na(dat.g$order)
-  message(sprintf("Dropping %d genera (%d species, %d data) due to taxon fail",
-                  sum(to.drop.no.order),
-                  sum(dat.g$N[to.drop.no.order]),
-                  sum(dat.g$K[to.drop.no.order])))
-  dat.g <- dat.g[!to.drop.no.order,]
-  rownames(dat.g) <- NULL
+  if ( any(to.drop.no.order) ) {
+    message(sprintf("Dropping %d genera (%d species, %d data) due to taxon fail",
+                    sum(to.drop.no.order),
+                    sum(dat.g$N[to.drop.no.order]),
+                    sum(dat.g$K[to.drop.no.order])))
+    dat.g <- dat.g[!to.drop.no.order,]
+  }
 
   to.drop.no.family <- dat.g$family == ""
-  message(sprintf("Dropping %d genera (%d species, %d data) due to taxon fail (family)",
-                  sum(to.drop.no.family),
-                  sum(dat.g$N[to.drop.no.family]),
-                  sum(dat.g$K[to.drop.no.family])))
-  dat.g <- dat.g[!to.drop.no.family,]
+  if ( any(to.drop.no.family) ) {
+    message(sprintf("Dropping %d genera (%d species, %d data) due to taxon fail (family)",
+                    sum(to.drop.no.family),
+                    sum(dat.g$N[to.drop.no.family]),
+                    sum(dat.g$K[to.drop.no.family])))
+    dat.g <- dat.g[!to.drop.no.family,]
+  }
   rownames(dat.g) <- NULL
 
+  ## This is OK for Pteridales, as it got synonomysed into other
+  ## groups.  Where is it coming from though?
   to.drop.no.data.order <-
     which(tapply(dat.g$p, dat.g$order, function(x) all(is.nan(x))))
-  warning(sprintf("Dropping %d orders because they have no data:\n\t%s",
-                  length(to.drop.no.data.order),
-                  paste(names(to.drop.no.data.order), collapse=", ")),
-          immediate.=TRUE)
-  dat.g <- dat.g[!(dat.g$order %in% names(to.drop.no.data.order)),]
+  if ( any(to.drop.no.data.order) ) {
+    message(sprintf("Dropping %d orders because they have no data:\n\t%s",
+                    length(to.drop.no.data.order),
+                    paste(names(to.drop.no.data.order), collapse=", ")))
+    dat.g <- dat.g[!(dat.g$order %in% names(to.drop.no.data.order)),]
+  }
 
   message(sprintf("Final set: %d genera, %d with data, %d species known",
                   nrow(dat.g), sum(dat.g$K > 0), sum(dat.g$K)))
