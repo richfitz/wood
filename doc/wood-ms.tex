@@ -51,22 +51,26 @@ $^9$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Nether
   divide is perhaps the most fundamental axis of functional diversity
   among plants.  We sought to address a very basic question: what
   percentage of the world's species are woody?  Surprisingly, this
-  question has never been comprehensively addressed.  With a database
-  of woodiness for 49,064 species of vascular plants we estimated the
-  status of the remaining
+  question has never been comprehensively addressed.
+  % 
+  We informally surveyed a the broad community of botanists to
+  determine whether a consensus answer to our question existed among
+  botanists --- even if not formally documented in the peer-reviewed
+  literature.  No such consensus existed, with estimates ranging from
+  1\% to 90\% (mean: 31.7\%).
+  % 
+  With a database of woodiness for 49,064 species of vascular plants
+  we estimated the status of the remaining
   % RGF: Number was incorrect: now should add up to 284,732
   % (284732 - 49064 == 235668)
-  235,668 species using two Monte Carlo approaches.  We estimate the
+  235,668 species using two Monte Carlo approaches.  We estimated the
   proportion ``woodiness'' among the world's vascular plants to be
-  between 45\% and 48\%.  We also sought to determine whether a consensus
-  answer to our question existed among botanists --- even if not
-  formally documented in the peer-reviewed literature.  To investigate
-  this, we coupled our analysis with a survey in which we posed our
-  question to the broader community of botanists and other biologists.
-  We found that no expert consensus existed and that, on average,
-  researchers underestimated the proportion of the world's flora that
-  was woody.  The results of our survey highlight that global datasets
-  can show patterns at odds with conventional wisdom.
+  between 45\% and 48\%.
+  %
+  This estimate is larger than 80\% of our expert estimates, most of
+  whom substantially understimated the proportion of the world's flora
+  that was woody.  The results of our survey highlight that global
+  datasets can show patterns at odds with conventional wisdom.
 \end{abstract}
 
 \newpage
@@ -128,6 +132,54 @@ poorly understood.
 
 \section{Methods and Materials}
 
+\subsection{Survey}
+
+% RGF: As someone else mentioned -- this is a bit odd, as it's the
+% first mention of the working group (this sentence is my fault).
+% 
+% In the introduction, we motivated this by saying that we thought
+% there might be consensus already.  Another way of framing this could
+% be to say that the reason why there is no published work on this
+% question is that everyone knows the answer; given we didn't we
+% wanted to find out if that was actually the case.
+%
+% Anyway, I suspect that everyone else will pick up on this, so I'd
+% like to see what the other suggestions are before adding another
+% version.
+We were surprised to find little consensus within the members of our
+NESCent working group, so proceeded to investigate if a
+general consensus among biologists existed.
+% 
+In a similar study, botanical experts largely agreed with the
+model--estimated number of species in several Angiosperm groups
+\citep{joppa2010}, and we were interested in whether there was similar
+anecdotal knowledge for the relative prevalence of this key trait.
+%
+We created an English-language survey asking for an estimate of the
+percentage of species that are woody according to the above
+definition.  We also asked respondents to indicate their level of
+familiarity with plants, level of formal training, and the country in
+which they received their training (see supplementary material Figure
+\ref{fig:survey-text} for details).
+%
+We distributed the survey to the community via several electronic
+mailing lists with wide circulation among biologists: \emph{EvolDir},
+\emph{ECOLOG}, \emph{r-sig-phylo}, \emph{Taxacom}, \emph{Herbaria}, as
+well as local lists. We also posted links on the social-networking
+platforms \textsc{google+}, \textsc{twitter} and \textsc{facebook} to
+reach a broad audience.
+%
+In order to increase representation of survey responses from Latin
+America, we translated the survey into Portuguese (thanks to Rafael
+Maia) and distributed it to Brazilian biology
+\textsc{facebook} groups and university mailing lists.
+
+To analyze the survey data, we used linear regression on
+logit-transformed percent woodiness as (for discussion as to why we
+used logit--transform, see ref \citep{wartonarcsine}) and treated the
+self-reported level of botanical familiarity and education as factors.
+All analyses were conducted with R \citep{R}.
+
 \subsection{Dataset}
 
 % RGF: "largest database": of what, exactly?  Plant functional traits?
@@ -158,8 +210,7 @@ In addition to species producing true wood (i.e., consisting of
 secondary xylem), this definition includes palms, tree ferns, and
 bamboo as woody.  The complete implementation of the ``woody''
 definition and its mapping to the Kew growth form categories is in
-SUPPLEMENTAL TABLE CSV?.  The full dataset is %% will be
-available via Dryad (reference to be added).  Taxonomically, we
+SUPPLEMENTAL TABLE CSV?.  Taxonomically, we
 included vascular plants (i.e., ferns, fern allies, gymnosperms, and
 angiosperms).
 
@@ -234,55 +285,36 @@ We repeated the above sampling approach 1,000 times and report means
 and confidence intervals over this distribution.
 %
 This procedure is described in detail in the appendix to this paper.
+The analysis script and full dataset are available on bitbucket
+(reference to be added) and the exact version from this manuscript is
+available via Dryad (reference to be added).
 
-\subsection{Survey}
-
-% RGF: As someone else mentioned -- this is a bit odd, as it's the
-% first mention of the working group (this sentence is my fault).
-% 
-% In the introduction, we motivated this by saying that we thought
-% there might be consensus already.  Another way of framing this could
-% be to say that the reason why there is no published work on this
-% question is that everyone knows the answer; given we didn't we
-% wanted to find out if that was actually the case.
-%
-% Anyway, I suspect that everyone else will pick up on this, so I'd
-% like to see what the other suggestions are before adding another
-% version.
-We were surprised to find little consensus within the members of our
-NESCent working group, so proceeded to investigate if a general
-consensus among biologists existed.
-% 
-In a similar study, botanical experts largely agreed with the
-model--estimated number of species in several Angiosperm groups
-\citep{joppa2010}, and we were interested in whether there was similar
-anecdotal knowledge for the relative prevalence of this key trait.
-%
-We created an English-language survey asking for an estimate of the
-percentage of species that are woody according to the above definition.  We also asked respondents to
-indicate their level of familiarity with plants, level of formal
-training, and the country in which they received their training (see
-supplementary material \ref{fig:survey-text} for details).
-%
-We distributed the survey to the community via several electronic
-mailing lists with wide circulation among biologists: \emph{EvolDir},
-\emph{ECOLOG}, \emph{r-sig-phylo}, \emph{Taxacom}, \emph{Herbaria}, as
-well as local lists. We also posted links on the social-networking
-platforms \textsc{google+}, \textsc{twitter} and \textsc{facebook} to
-reach a broad audience.
-%
-In order to increase representation of survey responses from Latin
-America, we translated the survey into Portuguese (thanks to Rafael
-Maia) and distributed it to Brazilian biology
-\textsc{facebook} groups and university mailing lists.
-
-To analyze the survey data, we used linear regression on
-logit-transformed percent woodiness as (for discussion as to why we
-used logit--transform, see ref \citep{wartonarcsine}) and treated the
-self-reported level of botanical familiarity and education as factors.
-All analyses were conducted with R \citep{R}.
 
 \section{Results and Discussion}
+
+There was strikingly little consensis among researchers as to the
+percentage of species that are woody.  We received 293 responses from
+31 countries, which ranged from estimates of 1\% to 90\% with a mean
+of 31.7\% (Figure \ref{fig:survey-distribution}).
+% nrow(d.survey)
+% range(d.survey$Estimate)
+We found little effect of a respondent's level of training on their
+estimate (Figure \ref{fig:survey}).  There was a significant effect of
+the respondent's familiarity with plants on the estimates, primarily
+driven by respondants with little botanical familiarity (the ``What's
+a Plant?'' category), whose estimates tended to be lower (less
+woody) than the estimates from other categories.
+%
+Before carrying out the survey, we had hypothesized that researchers
+from tropical regions may perceive the world as woodier than
+researchers from more temperate regions due to the latitudinal
+gradient in woodiness \citep{Molesheihgt}.  However, in our informal
+survey, there was no difference in estimates from researchers who
+trained in tropical countries compared with their temperate colleagues
+(results not shown).
+% RGF: Is the code for doing the classification handy anywhere?  The
+% country list is rather long.  Even though the results aren't shown,
+% I'd like to add them to the analysis file for the record.
 
 Across all vascular plants, we estimated the fraction of woody species
 to be between 45\% to 48\%.
@@ -291,11 +323,13 @@ to be between 45\% to 48\%.
 Specifically, using our ``strong prior'' sampling approach we
 estimated 45.0\% (95\% confidence interval of 44.7--45.3\%) and with
 the ``weak prior'' approach we estimated 47.2\% (95\% CI of
-46.6--47.8\%).
+46.6--47.8\%).  This estimate is larger than 81\% of the estimates
+from our survey.
+% mean(d.survey$Estimate < 45)
 % 
 The different approaches generate different distributions of the
 per-genus percentage of woodiness (Figure
-\ref{fig:distribution-genera}b), with a less strongly bimodal
+\ref{fig:distribution-genera}), with a less strongly bimodal
 distribution using the ``weak prior'' approach, as we describe in the
 appendix.
 %
@@ -314,6 +348,18 @@ both woody and herbaceous species (Figure
 \ref{fig:distribution-genera}) reinforces the importance of this
 trait.
 
+The distribution of woodiness varies widely among different taxonomic
+groups (Figure \ref{fig:phylogeny} and ref
+\citep{sinnott1915evolution}).  There are two major clades that are
+primarily herbaceous --- the monocots and ferns
+(Monilophyta). However, there are many primarily herbaceous clades
+nested within woody clades, and vice versa, which makes the
+combination of taxonomic and functional information crucial for
+answering this type of question.  The two different approaches (strong
+versus weak priors) led to similar taxonomic distributions of
+estimated woodiness (Figure \ref{fig:phylogeny} versus Figure
+\ref{fig:phylogeny-supp}), differing only in detail.
+
 Because the observed distribution of woodiness fraction among genera
 is itself very bimodal, we are inclined to believe that the true
 result lies closer to 45\% than to 47\%.  A more sophisticated
@@ -330,45 +376,6 @@ groups, but this is not possible for many plant clades
 In any case, we feel that such a simple question as this deserves a
 simple answer.
 
-The distribution of woodiness varies widely among different taxonomic
-groups (Figure \ref{fig:phylogeny} and ref
-\citep{sinnott1915evolution}).  There are two major clades that are
-primarily herbaceous --- the monocots and ferns
-(Monilophyta). However, there are many primarily herbaceous clades
-nested within woody clades, and vice versa, which makes the
-combination of taxonomic and functional information crucial for
-answering this type of question.  The two different approaches (strong
-versus weak priors) led to similar taxonomic distributions of
-estimated woodiness (Figure \ref{fig:phylogeny} versus Figure
-\ref{fig:phylogeny-supp}), differing only in detail.
-
-In contrast with the very small range in our estimate of the
-percentage of woody species in the world, there is strikingly little
-consensus among researchers.  We received 293 responses from 31
-countries, which ranged from estimates of 1\% to 90\% with a mean of
-31.7\%.  The vast majority (81\%) of the responses were less than even
-our smallest estimate.
-% nrow(d.survey)
-% range(d.survey$Estimate)
-% mean(d.survey$Estimate < 45)
-We found little effect of a respondent's level of training on their
-estimate (Figure \ref{fig:survey}).  There was a significant effect of
-the respondent's familiarity with plants on the estimates, primarily
-driven by respondants with little botanical familiarity (the ``What's
-a Plant?'' category), whose estimates tended to be lower (less
-woody) than the estimates from other categories.
-% 
-Before carrying out the survey, we had hypothesized that researchers
-from tropical regions may perceive the world as woodier than
-researchers from more temperate regions due to the latitudinal
-gradient in woodiness \citep{Molesheihgt}.  However, in our informal
-survey, respondents who trained in tropical countries were no more
-accurate in their predictions than their temperate colleagues (results
-not shown).
-% RGF: Is the code for doing the classification handy anywhere?  The
-% country list is rather long.  Even though the results aren't shown,
-% I'd like to add them to the analysis file for the record.
-
 We conclude with two observations.
 %
 First, most people perceive there to be substantially fewer woody
@@ -376,6 +383,10 @@ species in the world than there probably are.  This herb-centric view
 of the world may arise from the importance of our (mostly herbaceous)
 cultivated crops, or the fact that people --- including researchers
 --- likely spend more time in the garden than in the forest.
+% RGF: Andrea suggested something about the fact that many forests are
+% fairly species poor, outside of the hyperdiverse tropical forests.
+% Alternatively, it could be that people think of trees, when in fact
+% most shrubs are woody.
 %
 Second, there is no consensus as to how woody the world is.  We find
 it very surprising that this most basic aspect of plant natural
@@ -409,6 +420,23 @@ section Earth and Life Sciences (ALW) grant nr. 820.01.016.
 
 \bibliographystyle{prsb}
 \bibliography{wood.bib}
+
+
+\begin{figure}[p]
+  \centering
+  \includegraphics{figs/survey-results}
+  \caption{Distribution of responses to the survey question ``What
+    percentage of the world's vascular plant species are
+    woody?''. Responses are broken up by familiarity with plants
+    (panel (a)) and formal training in botany or a related discipline
+    (panel (b)). The mean and 95\% confidence intervals for our
+    estimates of the proportion of woody species from the empirical
+    data are depicted by the horizontal shaded rectangles; the blue
+    upper rectangle corresponds to the ``weak prior'' approach and the
+    red lower rectangle corresponds to the ``strong prior'' approach
+    (see Appendix for details).}
+  \label{fig:survey}
+\end{figure}
 
 \begin{figure}[p]
   \centering
@@ -444,22 +472,6 @@ section Earth and Life Sciences (ALW) grant nr. 820.01.016.
     percentage that is closer to 50\% (see Figures
     \ref{fig:phylogeny-supp} and \ref{fig:distribution-genera}).}
 \label{fig:phylogeny}
-\end{figure}
-
-\begin{figure}[p]
-  \centering
-  \includegraphics{figs/survey-results}
-  \caption{Distribution of responses to the survey question ``What
-    percentage of the world's vascular plant species are
-    woody?''. Responses are broken up by familiarity with plants
-    (panel (a)) and formal training in botany or a related discipline
-    (panel (b)). The mean and 95\% confidence intervals for our
-    estimates of the proportion of woody species from the empirical
-    data are depicted by the horizontal shaded rectangles; the blue
-    upper rectangle corresponds to the ``weak prior'' approach and the
-    red lower rectangle corresponds to the ``strong prior'' approach
-    (see Appendix for details).}
-  \label{fig:survey}
 \end{figure}
 
 \clearpage
@@ -551,6 +563,31 @@ and the number of species in the genus as its parameters.
 
 \begin{figure}[p]
   \centering
+  \vspace{-20ex}
+  \includegraphics[scale=0.7]{figs/Survey_supplemental}
+  \caption{(Supplementary) English-language version of the survey we
+    distributed}
+  \label{fig:survey-text}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics{figs/survey-distribution}
+  \caption{(Supplementary) Distribution of all responses to the survey
+    question ``What percentage of the world's vascular plant species
+    are woody?''.
+    %
+    The mean and 95\% confidence intervals for our estimates of the
+    proportion of woody species from the empirical data are depicted
+    by the horizontal shaded rectangles; the blue rectangle corresponds
+    to the ``weak prior'' approach and the red rectangle corresponds
+    to the ``strong prior'' approach (see Appendix for details).  }
+
+  \label{fig:survey-distribution}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
   \includegraphics{figs/fraction-on-phylogeny-supp}
 
   \caption{(Supplementary)
@@ -580,31 +617,6 @@ and the number of species in the genus as its parameters.
     (right) samples missing species without replacement (weak prior).
     See Appendix for details.}
   \label{fig:distribution-raw}
-\end{figure}
-
-\begin{figure}[p]
-  \centering
-  \vspace{-20ex}
-  \includegraphics[scale=0.7]{figs/Survey_supplemental}
-  \caption{(Supplementary) English-language version of the survey we
-    distributed}
-  \label{fig:survey-text}
-\end{figure}
-
-\begin{figure}[p]
-  \centering
-  \includegraphics{figs/survey-distribution}
-  \caption{(Supplementary) Distribution of all responses to the survey
-    question ``What percentage of the world's vascular plant species
-    are woody?''.
-    %
-    The mean and 95\% confidence intervals for our estimates of the
-    proportion of woody species from the empirical data are depicted
-    by the horizontal shaded rectangles; the blue rectangle corresponds
-    to the ``weak prior'' approach and the red rectangle corresponds
-    to the ``strong prior'' approach (see Appendix for details).  }
-
-  \label{fig:survey-distribution}
 \end{figure}
 
 \end{document}
