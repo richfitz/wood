@@ -45,32 +45,30 @@ $^9$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Nether
   % 
   % WKC: needs to be 200 words
   % 
-  Through large databases and synthetic research, a picture of global
-  biodiversity is is emerging, but basic questions remain, especially
-  with regard to global functional diversity.  The woody/herbaceous
-  divide is perhaps the most fundamental axis of functional diversity
-  among plants.  We sought to address a very basic question: what
-  percentage of the world's species are woody?  Surprisingly, this
-  question has never been comprehensively addressed.
+
+  The question posed by the title of this paper is a basic one; it is
+  surprising that the answer is not known given that the
+  woody/herbaceous divide is perhaps the most fundamental axis of
+  functional diversity among plants.
   % 
   We informally surveyed a the broad community of botanists to
-  determine whether a consensus answer to our question existed among
-  botanists --- even if not formally documented in the peer-reviewed
-  literature.  No such consensus existed, with estimates ranging from
-  1\% to 90\% (mean: 31.7\%).
+  determine whether a consensus answer to our question existed ---
+  even if not formally documented in the peer-reviewed literature.  No
+  such consensus existed, with estimates ranging from 1\% to 90\%
+  (mean: 31.7\%).
   % 
   With a database of woodiness for 49,064 species of vascular plants
   we estimated the status of the remaining
   % RGF: Number was incorrect: now should add up to 284,732
   % (284732 - 49064 == 235668)
-  235,668 species using two Monte Carlo approaches.  We estimated the
-  proportion ``woodiness'' among the world's vascular plants to be
+  235,668 species using two randomisation approaches.  We estimated
+  the proportion ``woodiness'' among the world's vascular plants to be
   between 45\% and 48\%.
   %
-  This estimate is larger than 80\% of our expert estimates, most of
-  whom substantially understimated the proportion of the world's flora
-  that was woody.  The results of our survey highlight that global
-  datasets can show patterns at odds with conventional wisdom.
+  This estimate is larger than 81\% of our expert estimates, most of
+  which substantially understimated the proportion of the world's
+  flora that was woody.  The results of our survey highlight that
+  global datasets can show patterns at odds with conventional wisdom.
 \end{abstract}
 
 \newpage
@@ -90,9 +88,9 @@ The last two thousand years of research into wood since Theophrastus
 classified his garden have uncovered its origin in the early Devonian
 ($\sim$~400 Mya) \citep{gerrienne2011simple}; that prevalence of
 woodiness varies with climate \citep{Molesheihgt}; that wood has been
-lost many times in diverse groups, both extant and extinction
-\citep{judd1994}; that many different ways of pseudo-woody growth
-habit have appeared across groups that have lost true woodiness, or
+lost many times in diverse groups, both extant and extinct
+\citep{judd1994}; that many different forms of pseudo-woody growth
+habit have appeared across groups that have lost true woodiness or
 diverged before true woodiness evolved \citep{Cornwellwood}.  We know
 about its mechanical properties and developmental pathways, its
 patterns of decomposition and their effects on ecosystem function
@@ -126,8 +124,8 @@ was to determine whether a consensus answer did exist --- even if not
 formalized in the literature --- and if so, whether it was consistent
 with the data.
 % 
-The tremendous variety of answers in response suggesting that this
-fundamental aspect of plant functional diversity was surprisingly
+The tremendous variety of answers in response suggest that this
+fundamental aspect of plant functional diversity is surprisingly
 poorly understood.
 
 \section{Methods and Materials}
@@ -231,10 +229,6 @@ records from all plant orders currently accepted by APG-III
 % sum(dat.g$H) # herbs
 % sum(dat.g$W) # woody species
 
-% RGF: Describe how we sorted out fern synonomy and got the accepted
-% number of species?  Or was that just the allies?  Or just the higher
-% order taxonomy.
-
 % WKC: compare family sampling to total number of families? Somehow
 % show the dataset is comprehensive?
 
@@ -258,8 +252,8 @@ However, the fraction of Orchidaceae with known data (1,574 / 27,104 =
 % sum(dat.g$N[i.orc]) # number of Orchidaceae
 % sum(dat.g$K[i.orc]) / sum(dat.g$N[i.orc]) # knowledge rate of Orchidaceae
 is much lower than the overall rate of knowledge for all vascular
-plants (36,238 / 274,141 = 13\%), which will upwardly bias the
-global estimate of woodiness.
+plants (36,238 / 274,141 = 13\%), which will upwardly bias the global
+estimate of woodiness.
 % sum(dat.g$K) # known vascular
 % sum(dat.g$N) # total vascular
 % sum(dat.g$K) / sum(dat.g$N) # knowlege rate for all vascular plants
@@ -281,8 +275,8 @@ For genera with no known states, we sampled a woodiness proportion
 from the empirical distribution of woodiness proportion for other
 genera within the same order.
 %
-We repeated the above sampling approach 1,000 times and report means
-and confidence intervals over this distribution.
+We repeated this sampling approach 1,000 times and report means and
+confidence intervals over this distribution.
 %
 This procedure is described in detail in the appendix to this paper.
 The analysis script and full dataset are available on bitbucket
@@ -323,21 +317,37 @@ to be between 45\% to 48\%.
 Specifically, using our ``strong prior'' sampling approach we
 estimated 45.0\% (95\% confidence interval of 44.7--45.3\%) and with
 the ``weak prior'' approach we estimated 47.2\% (95\% CI of
-46.6--47.8\%).  This estimate is larger than 81\% of the estimates
-from our survey.
+46.6--47.8\%).  This estimate is larger than 81\% of our survey
+estimates.
 % mean(d.survey$Estimate < 45)
-% 
+% mean(d.survey$Estimate < 100*res.strong$overall[["mean"]])
 The different approaches generate different distributions of the
 per-genus percentage of woodiness (Figure
 \ref{fig:distribution-genera}), with a less strongly bimodal
 distribution using the ``weak prior'' approach, as we describe in the
 appendix.
 %
-This difference in the predicted distribution drives the difference in
+This difference in the per-genus distribution drives the difference in
 the estimates of woodiness.  Genera that are primarily herbaceous
 (percentage of woody species less than 10\% for genera with at least
 10 records) were on average larger than primarily woody genera (more
-than 90\% woody species), with 202 species rather than 138.
+than 90\% woody species), with a mean of 202 species rather than 138.
+
+Because the observed distribution of woodiness fraction among genera
+is itself very bimodal, we are inclined to believe that the true
+result lies closer to 45\% than to 47\%.  A more sophisticated
+hierarchical modeling approach could lead to a more precise answer,
+but we feel that our values probably span the range of estimates that
+such an approach would generate.
+%
+A larger source of error is the likely nonrandom woodiness of
+undiscovered species.  In principle, rarefaction analysis could
+estimate the number of species remaining to be discovered in different
+groups, but this is not possible for many plant clades
+\citep{costello2011}.
+%
+In any case, we feel that such a simple question as this deserves a
+simple answer.
 
 Higher--order classifications are at least as much a product of human
 pattern matching as any biological process.  Genera probably
@@ -359,22 +369,6 @@ answering this type of question.  The two different approaches (strong
 versus weak priors) led to similar taxonomic distributions of
 estimated woodiness (Figure \ref{fig:phylogeny} versus Figure
 \ref{fig:phylogeny-supp}), differing only in detail.
-
-Because the observed distribution of woodiness fraction among genera
-is itself very bimodal, we are inclined to believe that the true
-result lies closer to 45\% than to 47\%.  A more sophisticated
-hierarchical modeling approach could lead to a more precise answer,
-but we feel that our values probably span the range of estimates that
-such an approach would generate.
-%
-A perhaps larger source of error is the likely nonrandom woodiness of
-undiscovered species.  In principle, rarefaction analysis could
-estimate the number of species remaining to be discovered in different
-groups, but this is not possible for many plant clades
-\citep{costello2011}.
-%
-In any case, we feel that such a simple question as this deserves a
-simple answer.
 
 We conclude with two observations.
 %
