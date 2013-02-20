@@ -7,13 +7,13 @@ source("wood-functions.R")
 
 ## Colours used throughout:
 cols.methods <- c(strong="#a63813", weak="#4d697f") # red, blue
-cols.tree <- c(Fern="#a63813",       # reddish brown
-               Gymnosperm="#533d0c", # dark brown
-               Angiosperm="#eeb911", # yellow (basal)
-               Monocots="#799321",   # green
-               Eudicots="#4d697f",    # light blue
+cols.tree <- c(Monilophytes="#a63813",       # reddish brown
+               Gymnosperms="#21313b", # dark brown
+               BasalAngiosperms="#eeb911", # yellow (basal)
+               Monocots="#204d14",   # green
+               Eudicots="#4d697f",   # light blue
                Rest="gray15")
-cols.woody <- c(woody="#21313b", herbaceous="#ea7518")
+cols.woody <- c(Woody="#533d0c", Herbaceous="#799321")
 cols.shading <- "#eeb911"
 
 
@@ -224,6 +224,14 @@ fig.fraction.on.phylogeny <- function(res) {
 
   polygon(xx1, yy1, border=NA, col=pie.col[2])
   polygon(xx2, yy2, border=NA, col=pie.col[1])
+
+  cex.legend <- 2/3
+  str <- str.leg <- setdiff(names(cols.tree), "Rest") # drop backbone
+  str.leg[str.leg == "BasalAngiosperms"] <- '"Palaeodiocots"'
+  legend("topleft", str.leg, fill=cols.tree[str],
+         cex=cex.legend, bty="n", border=NA)
+  legend("topright", names(cols.woody), fill=cols.woody,
+         cex=cex.legend, bty="n", border=NA)
 }
 
 ## If you want to redo the lat/long calculations, this is the function
