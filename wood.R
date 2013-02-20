@@ -219,6 +219,14 @@ fig.fraction.on.phylogeny <- function(res) {
   polygon(xx2, yy2, border=NA, col=pie.col[1])
 }
 
+## If you want to redo the lat/long calculations, this is the function
+## to run:
+##   build.country.list()
+## before running load.survey() below.
+## This downloads some files from GBIF and extracts country-level
+## lat/long values from it to rebuild survey/country_coords.csv.  This
+## file is already available in the repository, so this will rarely be
+## needed.  It is how this file was generated, however.
 d.survey <- load.survey()
 
 ## Convert estimates to normal using logit transformation
@@ -226,6 +234,14 @@ d.survey$Estimate.logit <- boot::logit(d.survey$Estimate / 100)
 res <- lm(Estimate.logit ~ Training + Familiarity, d.survey)
 summary(res)
 anova(res)
+
+res.lat <- lm(Estimate.logit ~ abs(Lat), d.survey)
+anova(res.lat)
+summary(res.lat)
+
+## Here is the fitted result:
+## plot(Estimate.logit ~ abs(Lat), d.survey)
+## abline(res.lat)
 
 fig.survey.results <- function(d.survey, res.strong, res.weak) {
   ci <- 100*cbind(res.strong$overall, res.weak$overall)

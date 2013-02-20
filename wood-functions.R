@@ -250,31 +250,107 @@ make.col.function <- function(cols) {
   }
 }
 
+download.maybe <- function(url, dest) {
+  if ( length(url) != 1 )
+    stop("Scalar URL required")
+  dest.file <- file.path(dest, basename(url))
+  if ( !file.exists(dest.file) )
+    download.file(url, dest.file)
+  invisible(TRUE)
+}
+
+build.country.list <- function() {
+  library(rgdal)
+  dir.create("survey/country", FALSE)
+  ext <- c("dbf", "fix", "ORG.dbf", "prj", "qix", "shp", "shx")
+  urls <- paste0("http://ogc.gbif.org/data/data/shapefiles/country.",
+                 ext)
+  lapply(urls, download.maybe, "survey/country")
+
+  country <- readOGR('survey/country/country.shp', 'country')
+  ret <- as.data.frame(coordinates(country))
+  names(ret) <- c("Long", "Lat")
+  ret <- data.frame(Country=as.character(country@data$CNTRY_NAME),
+                    ret)
+  write.csv(ret, "survey/country_coords.csv", row.names=FALSE)
+}
+
 load.survey <- function() {
   d <- read.csv(file="survey/Plant_survey_final.csv",
-                stringsAsFactors=TRUE)
-  ## Remove timestamp column and continent column:
-  d <- d[-c(1,5)]
+                stringsAsFactors=FALSE)
+  names(d) <- c("Time", "Estimate", "Familiarity", "Training",
+                "Continent", "Country")
 
-  ## change the colnames
-  colnames(d) <- c("Estimate", "Familiarity", "Training", "Country")
+  ## Drop the Time and Continent columns:
+  d <- d[!(names(d) %in% c("Time", "Continent"))]
 
   ## Here are the different familiarity and training categories from
   ## "best" to "worst".
   lvl.familiarity <- c("Very Familiar", "Familiar", "Somewhat Familiar",
                        "What's a Plant?")
+  d$Familiarity <- factor(d$Familiarity, lvl.familiarity, ordered=TRUE)
+  
   lvl.training <-
     c("Postgraduate degree in botany or a related field",
       "Partially complete postgraduate degree in botany or a related field",
       "Undergraduate degree in botany or a related field",
       "Some botany courses at either an undergraduate or postgraduate level",
       "No formal training in botany")             
-
-  d$Familiarity <- factor(d$Familiarity, lvl.familiarity, ordered=TRUE)
   d$Training <- factor(d$Training, lvl.training, ordered=TRUE)
 
+  ## Standardise the country names:
+  countries <- read.csv("survey/country_coords.csv",
+                        stringsAsFactors=FALSE)
+  d$Country <- cleanup.country.names(d$Country)
+  
+  idx <- match(d$Country, countries$Country)
+  mssg <- na.omit(d$Country[is.na(idx)])
+  if ( length(mssg) > 0 )
+    warning("Dropped countries %s", paste(mssg, collapse=", "))
+  d <- cbind(d, countries[idx,c("Long", "Lat")])
+
+  rownames(d) <- NULL
   d
 }
+
+## This generates the survey results with coordinates added.  Because
+## it depends on rgdal, we don't run this very often.  In fact, it's
+## not run automatically by wood.R, and the result of running it is
+## under version control.
+add.coordinates.to.survey <- function() {
+  library(rgdal) # will cause error if not installed.
+  country <- readOGR('survey/country/country.shp', 'country')
+  
+
+  coords <- as.data.frame(coordinates(country)[idx,])
+  rownames(coords) <- NULL
+  names(coords) <- c("Long", "Lat")
+
+  d <- cbind(d, coords)
+
+  write.csv(d, "survey/survey_results.csv", row.names=FALSE)
+  invisible(TRUE)
+}
+
+
+cleanup.country.names <- function(x) {
+  ## In cases where multiple countries are given, take the first one:
+  x <- sub("( and |, | / | & ).+", "", x)
+  ## Trim trailing non-alphabetic characters
+  x <- sub("[^A-Za-z]+$", "", x)
+  ## Translate inconsistent names:
+  translate <- list(France="france",
+                    "United States"=c("US", "USA"),
+                    "United Kingdom"=c("UK", "Scotland"),
+                    "Brazil"="Brasil")
+  tr <- cbind(to=rep(names(translate), sapply(translate, length)),
+              from=unlist(translate))
+  i <- match(x, tr[,"from"])
+  x[!is.na(i)] <- unname(tr[i[!is.na(i)],"to"])
+  x[x == ""] <- NA
+  x
+}
+
 
 ## To build family-level tree:
 get.class <- function(phy.f) {
