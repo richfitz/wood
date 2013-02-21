@@ -14,7 +14,7 @@
 
 \title{How much of the world is woody?}
 \author{
-Richard G. FitzJohn$^{*,1,2}$, Matthew W. Pennell$^{*,3,4}$, Amy E. Zanne$^{5,6}$,\\ Peter F. Stevens$^{7}$, David C. Tank$^{3,8}$, William K. Cornwell$^{9}$
+Richard G. FitzJohn$^{*,\dag,1,2}$, Matthew W. Pennell$^{*,3,4}$, Amy E. Zanne$^{5,6}$,\\ Peter F. Stevens$^{7}$, David C. Tank$^{3,8}$, William K. Cornwell$^{9}$
 }
 \date{}
 \affiliation{\noindent
@@ -138,15 +138,6 @@ poorly understood.
 
 \subsection{Survey}
 
-% RGF: After the reorder, this makes even less sense.  The
-% introduction finishes up with a big discussion about lack of
-% consensus, which was needed to motivate the original question when
-% the data came first.  So, I suggest this:
-% 
-% Trim down the discussion of the mention of the survey in the
-% preceeding paragraph.  Perhaps: "We felt that such a basic question
-% would be essentially known.  
-
 We first investigated whether a general consensus among biologists
 existed.  The motivation for this was to determine whether a consensus
 answer existed --- even if not formalized in the literature --- and if
@@ -189,29 +180,6 @@ conducted with R version 2.15.1 \citep{R}.
 
 \subsection{Dataset}
 
-% RGF: "largest database": of what, exactly?  Plant functional traits?
-% If nobody is looking at estimating what fraction of species are
-% woody, then it's not surprising that this is the largest such
-% database.  If we just want to say that it's a really large database,
-% we could say that this includes information on XX% of all extant
-% species, perhaps? (this point still pending)
-
-% WKC:yes, still need to finalize some decisions about this related to
-% Amy/Jeremy I have re-written this again
-
-% RGF: Alternatively: "49,064 species, representing almost 18\% of
-% known the 274,141 vascular plant species."
-%
-% path.forest <- readLines("~/.forest_path")
-% dat <- read.csv(file.path(path.forest, "export/speciesTraitData.csv"), stringsAsFactors=FALSE)
-% sum(!is.na(dat$woodiness))
-% 
-% RGF: Will -- can you please fill something in here:
-%
-%
-% RGF: If we go with "largest database" we need to be clear about what
-% the contrast is with.
-% 
 % RGF: Need to decide on strategy for the Zanne paper here.
 % 
 % RGF: Along with Dave's comments, we need to work out what we are
@@ -351,9 +319,6 @@ gradient in woodiness \citep{Molesheihgt}.
 However, in our informal survey, there was no difference in estimates
 from researchers who trained in tropical countries compared with their
 temperate colleagues (results not shown).
-% RGF: Is the code for doing the classification handy anywhere?  The
-% country list is rather long.  Even though the results aren't shown,
-% I'd like to add them to the analysis file for the record.
 
 Across all vascular plants, we estimated the fraction of woody species
 to be between 45\% to 48\%.
@@ -511,9 +476,6 @@ computed the observed fraction of woody species ($p_w = n_w / (n_w +
 n_h)$) and sampled the state of the unobserved species using a
 binomial distribution, so that the probability that $x$ of the species
 are woody is
-% RGF: I need to check this when not sleep-deprived/jet lagged. This
-% should be an offset binomial distribution. It may be clearer if we
-% define things about numbers of known and unknown species.
 \begin{equation}
   \Pr(x = k) = {N - n_w - n_h \choose k - n_w} 
   p^k (1-p)^{N - n_h - k}.
@@ -524,8 +486,6 @@ assign all unknown species to be woody (or herbaceous). In polymorphic
 cases this will give similar results to the hypergeometric sampling
 approach above. This approach corresponds to a very strong prior on
 the shape of the distribution of woodiness among genera.
-% RGF: This is really vague and I will think about it more when I'm
-% less braindead.
 While neither of these approaches is ``correct'', they probably
 span the range of possible outcomes.
 
