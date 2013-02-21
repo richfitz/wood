@@ -13,7 +13,7 @@
 \ProcessOptions\relax
 
 \RequirePackage{setspace}
-\doublespacing
+\onehalfspacing
 
 %% Line numbering
 \RequirePackage{lineno}
@@ -127,10 +127,12 @@ Titles for Systematic biology:
   \vskip 1.5em%
 \end{center}\par
 
+\setlength{\parskip}{0pt} % threequarters
 \theaffiliation
-%\end{titlepage}
-\doublespacing
+\setlength{\parskip}{.2ex plus1pt} % threequarters
+% \end{titlepage}
 \clearpage
+\doublespacing
 }
 
 % Abstract environment that does not decrease the font size.
@@ -141,5 +143,4 @@ Titles for Systematic biology:
 \RequirePackage[hmargin=3.5cm,vmargin=3.5cm]{geometry}
 
 \usepackage{setspace}
-\newcommand{\textspacing}{\setstretch{1.45}}
-\setlength{\parskip}{.2ex plus1pt} % threequarters
+%\newcommand{\textspacing}{\setstretch{1.45}}
