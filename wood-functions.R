@@ -156,12 +156,11 @@ load.clean.data <- function(regenerate=FALSE) {
 }
 
 to.pdf <- function(filename, width, height, expr,
-                   ..., pointsize=12, cairo=FALSE, verbose=TRUE) {
+                   ..., family="Times", pointsize=12, verbose=TRUE) {
   if ( verbose )
     cat(sprintf("Creating %s\n", filename))
-  if ( cairo ) require(Cairo)
-  dev <- if ( cairo ) CairoPDF else pdf
-  dev(filename, width=width, height=height, pointsize=pointsize, ...)
+  pdf(filename, width=width, height=height, pointsize=pointsize,
+      family=family, ...)
   on.exit(dev.off())
   eval.parent(substitute(expr))
 }
@@ -482,9 +481,9 @@ build.order.tree <- function(dat.g, regenerate=FALSE) {
     ## These are going to be dropped.
     dropped.orders <- missing.orders[n == 0]
     dropped.orders <- dropped.orders[-grep("^Unknown", dropped.orders)]
-    if (  length(dropped.orders) > 0 )
-      warning("Dropping orders: %s", paste(dropped.orders,
-                                           collapse=", "))
+    if ( length(dropped.orders) > 0 )
+      warning(sprintf("Dropping orders: %s",
+                      paste(dropped.orders, collapse=", ")))
 
     tmp.ok <- tmp[n == 1]
     nd <- sapply(tmp.ok, attr, "node")
