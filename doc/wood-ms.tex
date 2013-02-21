@@ -28,7 +28,7 @@ $^4$ National Evolutionary Synthesis Center, Durham, NC 27705, U.S.A.\\
 $^5$ Department of Biological Sciences, George Washington University, Washington, D.C. 20052, U.S.A.\\
 $^6$ Center for Conservation and Sustainable Development, Missouri Botanical Garden, St. Louis, MO, 63121, USA \\
 $^7$Department of Biology, University of Missouri, St. Louis, MO 63166, U.S.A.\\
-$^8$ Forest, Rangeland, and Fire Sciences Department and Stillinger Herbarium, College of Natural Resources, University of Idaho, Moscow, ID 83844, U.S.A.\\
+$^8$ Department of Forest, Rangeland, and Fire Sciences and Stillinger Herbarium, College of Natural Resources, University of Idaho, Moscow, ID 83844, U.S.A.\\
 $^9$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Netherlands
 }
 \runninghead{How much of the world is woody?}
@@ -39,29 +39,20 @@ $^9$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Nether
 \addtolength{\parskip}{.3em}
 
 \begin{abstract}
-  % RGF: Not sure about the first lines of this -- could/should be
-  % more grabby.  Is the first sentence really a better lead than the
-  % second?  Alternatively, can we start with the question (What
-  % percentage of species are woody?).  Otherwise it's probably good.
-  % 
-  % WKC: needs to be 200 words
-  % 
-
   The question posed by the title of this paper is a basic one; it is
   surprising that the answer is not known given that the
   woody/herbaceous divide is perhaps the most fundamental axis of
   functional diversity among plants.
   % 
-  We informally surveyed a the broad community of botanists to
+  We informally surveyed a the broad community of biologists to
   determine whether a consensus answer to our question existed ---
-  even if not formally documented in the peer-reviewed literature.  No
-  such consensus existed, with estimates ranging from 1\% to 90\%
-  (mean: 31.7\%).
+  even if not documented in the peer-reviewed literature.  No such
+  consensus existed, with estimates ranging from 1\% to 90\% (mean:
+  31.7\%).
   % 
   With a database of woodiness for 49,064 species of vascular plants
   we estimated the status of the remaining
-  % RGF: Number was incorrect: now should add up to 284,732
-  % (284732 - 49064 == 235668)
+  %
   235,668 species using two randomisation approaches.  We estimated
   the proportion ``woodiness'' among the world's vascular plants to be
   between 45\% and 48\%.
@@ -75,12 +66,14 @@ $^9$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Nether
 \newpage
 \section{Introduction}
 
-The distinction between a woody and non-woody growth-form of plants is
+% RGF: Changed "of plants" to "in plants" here, but something still a
+% bit odd about this sentence.
+The distinction between a woody and non-woody growth-form in plants is
 probably the most profound contrast among terrestrial plants and
 ecosystems: the difference between a forest and a grassland is the
 presence or absence of wood. The recognition of the fundamental
 importance of this divide dates back at least to \textit{Enquiry into
- Plants} by Theophrastus of Eresus (371 -- 287 BC), a student of
+  Plants} by Theophrastus of Eresus (371 -- 287 BC), a student of
 Plato and Aristotle, who began his investigation into plant form and
 function by classifying the hundreds of plants in his garden into
 woody and herbaceous categories \citep{theophrastus1916enquiry}.
@@ -90,18 +83,16 @@ classified his garden have uncovered its origin in the early Devonian
 ($\sim$~400 Mya) \citep{gerrienne2011simple}; that prevalence of
 woodiness varies with climate \citep{Molesheihgt}; that wood has been
 lost many times in diverse groups, both extant and extinct
-\citep{judd1994}; that many different forms of pseudo-woody growth
+\citep{judd1994}; and that many different forms of pseudo-woody growth
 habit have appeared across groups that have lost true woodiness or
 diverged before true woodiness evolved \citep{Cornwellwood}.  We know
 about its mechanical properties and developmental pathways, its
 patterns of decomposition and their effects on ecosystem function
-\citep{Cornwellwood}, and its association with decreased rates of
-molecular evolution \citep{SmithDonoghue}.
-% wkc: changed smith donoghue ref to be more precise
-% RGF: Looks like I've mis-remembered this.  I've reworded a bit to
-% make it bounce along a bit better.
-However, we have no idea about what proportion of species are
-actually woody.
+\citep{Cornwellwood}, and that woody and herbaceous species have
+markedly different rates of molecular evolution \citep{SmithDonoghue}.
+%
+However, we have no idea about what proportion of species are actually
+woody.
 
 With the rise of bioinformatics, the similar biodiversity question of
 ``how many species are there on earth'' has been approached with a
@@ -112,18 +103,22 @@ number around 8.7 million species with around 300,000 of those plants
 \citep{mora2011plos}, although considerable variation still exists
 among estimates \citep{costello2011}.
 
-Here, we aim to use similar tools to re-ask Theophrastus' 2000 year
-old question at the global scale: how many of the world's plant
-species are woody?
-%
+We aim to use similar tools to re-ask Theophrastus' 2000 year old
+question at a global scale: how many of the world's plant species are
+woody?
+% RGF: Not happy with this reference placement -- try and get it more
+% neatly into the text.  Could go into the "However, we have no
+% idea..." paragraph, perhaps.
 We felt that such a basic question would be essentially known.
-However, because we found little research that addressed this question
-we took the unconventional approach of coupling our analysis of the
-data with a survey in which we asked our question to the broader
-community of botanists and other biologists.  The motivation for this
-was to determine whether a consensus answer did exist --- even if not
-formalized in the literature --- and if so, whether it was consistent
-with the data.
+%
+However, discussions among our ``Tempo and Mode of Plant Trait
+Evolution'' NESCent working group revealed a wide range of opinions
+and very little published research, with the exception of an almost
+100-year old paper \citep{sinnott1915evolution}.
+%
+Because of this we took the unconventional approach of coupling our
+analysis of the data with a survey in which we asked our question to
+the broader community of botanists and other biologists.
 % 
 The tremendous variety of answers in response suggest that this
 fundamental aspect of plant functional diversity is surprisingly
@@ -133,21 +128,19 @@ poorly understood.
 
 \subsection{Survey}
 
-% RGF: As someone else mentioned -- this is a bit odd, as it's the
-% first mention of the working group (this sentence is my fault).
+% RGF: After the reorder, this makes even less sense.  The
+% introduction finishes up with a big discussion about lack of
+% consensus, which was needed to motivate the original question when
+% the data came first.  So, I suggest this:
 % 
-% In the introduction, we motivated this by saying that we thought
-% there might be consensus already.  Another way of framing this could
-% be to say that the reason why there is no published work on this
-% question is that everyone knows the answer; given we didn't we
-% wanted to find out if that was actually the case.
-%
-% Anyway, I suspect that everyone else will pick up on this, so I'd
-% like to see what the other suggestions are before adding another
-% version.
-We were surprised to find little consensus within the members of our
-NESCent working group, so proceeded to investigate if a
-general consensus among biologists existed.
+% Trim down the discussion of the mention of the survey in the
+% preceeding paragraph.  Perhaps: "We felt that such a basic question
+% would be essentially known.  
+
+We first investigated whether a general consensus among biologists
+existed.  The motivation for this was to determine whether a consensus
+answer existed --- even if not formalized in the literature --- and if
+so, whether it was consistent with the data.
 % 
 In a similar study, botanical experts largely agreed with the
 model--estimated number of species in several Angiosperm groups
@@ -163,10 +156,10 @@ which they received their training (see supplementary material Figure
 %
 We distributed the survey to the community via several electronic
 mailing lists with wide circulation among biologists: \emph{EvolDir},
-\emph{ECOLOG}, \emph{r-sig-phylo}, \emph{Taxacom}, \emph{Herbaria}, as
-well as local lists. We also posted links on the social-networking
-platforms \textsc{google+}, \textsc{twitter} and \textsc{facebook} to
-reach a broad audience.
+\emph{ECOLOG}, \emph{\mbox{r-sig-phylo}}, \emph{Taxacom},
+\emph{Herbaria}, as well as local lists. We also posted links on the
+social-networking platforms \textsc{google+}, \textsc{twitter} and
+\textsc{facebook} to reach a broad audience.
 %
 In order to increase representation of survey responses from Latin
 America, we translated the survey into Portuguese (thanks to Rafael
@@ -201,31 +194,67 @@ We used a recently assembled database with growth-form data for
 % sum(!is.na(dat$woodiness))
 % 
 % RGF: Will -- can you please fill something in here:
-The core of the data is a growth form dataset from Kew Botanic Gardens
-(REF?) with major additions from \citep{Molesheihgt} and \cite{apweb}.
-This dataset takes a ``functional'' view of woodiness, which is
-defined as the presence of a prominent, perennial, above-ground stem.
-In addition to species producing true wood (i.e., consisting of
-secondary xylem), this definition includes palms, tree ferns, and
-bamboo as woody.  The complete implementation of the ``woody''
-definition and its mapping to the Kew growth form categories is in
-SUPPLEMENTAL TABLE CSV?.  Taxonomically, we
-included vascular plants (i.e., ferns, fern allies, gymnosperms, and
-angiosperms).
+%
+%
+% RGF: If we go with "largest database" we need to be clear about what
+% the contrast is with.
+% 
+% RGF: Need to decide on strategy for the Zanne paper here.
+% 
+% RGF: Along with Dave's comments, we need to work out what we are
+% providing in terms of raw data.  We probably can't redistribute the
+% raw Plant List, but we can distribute our list of "from" and "to"
+% names.  This should probably be the database version of "from", and
+% the final analysis version of "to".  We probably need to talk about
+% this soon.
+We used a recently assembled database with growth-form data for 49,064
+vascular plant species, which is the largest such database assembled
+to date (see ZANNE et al. (submitted) \& Dryad reference). The core of
+the woodiness dataset came from Kew Rotal Botanic Gardens dataset on
+growth form \citep{Kew}.  We reduced the original 103 categories to a
+binary classification following a ``functional'' definition of
+woodiness as a plant with a ``prominent, persistent above-ground
+stem''.  In 57 of 103 cases, the Kew growth form categories provided
+enough information to classify the species as either woody or
+herbaceous according to our definition (see Table \ref{tab:kew} for
+specific decisions).  In addition, several smaller datasets were added
+according to the same categorization (see ZANNE et al. (submitted)).
+Note that in addition to species producing true wood (i.e., consisting
+of secondary xylem), this definition classifies, among other groups,
+palms, tree ferns, and bamboo as woody.
+
+Taxonomically, we included vascular plants (i.e., lycopods, ferns,
+gymnosperms, and angiosperms).
+%
+Because the effort to organize plant taxonomy, especially synonymy, is
+on-going, there was uncertainty regarding the status of many of these
+plant names.  
+%
+To bring species binomials to a common taxonomy among datasets, names
+were matched against accepted names in the Plant List
+\citep{ThePlantList}.  Any binomials not found in this list were
+matched against the International Plant Name Index
+(http://www.ipni.org/) and Tropicos (http://www.tropicos.org/);
+potential synonymy in binomials arising from the three lists was
+investigated using the Plant List tools.  
+% RGF: What is "Plant List tools" -- is there a reference?  I didn't
+% see anything on the website.
+Binomials remaining unmatched were compared first to the Plant List
+and if needed to IPNI with an approximate matching algorithm to allow
+for misspellings, followed by manual verification.
 
 Theophrastus both recognized the fundamental importance of the
 distinction between woody and herbaceous plants, and that this
 distinction is in some cases difficult to make.  There are a number of
 species which are intermediate in form \citep{beaulieuHiddenRates}; in
 this dataset 633 species (1.3\%) were coded as variable.  For the
-formal analysis we excluded these species. Because the effort to
-organize plant taxonomy, especially synonymy, is on-going, there was
-uncertainty regarding the status of many of these plant names.  We
-matched this database with the accepted names from the plant list
-\citep{ThePlantList} leading to 37,488 records with documented
-taxonomy---15,657 herbs and 21,831 woody species.  This included
-records from all plant orders currently accepted by APG-III
-\citep{APG3} along with the ferns taxonomy from ref \cite{apweb}.
+formal analysis we excluded these species.
+%
+Our final database contained 37,488 records with both information on
+woodiness and documented taxonomy---15,657 herbs and 21,831 woody
+species.  This included records from all plant orders currently
+accepted by APG-III \citep{APG3} along with the ferns taxonomy from
+ref \cite{apweb}.
 % sum(dat.g$K) # known species
 % sum(dat.g$H) # herbs
 % sum(dat.g$W) # woody species
@@ -247,13 +276,13 @@ data.
 % i.orc <- dat.g$family == "Orchidaceae"
 % sum(dat.g$K[i.orc]) # known Orchidaceae
 % sum(dat.g$W[i.orc]) # woody Orchidaceae
-However, the fraction of Orchidaceae with known data (1,574 / 27,104 =
-6\%)
+However, the fraction of Orchidaceae with known data (1,574 of 27,104
+= 6\%)
 % sum(dat.g$K[i.orc]) # known Orchidaceae
 % sum(dat.g$N[i.orc]) # number of Orchidaceae
 % sum(dat.g$K[i.orc]) / sum(dat.g$N[i.orc]) # knowledge rate of Orchidaceae
 is much lower than the overall rate of knowledge for all vascular
-plants (36,238 / 274,141 = 13\%), which will upwardly bias the global
+plants (36,238 of 274,141 = 13\%), which will upwardly bias the global
 estimate of woodiness.
 % sum(dat.g$K) # known vascular
 % sum(dat.g$N) # total vascular
@@ -279,15 +308,15 @@ genera within the same order.
 We repeated this sampling approach 1,000 times and report means and
 confidence intervals over this distribution.
 %
-This procedure is described in detail in the appendix to this paper.
-The analysis script and full dataset are available on bitbucket
-(reference to be added) and the exact version from this manuscript is
-available via Dryad (reference to be added).
+This procedure is described in detail in the appendix.  The analysis
+script and full dataset are available on bitbucket (reference to be
+added) and the exact version from this manuscript is available via
+Dryad (reference to be added).
 
 
 \section{Results and Discussion}
 
-There was strikingly little consensis among researchers as to the
+There was strikingly little consensus among researchers as to the
 percentage of species that are woody.  We received 293 responses from
 31 countries, which ranged from estimates of 1\% to 90\% with a mean
 of 31.7\% (Figure \ref{fig:survey-distribution}).
@@ -351,13 +380,13 @@ In any case, we feel that such a simple question as this deserves a
 simple answer.
 
 Higher--order classifications are at least as much a product of human
-pattern matching as any biological process.  Genera probably
+pattern matching as any biological processes.  Genera probably
 correspond to the morphological discontinuities that humans deem
 important \citep{scotland2004significance}, which likely includes
-woodiness, albeit now tempered by monophyly.  The relative paucity of genera with significant numbers of
-both woody and herbaceous species (Figure
-\ref{fig:distribution-genera}) reinforces the importance of this
-trait.
+woodiness, albeit now tempered by monophyly.  The relative paucity of
+genera with significant numbers of both woody and herbaceous species
+(Figure \ref{fig:distribution-genera}) reinforces the importance of
+this trait.
 
 The distribution of woodiness varies widely among different taxonomic
 groups (Figure \ref{fig:phylogeny} and ref
@@ -500,7 +529,7 @@ proportional to
   {N - n_w - x \choose n_h}
 \end{equation}
 For \textit{Microcoelia} this gives a 45\% probability that all
-species are herbacious, and a 92\% chance that at most three species
+species are herbaceous, and a 92\% chance that at most three species
 are woody.
 
 This approach probably overestimates the number of woody species in
@@ -613,6 +642,15 @@ and the number of species in the genus as its parameters.
     See Appendix for details.}
   \label{fig:distribution-raw}
 \end{figure}
+
+\begin{table}[p]
+  \centering
+  \textit{[too large to set; see csv file]}
+  \caption{Look-up table for converting the 103 growth form categories
+    in the Royal Botanic Gardens Kew database into a binary
+woody/herbaceous coding.}
+\label{tab:kew}
+\end{table}
 
 \end{document}
 
