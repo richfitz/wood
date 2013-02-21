@@ -15,6 +15,7 @@ cols.tree <- c(Monilophytes="#a63813",       # reddish brown
                Rest="gray15")
 cols.woody <- c(Woody="#533d0c", Herbaceous="#799321")
 cols.shading <- "#eeb911"
+cols.tropical <- c(tropical="#ea7518", temperate="#62a184")
 
 
 ## Data at the level of genus: has taxonomic information and counts of
@@ -254,6 +255,8 @@ res.lat <- lm(Estimate.logit ~ abs(Lat), d.survey)
 anova(res.lat)
 summary(res.lat)
 
+res.tro <- lm(Estimate.logit ~ Tropical, d.survey)
+
 ## Here is the fitted result:
 ## plot(Estimate.logit ~ abs(Lat), d.survey)
 ## abline(res.lat)
@@ -316,20 +319,42 @@ fig.distribution.raw <- function(res.strong, res.weak) {
 }
 
 fig.survey.distribution <- function(d.survey, res.strong, res.weak) {
+  par(mfrow=c(2, 1), mar=c(2, 4, .5, .5), oma=c(2, 0, 0, 0))
+  lwd <- 1.5
+
   ci <- 100*cbind(res.strong$overall, res.weak$overall)
-  par(mar=c(4.1, 4.1, .5, .5), mgp=c(2.5, 1, 0))
   hist(d.survey$Estimate, xlim=c(0, 100), las=1, col=cols.shading,
-       xlab="Estimate of percentage woodiness", main="",
-       ylab="Number of responses")
-
+       xaxt="n", xlab="", ylab="Number of responses", main="")
   box(bty="l")
-
-  cols <- cols.methods
+  axis(1, label=FALSE)
+  label(.02, .96, "a)")
 
   usr <- par("usr")
   rect(ci["lower",], usr[3], ci["upper",], usr[4],
-       col=diversitree:::add.alpha(cols, .5), border=NA)
-  abline(v=ci["mean",], col=cols)
+       col=diversitree:::add.alpha(cols.methods, .5), border=NA)
+  abline(v=ci["mean",], col=cols.methods)
+  
+
+  h.tropical <- hist(d.survey$Estimate[d.survey$Tropical], plot=FALSE)
+  h.temperate <- hist(d.survey$Estimate[!d.survey$Tropical], plot=FALSE)
+
+  ylim <- range(h.tropical$counts, h.temperate$counts)
+  plot(NA, xlim=c(0, 100), ylim=ylim, las=1, xlab="",
+       ylab="Number of responses", bty="n", bty="l")
+  mtext("Estimate of percentage woodiness", 1, outer=TRUE, line=.5)
+
+  hist.outline(h.tropical,  cols.tropical[1], lwd=lwd, density=FALSE)
+  hist.outline(h.temperate, cols.tropical[2], lwd=lwd, density=FALSE)
+
+  usr <- par("usr")
+  rect(ci["lower",], usr[3], ci["upper",], usr[4],
+       col=diversitree:::add.alpha(cols.methods, .5), border=NA)
+  abline(v=ci["mean",], col=cols.methods)
+
+  label(.02, .96, "b)")
+
+  legend("topright", c("Tropical", "Temperate"), lwd=lwd,
+         col=cols.tropical, bty="n", cex=.75)
 }
 
 
@@ -348,7 +373,7 @@ to.pdf("doc/figs/distribution-raw.pdf", 6, 4,
 to.pdf("doc/figs/survey-results.pdf", 6, 4,
        fig.survey.results(d.survey, res.strong, res.weak))
 
-to.pdf("doc/figs/survey-distribution.pdf", 6, 6,
+to.pdf("doc/figs/survey-distribution.pdf", 6, 5,
        fig.survey.distribution(d.survey, res.strong, res.weak))
 
 
