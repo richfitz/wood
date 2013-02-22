@@ -32,11 +32,6 @@ $^8$ Department of Forest, Rangeland, and Fire Sciences and Stillinger Herbarium
 $^9$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Netherlands
 }
 \runninghead{How much of the world is woody?}
-% RGF: Just guesses at something that might be useful
-% But seriously: http://imgur.com/AHqKoc9
-% Apparently we need 3-6 papers in case anybody faxes the paper to ISI
-% web of science who will send smoke signals to libraries around the
-% world!
 \keywords{Database, Herbaceousness, Macroecology, Woodiness}
 
 \begin{document}
@@ -45,12 +40,6 @@ $^9$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Nether
 \addtolength{\parskip}{.3em}
 
 \begin{abstract}
-  % RGF: Or should we simply restate the title here to say:
-  % "The question of what the percentage of woody species is is a
-  % basic one;" (but more nicely written)?  Not sure what is clearer.
-  
-% MWP: I like it as is.  
-  
   The question posed by the title of this paper is a basic one; it is
   surprising that the answer is not known given that the
   woody/herbaceous divide is perhaps the most fundamental axis of
@@ -70,20 +59,18 @@ $^9$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Nether
   between 45\% and 48\%.
   %
   This estimate is larger than 81\% of the estimates in our survey,
-  most of which substantially understimated the proportion of the
+  most of which substantially underestimated the proportion of the
   world's flora that was woody.  The results of our survey highlight
   that global datasets can show patterns at odds with conventional
   wisdom.
 \end{abstract}
 
+\vfill
+\paragraph{Keywords:} \thekeywords
+
 \newpage
 \section{Introduction}
 
-% RGF: Changed "of plants" to "in plants" here, but something still a
-% bit odd about this sentence.
-
-% MWP: Just got rid of the first "plants" as we already say "among terrestrial
-% plants" below. You can change it back if you don't like it.
 The distinction between a woody and non-woody growth-form is
 probably the most profound contrast among terrestrial plants and
 ecosystems: the difference between a forest and a grassland is the
@@ -122,11 +109,7 @@ exists among estimates \citep{costello2011}.
 We aim to use similar tools to re-ask Theophrastus' 2000 year old
 question at a global scale: how many of the world's plant species are
 woody?
-% RGF: Not happy with this reference placement -- try and get it more
-% neatly into the text.  Could go into the "However, we have no
-% idea..." paragraph, perhaps.
-
-% MWP: Not really sure what else to do here. It seems fine.
+%
 We felt that such a basic question would be essentially known.
 %
 However, discussions among our ``Tempo and Mode of Plant Trait
@@ -148,7 +131,7 @@ poorly understood.
 
 We first investigated whether a general consensus among biologists
 existed.  The motivation for this was to determine whether a consensus
-answer existed --- even if not formalized in the literature --- and if
+answer existed --- even if not formalised in the literature --- and if
 so, whether it was consistent with the data.
 % 
 In a similar study, botanical experts largely agreed with the
@@ -175,7 +158,7 @@ America, we translated the survey into Portuguese (thanks to Rafael
 Maia) and distributed it to Brazilian biology
 \textsc{facebook} groups and university mailing lists.
 
-To analyze the survey data, we used linear regression on
+To analyse the survey data, we used linear regression on
 logit-transformed percent woodiness as (for discussion as to why we
 used logit--transform, see ref \citep{wartonarcsine}) and treated the
 self-reported level of botanical familiarity and education as factors.
@@ -188,22 +171,10 @@ conducted with R version 2.15.1 \citep{R}.
 
 \subsection{Dataset}
 
-% RGF: Need to decide on strategy for the Zanne paper here.
-% 
-% RGF: Along with Dave's comments, we need to work out what we are
-% providing in terms of raw data.  We probably can't redistribute the
-% raw Plant List, but we can distribute our list of "from" and "to"
-% names.  This should probably be the database version of "from", and
-% the final analysis version of "to".  We probably need to talk about
-% this soon.
-
-% MWP: This discussion can wait until we get reviews back
-% No need to worry about it at this point. Unclear what the status of Jeremy/Amy's 
-% paper will be at the time this gets accepted somewhere.
 We used a recently assembled database with growth-form data for 49,064
 vascular plant species, which is the largest such database assembled
 to date (see ref \citep{Zanne}). The core of the woodiness dataset
-came from Kew Rotal Botanic Gardens dataset on growth form
+came from Kew Royal Botanic Gardens dataset on growth form
 \citep{Kew}.  We reduced the original 103 growth form categories to a
 binary classification following a ``functional'' definition of
 woodiness as a plant with a ``prominent, persistent above-ground
@@ -211,7 +182,7 @@ stem''.  Fifty seven of the 103 categories provided enough information
 to classify species as either woody or herbaceous according to our
 definition (see Table \ref{tab:kew} for specific decisions).  In
 addition, several smaller datasets were added according to the same
-categorization \citep{Zanne}.  Note that in addition to species
+categorisation \citep{Zanne}.  Note that in addition to species
 producing true wood (i.e., consisting of secondary xylem), this
 definition classifies, among other groups, palms, tree ferns, and
 bamboo as woody.
@@ -219,7 +190,7 @@ bamboo as woody.
 Taxonomically, we included vascular plants (i.e., lycopods, ferns,
 gymnosperms, and angiosperms).
 %
-Because the effort to organize plant taxonomy, especially synonymy, is
+Because the effort to organise plant taxonomy, especially synonymy, is
 on-going, there was uncertainty regarding the status of many of these
 plant names.  
 %
@@ -230,15 +201,12 @@ matched against the International Plant Name Index
 (http://www.ipni.org/) and Tropicos (http://www.tropicos.org/);
 potential synonymy in binomials arising from the three lists was
 investigated using the Plant List tools \citep{ThePlantList}.  
-% RGF: What is "Plant List tools" -- is there a reference?  I didn't
-% see anything on the website.  Dave added this, so chase up with him?
-
-% MWP: I believe this is just a reference to the plant list. Just cite the list.
+%
 Binomials remaining unmatched were compared first to the Plant List
 and if needed to IPNI with an approximate matching algorithm to allow
 for misspellings, followed by manual verification.
 
-Theophrastus both recognized the fundamental importance of the
+Theophrastus both recognised the fundamental importance of the
 distinction between woody and herbaceous plants, and that this
 distinction is in some cases difficult to make.  There are a number of
 species which are intermediate in form \citep{beaulieuHiddenRates}; in
@@ -306,7 +274,7 @@ confidence intervals over this distribution.
 %
 This procedure is described in detail in the appendix.  The analysis
 script and full dataset are available on bitbucket (reference to be
-added) and the exact version of the datast used in the analysis is
+added) and the exact version of the dataset used in the analysis is
 available from Dryad (reference to be added).
 
 
@@ -321,11 +289,11 @@ of 31.7\% (Figure \ref{fig:survey-distribution}).
 We found little effect of a respondent's level of training on their
 estimate (Figure \ref{fig:survey}).  There was a significant effect of
 the respondent's familiarity with plants on the estimates, primarily
-driven by respondants with little botanical familiarity (the ``What's
+driven by respondents with little botanical familiarity (the ``What's
 a Plant?'' category), whose estimates tended to be lower (less woody)
 than the estimates from other categories.
 %
-Before carrying out the survey, we had hypothesized that researchers
+Before carrying out the survey, we had hypothesised that researchers
 from tropical regions may perceive the world as woodier than
 researchers from more temperate regions due to the latitudinal
 gradient in woodiness \citep{Molesheihgt}.
@@ -362,7 +330,7 @@ rather than 138.
 Because the observed distribution of woodiness fraction among genera
 is itself strongly bimodal, we are inclined to believe that the true
 result lies closer to 45\% than to 47\%.  A more sophisticated
-hierarchical modeling approach could lead to a more precise answer,
+hierarchical modelling approach could lead to a more precise answer,
 but we feel that our values probably span the range of estimates that
 such an approach would generate.
 %
@@ -403,30 +371,21 @@ species in the world than there probably are.  This herb-centric view
 of the world may arise from the importance of our (mostly herbaceous)
 cultivated crops, or the fact that people --- including researchers
 --- likely spend more time in the garden than in the forest.
-% RGF: Andrea suggested something about the fact that many forests are
-% fairly species poor, outside of the hyperdiverse tropical forests.
-% Alternatively, it could be that people think of trees, when in fact
-% most shrubs are woody.
 %
-% MWP: I think the point about forests being species poor except in the forest
-% is already covered by the hypothesized latitudinal gradient in opinions on woodiness
-% and the point about shrubs being woody makes it sort of seem like we asked
-% something of a trick question. Personally while I think Andrea is probably correct
-% on both accounts, I would just as well leave them out. 
 Second, there is no consensus as to how woody the world is.  We find
 it very surprising that this most basic aspect of plant natural
 history was not generally known.  Global plant functional diversity is
 much woodier than we thought.
 
-\section{Acknowledgments}
+\section{Acknowledgements}
 
 We thank the members of the Tempo and Mode of Plant Trait
 Evolution working group for contributing to project development,
 members of the broader community who took the time to fill out and
 comment on our survey and Rafael Maia for translating our survey and
-helping us to distribute it. We would also like to thank Jon Eastman for 
-helping us create the taxonomic references we used for this study.
-% RGF: Hiding this down here a bit:
+helping us to distribute it.  In particular, thank Jon Eastman for 
+developing the taxonomic resources we used for this study.
+%
 We thank Dales Indian Cuisine in Durham, NC for providing the buffet
 lunch over which this project was brought to life.
 %
@@ -444,7 +403,7 @@ WKC was supported by Netherlands Organisation for
 Scientific Research (NWO) through its Open Competition Program of the
 section Earth and Life Sciences (ALW) grant nr. 820.01.016.
 
-\section{Appendix: Sampling proceedure}
+\section{Appendix: Sampling procedure}
 
 Here, we describe our algorithm for sampling the states of species
 that lack information on woodiness. We treat each genus separately,
@@ -482,7 +441,7 @@ very weak prior on the shape of the distribution of the fraction of
 woody species within a genus.
 
 However, the distribution of woodiness among genera and families is
-strongly bimodal; most genera are either all-woody or all-herbacious
+strongly bimodal; most genera are either all-woody or all-herbaceous
 (Figure \ref{fig:distribution-genera} and ref
 \citep{sinnott1915evolution}).  Among the 748 genera with at least 10
 records, 392 are entirely woody, 248 are entirely herbaceous, and only
@@ -549,7 +508,7 @@ and the number of species in the genus as its parameters.
 \begin{figure}[p]
   \centering
   \includegraphics{figs/fraction-by-genus}
-  \caption{Distribution of the pertange of woodiness among genera.
+  \caption{Distribution of the percentage of woodiness among genera.
     The distribution of the percentage of species that are woody within
     a genus is strongly bimodal among genera (panel a -- showing
     genera with at least 10 species only).
@@ -669,3 +628,5 @@ woody/herbaceous coding.}
 %%% TeX-master: t
 %%% TeX-PDF-mode: t
 %%% End:
+
+
