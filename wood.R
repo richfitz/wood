@@ -3,8 +3,10 @@
 ### Set knitr options
 ##+ echo=FALSE,results=FALSE
 if ( !interactive() ) {
-  knitr::opts_chunk$set(tidy=FALSE, fig.height=5)
+  knitr::opts_chunk$set(tidy=FALSE, fig.height=6)
   options(show.signif.stars=FALSE)
+  ## Suppress a warning about incompatibility with results from R < 2.2.0
+  invisible(suppressWarnings(sample(1:250, 1, pr=rep(1, 250), replace=TRUE)))
 }
 
 library(multicore)
@@ -13,21 +15,25 @@ path.forest <- readLines("~/.forest_path")
 source("wood-functions.R")
 
 ## Colours used throughout:
-cols.methods <- c(strong="#a63813", weak="#4d697f") # red, blue
-cols.tree <- c(Monilophytes="#a63813",       # reddish brown
-               Gymnosperms="#21313b", # dark brown
-               BasalAngiosperms="#eeb911", # yellow (basal)
-               Monocots="#204d14",   # green
-               Eudicots="#4d697f",   # light blue
-               Rest="gray15")
-cols.woody <- c(Woody="#533d0c", Herbaceous="#799321")
-cols.shading <- "#eeb911"
-cols.tropical <- c(tropical="#ea7518", temperate="#62a184")
+cols.methods <- c(strong="#a63813",        # red
+                  weak="#4d697f")          # blue
+cols.tree <- c(Monilophytes="#a63813",     # reddish brown
+               Gymnosperms="#21313b",      # dark brown
+               BasalAngiosperms="#eeb911", # yellow
+               Monocots="#204d14",         # green
+               Eudicots="#4d697f",         # light blue
+               Rest="gray15")              # dark grey
+cols.woody <- c(Woody="#533d0c",           # brown
+                Herbaceous="#799321")      # green
+cols.shading <- "#eeb911"                  # yellow
+cols.tropical <- c(tropical="#ea7518",     # orange
+                   temperate="#62a184")    # teal
 
 ## Data at the level of genus: has taxonomic information and counts of
 ## number of species that are woody, herbaceous, known, and known to
 ## exist.
 dat.g <- load.clean.data()
+write.csv(dat.g, "analysis-for-review/dat.g.csv", row.names=FALSE)
 
 ## Phylogeny at the level of order
 phy.o <- build.order.tree(dat.g)
@@ -136,9 +142,6 @@ fig.fraction.by.genus <- function(res.strong, res.weak) {
   lwd <- 1.5
 
   tmp <- dat.g$p[dat.g$K >= 10] # genera with 10 records
-  ## TODO: Do we want the distribution of % woody-per-family here too?
-  ## Is that something that can actually be easily computed (probably
-  ## not).
   h <- hist(100*tmp, 50, plot=FALSE)
   plot(NA, xlim=c(0, 100), ylim=range(0, h$density),
        xaxt="n", yaxt="n", bty="l", xlab="", ylab="")
@@ -256,21 +259,23 @@ fig.fraction.on.phylogeny(phy.o, res.weak)
 
 ## If you want to redo the lat/long calculations, this is the function
 ## to run:
-##   build.country.list()
-## before running load.survey() below.
+##   `build.country.list()`
+## before running `load.survey()` below.
 ## This downloads some files from GBIF and extracts country-level
-## lat/long values from it to rebuild survey/country_coords.csv.  This
+## lat/long values from it to rebuild `survey/country_coords.csv`.  This
 ## file is already available in the repository, so this will rarely be
 ## needed.  It is how this file was generated, however.
 d.survey <- load.survey()
 
-## Convert estimates to normal using logit transformation
+## Convert estimates to normal using logit transformation:
 d.survey$Estimate.logit <- boot::logit(d.survey$Estimate / 100)
+
+## Model with training and familiarity as factors:
 res <- lm(Estimate.logit ~ Training + Familiarity, d.survey)
 summary(res)
 anova(res)
 
-## Regression against |latitude|
+## Regression against |latitude|:
 res.lat <- lm(Estimate.logit ~ abs(Lat), d.survey)
 anova(res.lat)
 summary(res.lat)
@@ -280,7 +285,7 @@ summary(res.lat)
 plot(Estimate.logit ~ abs(Lat), d.survey)
 abline(res.lat)
 
-## As a categorical tropical/non-tropical variable
+## As a categorical tropical/non-tropical variable:
 res.tro <- lm(Estimate.logit ~ Tropical, d.survey)
 anova(res.tro)
 summary(res.tro)

@@ -161,6 +161,10 @@ load.clean.data <- function(regenerate=FALSE) {
   message(sprintf("Final set: %d genera, %d with data, %d species known",
                   nrow(dat.g), sum(dat.g$K > 0), sum(dat.g$K)))
 
+  ## Reorder columns
+  cols <- c("genus", "family", "order", "W", "H", "K", "N", "p")
+  dat.g <- dat.g[cols]
+
   saveRDS(dat.g, filename)
   dat.g
 }
