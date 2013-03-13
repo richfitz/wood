@@ -1,5 +1,15 @@
+## # Load the woodiness data
+
+## Load the data from the "forest" database.  This cleans up taxonomy,
+## duplicated and nonstandard entries, empty records.  It then
+## collapses things down to counts by genus, expanded to all known
+## genera according to the plant list.  Final columns are
+##   "genus", "family", "order", "W", "H", "K", "N", "p"
+## where the last 5 columns are known woody, known herbaceous, known
+## state, total species, and percentage of known species that are
+## woody (i.e., W / K).
 load.clean.data <- function(regenerate=FALSE) {
-  filename <- "woodiness.rds"
+  filename <- "dat.g.rds"
   if ( !regenerate && file.exists(filename) )
     return(readRDS(filename))
   
@@ -155,124 +165,7 @@ load.clean.data <- function(regenerate=FALSE) {
   dat.g
 }
 
-to.pdf <- function(filename, width, height, expr,
-                   ..., family="Times", pointsize=12, verbose=TRUE) {
-  if ( verbose )
-    cat(sprintf("Creating %s\n", filename))
-  pdf(filename, width=width, height=height, pointsize=pointsize,
-      family=family, ...)
-  on.exit(dev.off())
-  eval.parent(substitute(expr))
-}
-
-label <- function(px, py, lab, ..., adj=c(0, 1)) {
-  usr <- par("usr")
-  text(usr[1] + px*(usr[2] - usr[1]),
-       usr[3] + py*(usr[4] - usr[3]),
-       lab, adj=adj, ...)
-}
-
-## This will roll into trait.plot soon.
-trait.plot.cont <- function(tree, dat, cols, lab=names(cols), str=0:1,
-                            class=NULL, type="f", w=1/50,
-                            legend=length(cols) > 1, cex.lab=.5,
-                            font.lab=3, cex.legend=.75, margin=1/4,
-                            check=TRUE, quiet=FALSE) {
-  if ( type != "f" )
-    stop("type != f not yet implemented")
-  if ( !is.null(class) && length(class) != length(tree$tip.label) )
-    stop("'class' must be a vector along tree$tip.label")
-  n <- length(cols)
-  if ( n < 1 )
-    stop("Need some colours")
-  if ( !is.data.frame(dat) ) {
-    if ( is.vector(dat) && n == 1 ) {
-      nm <- names(dat)
-      dat <- matrix(dat)
-      rownames(dat) <- nm
-    } else {
-      stop("dat must be a matrix")
-    }
-  }
-  if ( !all(tree$tip.label %in% rownames(dat)) )
-    stop("All taxa must have entries in 'dat' (rownames)")
-  if ( n > 1 ) {
-    if ( !all(names(cols) %in% names(dat)) )
-      stop("Not all colours have data")
-    if ( is.null(names(cols)) )
-      stop("'cols' must be named")
-    dat <- dat[names(cols)]
-  }
-
-  dat <- dat[tree$tip.label,,drop=FALSE]
-
-  par(mar=rep(0, 4))
-  t <- max(branching.times(tree))
-  w <- w * t
-
-  plot2.phylo <- diversitree:::plot2.phylo
-  group.label.tip <- diversitree:::group.label.tip
-  filled.arcs <- diversitree:::filled.arcs
-  if ( is.null(class) ) {
-    plt <- plot2.phylo(tree, type="f", show.tip.label=TRUE,
-                       label.offset=(n+2)*w, cex=cex.lab)
-  } else {
-    plt <- plot2.phylo(tree, type="f", show.tip.label=FALSE,
-                       label.offset=t*margin)
-    group.label.tip(plt, class, "black", "black",
-                    offset.bar=w*(n+2), offset.lab=w*(n+3), lwd=1.5,
-                    cex=cex.lab, font=font.lab,
-                    check=check, quiet=quiet)
-  }
-
-  xy <- plt$xy
-  theta <- xy$theta[seq_along(tree$tip.label)]
-  dt <- diff(sort(theta))[1]/2
-
-  for ( i in seq_along(cols) ) {
-    filled.arcs(theta - dt, theta + dt, max(xy$x) + i * w, w,
-                cols[[i]](dat[,i]))
-  }
-  invisible(plt)
-}
-
-## Here is a function that converts a value on 0..1 to increasingly
-## dark blues.
-make.col.function <- function(cols) {
-  ramp <- colorRamp(cols)  
-  function(x) {
-    i <- !is.na(x)
-    tmp <- ramp(x[i])
-    ret <- rep(NA_character_, length(x))
-    ret[i] <- rgb(tmp[,1], tmp[,2], tmp[,3], max=255)
-    ret
-  }
-}
-
-download.maybe <- function(url, dest) {
-  if ( length(url) != 1 )
-    stop("Scalar URL required")
-  dest.file <- file.path(dest, basename(url))
-  if ( !file.exists(dest.file) )
-    download.file(url, dest.file)
-  invisible(TRUE)
-}
-
-build.country.list <- function() {
-  library(rgdal)
-  dir.create("survey/country", FALSE)
-  ext <- c("dbf", "fix", "ORG.dbf", "prj", "qix", "shp", "shx")
-  urls <- paste0("http://ogc.gbif.org/data/data/shapefiles/country.",
-                 ext)
-  lapply(urls, download.maybe, "survey/country")
-
-  country <- readOGR('survey/country/country.shp', 'country')
-  ret <- as.data.frame(coordinates(country))
-  names(ret) <- c("Long", "Lat")
-  ret <- data.frame(Country=as.character(country@data$CNTRY_NAME),
-                    ret)
-  write.csv(ret, "survey/country_coords.csv", row.names=FALSE)
-}
+## # Load the survey data
 
 load.survey <- function() {
   d <- read.csv(file="survey/Plant_survey_final.csv",
@@ -313,26 +206,7 @@ load.survey <- function() {
   d
 }
 
-## This generates the survey results with coordinates added.  Because
-## it depends on rgdal, we don't run this very often.  In fact, it's
-## not run automatically by wood.R, and the result of running it is
-## under version control.
-add.coordinates.to.survey <- function() {
-  library(rgdal) # will cause error if not installed.
-  country <- readOGR('survey/country/country.shp', 'country')
-  
-
-  coords <- as.data.frame(coordinates(country)[idx,])
-  rownames(coords) <- NULL
-  names(coords) <- c("Long", "Lat")
-
-  d <- cbind(d, coords)
-
-  write.csv(d, "survey/survey_results.csv", row.names=FALSE)
-  invisible(TRUE)
-}
-
-
+## Standardise the given country names into a common list.
 cleanup.country.names <- function(x) {
   ## In cases where multiple countries are given, take the first one:
   x <- sub("( and |, | / | & ).+", "", x)
@@ -351,79 +225,57 @@ cleanup.country.names <- function(x) {
   x
 }
 
+## This generates the survey results with coordinates added.  Because
+## it depends on rgdal, we don't run this very often.  In fact, it's
+## not run automatically by wood.R, and the result of running it is
+## under version control.
+add.coordinates.to.survey <- function() {
+  library(rgdal) # will cause error if not installed.
+  country <- readOGR('survey/country/country.shp', 'country')
+  
+  coords <- as.data.frame(coordinates(country)[idx,])
+  rownames(coords) <- NULL
+  names(coords) <- c("Long", "Lat")
 
-## To build family-level tree:
-get.class <- function(phy.f) {
-  lab <- phy.f$node.label
-  keep <- grepl("ales$", lab)
-  keep[lab == "Monilophyte"] <- TRUE
-  keep[lab %in% c("Gleicheniales", "Schizaeales", "Salviniales")] <- FALSE
-  keep[grep("_To_", lab)] <- FALSE
-  lab[!keep] <- NA
+  d <- cbind(d, coords)
 
-  descendants <- diversitree:::descendants
-  desc.spp <- function(node, phy) {
-    n.spp <- length(phy$tip.label)
-    ret <- descendants(match(node, phy$node.label) + n.spp, phy$edge)
-    phy$tip.label[ret[ret <= n.spp]]
+  write.csv(d, "survey/survey_results.csv", row.names=FALSE)
+  invisible(TRUE)
+}
+
+## This downloads a bunch of data from gbif and gets latitude and
+## longitude for all countries.  This is saved in the
+## survey/country_coords.csv file, so does not need to be run except
+## to refresh these coordinates (note that this file is under version
+## control, so this is really here only as a reference of what was
+## done).
+build.country.list <- function() {
+  ## Download files if they do not already exist.
+  download.maybe <- function(url, dest) {
+    if ( length(url) != 1 )
+      stop("Scalar URL required")
+    dest.file <- file.path(dest, basename(url))
+    if ( !file.exists(dest.file) )
+      download.file(url, dest.file)
+    invisible(TRUE)
   }
-  orders <- lab[!is.na(lab)]
-  tmp <- lapply(orders, desc.spp, phy.f)
-  class <- data.frame(order=rep(orders, sapply(tmp, length)),
-                      family=unlist(tmp), stringsAsFactors=FALSE)
-  any(duplicated(unlist(class$family)))
 
-  ## There are a handful of otherws potentially worth keeping, too.
-  grp <- class$order[match(phy.f$tip.label, class$family)]
-  grp[phy.f$tip.label == "Arecaceae"] <- "Arecacales"
-  grp[phy.f$tip.label == "Boraginaceae"] <- "Boraginaceae"
-  grp[phy.f$tip.label == "Vitaceae"] <- "Vitales"
-  grp[phy.f$tip.label == "Dilleniaceae"] <- "Dilleniaceae"
-  grp[phy.f$tip.label == "Escalloniaceae"] <- "Escalloniaceae"
-  grp[phy.f$tip.label == "Sabiaceae"] <- "Sabiaceae"
-  grp[phy.f$tip.label == "Chloranthaceae"] <- "Chloranthaceae"
-  grp[phy.f$tip.label == "Buxaceae"] <- "Buxaceae"
-  grp[phy.f$tip.label == "Icacinaceae"] <- "Icacinaceae"
-  grp[phy.f$tip.label == "Acoraceae"] <- "Acoraceae"
-  grp[phy.f$tip.label == "Paracryphiaceae"] <- "Paracryphiaceae"
-  grp
+  library(rgdal)
+  dir.create("survey/country", FALSE)
+  ext <- c("dbf", "fix", "ORG.dbf", "prj", "qix", "shp", "shx")
+  urls <- paste0("http://ogc.gbif.org/data/data/shapefiles/country.",
+                 ext)
+  lapply(urls, download.maybe, "survey/country")
+
+  country <- readOGR('survey/country/country.shp', 'country')
+  ret <- as.data.frame(coordinates(country))
+  names(ret) <- c("Long", "Lat")
+  ret <- data.frame(Country=as.character(country@data$CNTRY_NAME),
+                    ret)
+  write.csv(ret, "survey/country_coords.csv", row.names=FALSE)
 }
 
-build.family.tree <- function(regenerate=FALSE) {
-  filename <- "phy.f.rds"
-  if ( !regenerate && file.exists(filename) ) {
-    phy.f <- readRDS(filename)
-  } else {
-    browser()
-    phy <- read.tree(file.path(path.forest,
-                               "taxonomic/trees/spLevelApgBackbone.tre"))
-    i <- phy$node.label == ""
-    phy$node.label[i] <- sprintf("node.%d", (1:phy$Nnode)[i])
-    problems <-
-      readLines(file.path(path.forest,
-                          "taxonomic/trees/problemSpeciesAPG.txt"))
-    problems <- sub(" *$", "", problems) # kill trailing whitespace
-    phy <- diversitree:::drop.tip.fixed(phy, problems)
-    phy <- compute.brlen(phy, method="Grafen", power=.45)
-    families <-
-      read.csv(file.path(path.forest, "taxonomic/genus_order_lookup.csv"),
-               stringsAsFactors=FALSE)
-    genus <- sub("_.+$", "", phy$tip.label)
-    family <- families$family[match(genus, families$genus)]
-    family[is.na(family)] <- genus[is.na(family)] # Fabaceae x 5
-    phy.f <- clades.from.classification(phy, family, check=FALSE)
-    ord <- get.class(phy.f)
-    names(ord) <- phy.f$tip.label
-    phy.f$class <- ord
-    saveRDS(phy.f, filename)
-  }
-  phy.f
-}
-
-descendants.spp <- function(node, phy) {
-  i <- diversitree:::descendants(node, phy$edge)
-  phy$tip.label[i[i <= length(phy$tip.label)]]
-}
+## # Order level phylogeny
 
 build.order.tree <- function(dat.g, regenerate=FALSE) {
   filename <- "phy.o.rds"
@@ -516,6 +368,35 @@ build.order.tree <- function(dat.g, regenerate=FALSE) {
   phy.o
 }
 
+## # Utilities
+
+## Evaluate expression 'expr' that produces a figure as a side effect,
+## saving the result in a pdf file.
+to.pdf <- function(filename, width, height, expr,
+                   ..., family="Times", pointsize=12, verbose=TRUE) {
+  if ( verbose )
+    cat(sprintf("Creating %s\n", filename))
+  pdf(filename, width=width, height=height, pointsize=pointsize,
+      family=family, ...)
+  on.exit(dev.off())
+  eval.parent(substitute(expr))
+}
+
+## Add a label to a plot at a fixed relative location.
+label <- function(px, py, lab, ..., adj=c(0, 1)) {
+  usr <- par("usr")
+  text(usr[1] + px*(usr[2] - usr[1]),
+       usr[3] + py*(usr[4] - usr[3]),
+       lab, adj=adj, ...)
+}
+
+## Identify species descended from a node
+descendants.spp <- function(node, phy) {
+  i <- diversitree:::descendants(node, phy$edge)
+  phy$tip.label[i[i <= length(phy$tip.label)]]
+}
+
+## Draw the outline of a histogram
 hist.outline <- function(h, col, ..., density=TRUE) {
   dx <- diff(h$mids[1:2])
   xx <- rep(with(h, c(mids - dx/2, mids[length(mids)] + 
