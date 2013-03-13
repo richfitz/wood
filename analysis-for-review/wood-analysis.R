@@ -242,7 +242,7 @@ fig.fraction.on.phylogeny <- function(phy.o, res) {
 
   cex.legend <- 2/3
   str <- str.leg <- setdiff(names(cols.tree), "Rest") # drop backbone
-  str.leg[str.leg == "BasalAngiosperms"] <- '"Palaeodiocots"'
+  str.leg[str.leg == "BasalAngiosperms"] <- '"Basal Angiosperms"'
   legend("topleft", str.leg, fill=cols.tree[str],
          cex=cex.legend, bty="n", border=NA)
   legend("topright", names(cols.woody), fill=cols.woody,
@@ -400,21 +400,21 @@ fig.survey.distribution(d.survey, res.strong, res.weak)
 
 ## This produces exactly the figures in the manuscript:
 if ( FALSE ) {
-to.pdf("fraction-by-genus.pdf", 6, 6,
-       fig.fraction.by.genus(res.strong, res.weak))
+  to.pdf("fraction-by-genus.pdf", 6, 6,
+         fig.fraction.by.genus(res.strong, res.weak))
 
-to.pdf("fraction-on-phylogeny.pdf", 6, 6,
-       fig.fraction.on.phylogeny(phy.o, res.strong))
+  to.pdf("fraction-on-phylogeny.pdf", 6, 6,
+         fig.fraction.on.phylogeny(phy.o, res.strong))
 
-to.pdf("fraction-on-phylogeny-supp.pdf", 6, 6,
-       fig.fraction.on.phylogeny(phy.o, res.weak))
+  to.pdf("fraction-on-phylogeny-supp.pdf", 6, 6,
+         fig.fraction.on.phylogeny(phy.o, res.weak))
 
-to.pdf("distribution-raw.pdf", 6, 4,
-       fig.distribution.raw(res.strong, res.weak))
+  to.pdf("distribution-raw.pdf", 6, 4,
+         fig.distribution.raw(res.strong, res.weak))
 
-to.pdf("survey-results.pdf", 6, 4,
-       fig.survey.results(d.survey, res.strong, res.weak))
+  to.pdf("survey-results.pdf", 6, 4,
+         fig.survey.results(d.survey, res.strong, res.weak))
 
-to.pdf("survey-distribution.pdf", 6, 5,
-       fig.survey.distribution(d.survey, res.strong, res.weak))
+  to.pdf("survey-distribution.pdf", 6, 5,
+         fig.survey.distribution(d.survey, res.strong, res.weak))
 }
