@@ -30,12 +30,20 @@ $^6$ Center for Conservation and Sustainable Development, Missouri Botanical Gar
 $^7$ Department of Biology, University of Missouri, St. Louis, MO 63166, U.S.A.\\
 $^8$ Missouri Botanical Garden, PO Box 299, St Louis, MO 63166-0299\\
 $^9$ Department of Forest, Rangeland, and Fire Sciences and Stillinger Herbarium, College of Natural Resources, University of Idaho, Moscow, ID 83844, U.S.A.\\
-$^{10}$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Netherlands
+$^{10}$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Netherlands\\
+\vfill
+% \raggedright, no line numbers, \pagestyle{empty}, copy and paste,
+% remove figures (draft mode would be faster) and don't count
+% supplement.
+\textbf{Word-count:} 4199 words
 }
 \runninghead{How much of the world is woody?}
 \keywords{Database, Herbaceousness, Macroecology, Woodiness}
 
 \begin{document}
+% \raggedright
+% \pagestyle{empty}
+
 \mstitlepage
 \parindent=1.5em
 \addtolength{\parskip}{.3em}
@@ -56,7 +64,7 @@ $^{10}$ Department of Systems Ecology, VU University, 1081 HV Amsterdam, The Net
   we estimated the status of the remaining
   %
   235,668 species using two randomisation approaches.  We estimated
-  the proportion woodiness among the world's vascular plants to be
+  the proportion of woodiness among the world's vascular plants to be
   between 45\% and 48\%.
   %
   This estimate is larger than 81\% of the estimates in our survey,
@@ -104,8 +112,8 @@ variety of different methods \citep{may1988many,erwin1991many,
   stork1993many, joppa2010, costello2011, mora2011plos}.  These
 statistical estimates have improved, narrowing in most recently on a
 number around 8.7 million species with approximately 300,000 of those
-plants \citep{mora2011plos}, although considerable variation still
-exists among estimates \citep{costello2011}.
+being plants \citep{mora2011plos}, although considerable variation
+still exists among estimates \citep{costello2011}.
 
 We aim to use similar tools to re-ask Theophrastus' 2000 year old
 question at a global scale: how many of the world's plant species are
@@ -155,15 +163,15 @@ social-networking platforms \textsc{google+}, \textsc{twitter} and
 \textsc{facebook} to reach a broad audience.
 %
 In order to increase representation of survey responses from Latin
-America, we translated the survey into Portuguese (thanks to Rafael
-Maia) and distributed it to Brazilian biology
-\textsc{facebook} groups and university mailing lists.
+America, we translated the survey into Portuguese and distributed it
+to Brazilian biology \textsc{facebook} groups and university mailing
+lists.
 
 To analyse the survey data, we used linear regression on
-logit-transformed percent woodiness as (for discussion as to why we
-used logit--transform, see ref \citep{wartonarcsine}) and treated the
-self-reported level of botanical familiarity and education as factors.
-We converted country of training to coarse latitude using shapefiles
+logit-transformed percent woodiness as (see ref \citep{wartonarcsine})
+and treated the self-reported level of botanical familiarity and
+education as factors.  We converted country of training to coarse
+latitude using shapefiles
 from the GBIF dataportal\\
 (\texttt{http://code.google.com/p/gbif-dataportal/wiki/ConfiguringGeoserver}),
 and converted these into ``tropical'' and ``temperate'' using an
@@ -236,13 +244,13 @@ plants.
 % sum(dat.g$K) # known
 % sum(dat.g$W) / sum(dat.g$K) # fraction
 For example, most Orchidaceae are probably herbaceous; we have only
-two records of woodiness among the 1,574 species for which we have
+one record of woodiness among the 1,574 species for which we have
 data.
 % i.orc <- dat.g$family == "Orchidaceae"
 % sum(dat.g$K[i.orc]) # known Orchidaceae
 % sum(dat.g$W[i.orc]) # woody Orchidaceae
-However, the fraction of Orchidaceae with known data (1,574 of 27,104
-= 6\%)
+However, the fraction of Orchidaceae species with known data (1,574 of
+27,104 = 6\%)
 % sum(dat.g$K[i.orc]) # known Orchidaceae
 % sum(dat.g$N[i.orc]) # number of Orchidaceae
 % sum(dat.g$K[i.orc]) / sum(dat.g$N[i.orc]) # knowledge rate of Orchidaceae
@@ -275,8 +283,7 @@ confidence intervals over this distribution.
 %
 This procedure is described in detail in the appendix.  The analysis
 script and full dataset are available on bitbucket (reference to be
-added) and the exact version of the dataset used in the analysis is
-available from Dryad (reference to be added).
+added) and Dryad (reference to be added).
 
 
 \section{Results and Discussion}
@@ -287,6 +294,7 @@ percentage of species that are woody.  We received 292 responses from
 of 31.7\% (Figure \ref{fig:survey-distribution}).
 % nrow(d.survey)
 % range(d.survey$Estimate)
+% mean(d.survey$Estimate)
 We found little effect of a respondent's level of training on their
 estimate (Figure \ref{fig:survey}).  There was a significant effect of
 the respondent's familiarity with plants on the estimates, primarily
@@ -302,7 +310,7 @@ gradient in woodiness \citep{Molesheihgt}.
 Indeed, there was an effect of being in a tropical country, with the
 estimates from tropical countries were slightly higher than those from
 temperate countries ($p=$0.02), but this effect was very small
-($r^2$=0.016, Figure \ref{fig:survey-distribution}).
+($r^2$=0.02, Figure \ref{fig:survey-distribution}).
 
 Across all vascular plants, we estimated the fraction of woody species
 to be between 45\% to 48\%.
@@ -311,8 +319,8 @@ to be between 45\% to 48\%.
 Specifically, using our ``strong prior'' sampling approach we
 estimated 45.0\% of species are woody (95\% confidence interval of
 44.7--45.3\%) and with the ``weak prior'' approach we estimated 47.2\%
-(95\% CI of 46.6--47.8\%).  This estimate is larger than 81\% of our
-survey estimates.
+(95\% CI of 46.6--47.8\%).  Our smallest estimate is greater than 81\%
+of our survey estimates.
 % mean(d.survey$Estimate < 45)
 % mean(d.survey$Estimate < 100*res.strong$overall[["mean"]])
 The different approaches generate different distributions of the
@@ -329,11 +337,11 @@ genera (more than 90\% woody species), with a mean of 202 species
 rather than 138.
 
 Because the observed distribution of woodiness fraction among genera
-is itself strongly bimodal, we are inclined to believe that the true
-result lies closer to 45\% than to 47\%.  A more sophisticated
-hierarchical modelling approach could lead to a more precise answer,
-but we feel that our values probably span the range of estimates that
-such an approach would generate.
+is itself strongly bimodal, we believe that the true result lies
+closer to 45\% than to 47\%.  A more sophisticated hierarchical
+modelling approach could lead to a more precise answer, but we feel
+that our values probably span the range of estimates that such an
+approach would generate.
 %
 A larger source of error is the likely nonrandom woodiness of
 undiscovered species.  In principle, rarefaction analysis could
@@ -354,10 +362,11 @@ Higher--order classifications are at least as much a product of human
 pattern matching as any biological processes.  Genera probably
 correspond to the morphological discontinuities that humans deem
 important \citep{scotland2004significance}, which likely includes
-woodiness \citep[e.g.][]{Hutchinson}, albeit now tempered by monophyly.  The relative paucity of
-genera with significant numbers of both woody and herbaceous species
-(Figure \ref{fig:distribution-genera}) reinforces the importance of
-this trait.
+woodiness \citep[e.g.,][]{Hutchinson}, albeit now tempered by
+monophyly.  The relative rarity of genera with significant numbers of
+both woody and herbaceous species (Figure
+\ref{fig:distribution-genera}) reinforces the importance of this
+trait.
 
 The distribution of woodiness varies widely among different taxonomic
 groups (Figure \ref{fig:phylogeny} and ref
@@ -544,7 +553,9 @@ and the number of species in the genus as its parameters.
     ``strong prior'' (sampling without replacement) approach.  Using
     the ``weak prior'' approach generally leads to an estimated
     percentage that is closer to 50\% (see Figures
-    \ref{fig:phylogeny-supp} and \ref{fig:distribution-genera}).}
+    \ref{fig:phylogeny-supp} and \ref{fig:distribution-genera}).
+    Phylogeny from \citep{Zanne}.  Orders not placed by APG-III
+    \citep{APG3} are not displayed.}
 \label{fig:phylogeny}
 \end{figure}
 
@@ -582,7 +593,7 @@ and the number of species in the genus as its parameters.
     ``tropical'' (orange distribution) and ``temperate'' (teal).
     Estimates from tropical countries were slightly, but
     significantly, higher than those from temperate countries
-    ($p=$0.02, $r^2$=0.016).
+    ($p=$0.02, $r^2$=0.02).
   }
 
   \label{fig:survey-distribution}
@@ -605,7 +616,9 @@ and the number of species in the genus as its parameters.
     estimated using the ``weak prior'' (sampling with replacement)
     approach.  Using the ``strong prior'' approach generally leads to
     an estimated percentage that is further away from 50\% (see
-    Figures \ref{fig:phylogeny} and \ref{fig:distribution-genera}).}
+    Figures \ref{fig:phylogeny} and \ref{fig:distribution-genera}).
+    Phylogeny from \citep{Zanne}.  Orders not placed by APG-III
+    \citep{APG3} are not displayed.}
   \label{fig:phylogeny-supp}
 \end{figure}
 
