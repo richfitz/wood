@@ -377,17 +377,17 @@ build.order.tree <- function(dat.g, regenerate=FALSE) {
 ## Evaluate expression 'expr' that produces a figure as a side effect,
 ## saving the result in a pdf file.
 to.pdf <- function(filename, width, height, expr,
-                   ..., family="Times", pointsize=12, verbose=TRUE) {
+                   ..., pointsize=12, verbose=TRUE) {
   if ( verbose )
     cat(sprintf("Creating %s\n", filename))
-  pdf(filename, width=width, height=height, pointsize=pointsize,
-      family=family, ...)
+  pdf(filename, width=width, height=height, pointsize=pointsize, ...)
   on.exit(dev.off())
   eval.parent(substitute(expr))
 }
 
 ## Add a label to a plot at a fixed relative location.
 label <- function(px, py, lab, ..., adj=c(0, 1)) {
+  lab <- LETTERS[lab]
   usr <- par("usr")
   text(usr[1] + px*(usr[2] - usr[1]),
        usr[3] + py*(usr[4] - usr[3]),

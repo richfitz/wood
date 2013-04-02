@@ -145,7 +145,7 @@ fig.fraction.by.genus <- function(res.strong, res.weak) {
        xaxt="n", yaxt="n", bty="l", xlab="", ylab="")
   mtext("Probability density", 2, line=.5)
   axis(1, tick=TRUE, label=FALSE)
-  label(.02, .96, "(a)")
+  label(.02, .96, 1)
   hist.outline(h, "black", lwd=lwd)  
   
   cols <- cols.methods
@@ -165,7 +165,7 @@ fig.fraction.by.genus <- function(res.strong, res.weak) {
   legend("topleft", c("No replacement (strong prior)",
                       "Replacement (weak prior)"),
          col=cols, lty=1, bty="n", cex=.85, inset=c(.1, 0), lwd=lwd)
-  label(.02, .96, "(b)")
+  label(.02, .96, 2)
 }
 
 ##+ fraction_by_genus,fig.cap="Fraction of woodiness by genus"
@@ -305,7 +305,7 @@ fig.survey.results <- function(d.survey, res.strong, res.weak) {
   text(1:4, -5, levels(d.survey$Familiarity),
        srt=-55, xpd=NA, adj=c(0, NA), cex=.85)
   mtext("Estimate of percentage woodiness", 2, line=2.75)
-  label(.02, .96, "(a)")
+  label(.02, .96, 1)
 
   usr <- par("usr")
   rect(usr[1], ci["lower",], usr[2], ci["upper",], col=cols.tr,
@@ -318,7 +318,7 @@ fig.survey.results <- function(d.survey, res.strong, res.weak) {
   xl <- c("Postgrad","Part postgrad","Undergrad","Part undergrad", "None")
   text(1:5, -5, xl,
        srt=-55, xpd=TRUE, adj=c(0, NA), cex=.85) 
-  label(.02, .96, "(b)") 
+  label(.02, .96, 2) 
 
   usr <- par("usr")
   rect(usr[1], ci["lower",], usr[2], ci["upper",], col=cols.tr,
@@ -365,7 +365,7 @@ fig.survey.distribution <- function(d.survey, res.strong, res.weak) {
        xaxt="n", xlab="", ylab="Number of responses", main="")
   box(bty="l")
   axis(1, label=FALSE)
-  label(.02, .96, "(a)")
+  label(.02, .96, 1)
 
   usr <- par("usr")
   rect(ci["lower",], usr[3], ci["upper",], usr[4],
@@ -389,7 +389,7 @@ fig.survey.distribution <- function(d.survey, res.strong, res.weak) {
        col=diversitree:::add.alpha(cols.methods, .5), border=NA)
   abline(v=ci["mean",], col=cols.methods)
 
-  label(.02, .96, "(b)")
+  label(.02, .96, 2)
 
   legend("topright", c("Tropical", "Temperate"), lwd=lwd,
          col=cols.tropical, bty="n", cex=.75)
