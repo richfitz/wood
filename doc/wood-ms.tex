@@ -1,7 +1,7 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage[osf]{mathpazo}
 \usepackage{ms}
-\usepackage[numbers]{natbib}
+\usepackage{natbib}
 \usepackage{lineno}
 \usepackage{graphicx}
 \usepackage{caption}
@@ -94,7 +94,7 @@ woody and herbaceous categories \citep{theophrastus1916enquiry}.
 
 The last two thousand years of research into wood since Theophrastus
 classified his garden have uncovered its origin in the early Devonian
-($\sim$~400 Mya) \citep{gerrienne2011simple}; that prevalence of
+($\sim$~400 Mya; \citealt{gerrienne2011simple}); that prevalence of
 woodiness varies with climate \citep{Molesheihgt}; that wood has been
 lost many times in diverse groups, both extant and extinct
 \citep{judd1994}; and that many different forms of pseudo-woody growth
@@ -151,7 +151,7 @@ We created an English-language survey asking for an estimate of the
 percentage of species that are woody according to the above
 definition.  We also asked respondents to indicate their level of
 familiarity with plants, level of formal training, and the country in
-which they received their training (see supplementary material Figure
+which they received their training (see supplementary Figure
 \ref{fig:survey-text} for details).
 %
 We distributed the survey to the community via several electronic
@@ -167,7 +167,7 @@ to Brazilian biology \textsc{facebook} groups and university mailing
 lists.
 
 To analyse the survey data, we used linear regression on
-logit-transformed percent woodiness as (see ref \citep{wartonarcsine})
+logit-transformed percent woodiness as \citep[see][]{wartonarcsine}
 and treated the self-reported level of botanical familiarity and
 education as factors.  We converted country of training to coarse
 latitude using shapefiles
@@ -181,19 +181,18 @@ conducted with R version 2.15.1 \citep{R}.
 
 We used a recently assembled database with growth-form data for 49,064
 vascular plant species, which is the largest such database assembled
-to date (see ref \citep{Zanne}). The core of the woodiness dataset
-came from Kew Royal Botanic Gardens dataset on growth form
-\citep{Kew}.  We reduced the original 103 growth form categories to a
-binary classification following a ``functional'' definition of
-woodiness as a plant with a ``prominent, persistent above-ground
-stem''.  Fifty seven of the 103 categories provided enough information
-to classify species as either woody or herbaceous according to our
-definition (see Table \ref{tab:kew} for specific decisions).  In
-addition, several smaller datasets were added according to the same
-categorisation \citep{Zanne}.  Note that in addition to species
-producing true wood (i.e., consisting of secondary xylem), this
-definition classifies, among other groups, palms, tree ferns, and
-bamboo as woody.
+to date \citep[see][]{Zanne}. The core of the woodiness dataset came
+from Kew Royal Botanic Gardens dataset on growth form \citep{Kew}.  We
+reduced the original 103 growth form categories to a binary
+classification following a ``functional'' definition of woodiness as a
+plant with a ``prominent, persistent above-ground stem''.  Fifty seven
+of the 103 categories provided enough information to classify species
+as either woody or herbaceous according to our definition (see Table
+\ref{tab:kew} for specific decisions).  In addition, several smaller
+datasets were added according to the same categorisation
+\citep{Zanne}.  Note that in addition to species producing true wood
+(i.e., consisting of secondary xylem), this definition classifies,
+among other groups, palms, tree ferns, and bamboo as woody.
 
 Taxonomically, we included vascular plants (i.e., lycopods, ferns,
 gymnosperms, and angiosperms).
@@ -225,7 +224,7 @@ Our final database contained 37,488 records with both information on
 woodiness and documented taxonomy --- 15,657 herbs and 21,831 woody
 species.  This included records from all flowering plant orders
 currently accepted by APG-III \citep{APG3} and those in the ferns
-taxonomy from ref \cite{apweb}.
+taxonomy from \citet{apweb}.
 % sum(dat.g$K) # known species
 % sum(dat.g$H) # herbs
 % sum(dat.g$W) # woody species
@@ -368,8 +367,8 @@ both woody and herbaceous species (Figure
 trait.
 
 The distribution of woodiness varies widely among different taxonomic
-groups (Figure \ref{fig:phylogeny} and ref
-\citep{sinnott1915evolution}).  There are two major clades that are
+groups (Figure \ref{fig:phylogeny} and 
+\citealt{sinnott1915evolution}).  There are two major clades that are
 primarily herbaceous --- the monocots and ferns
 (Monilophyta). However, there are many primarily herbaceous clades
 nested within woody clades, and vice versa, which makes the
@@ -398,7 +397,7 @@ We thank the members of the Tempo and Mode of Plant Trait
 Evolution working group for contributing to project development,
 members of the broader community who took the time to fill out and
 comment on our survey and Rafael Maia for translating our survey and
-helping us to distribute it.  In particular, we thank Jon Eastman for 
+helping us to distribute it.  In particular, thank Jon Eastman for 
 developing the taxonomic resources we used for this study.
 %
 We thank Dales Indian Cuisine in Durham, NC for providing the buffet
@@ -457,8 +456,8 @@ woody species within a genus.
 
 However, the distribution of woodiness among genera and families is
 strongly bimodal; most genera are either all-woody or all-herbaceous
-(Figure \ref{fig:distribution-genera} and ref
-\citep{sinnott1915evolution}).  Among the 748 genera with at least 10
+(Figure \ref{fig:distribution-genera} and 
+\citealt{sinnott1915evolution}).  Among the 748 genera with at least 10
 records, 392 are entirely woody, 248 are entirely herbaceous, and only
 50 have between 10\% and 90\% woody species. As a result, knowing the
 state of a handful of species within a genus can give a reasonable
@@ -501,7 +500,7 @@ and the number of species in the genus as its parameters.
 % I think no. People need to be smacked in the fact to see connections
 % and any face smacking would inevitably disrupt the flow of the ms.
 
-\bibliographystyle{prsb}
+\bibliographystyle{refstyle}
 \bibliography{wood.bib}
 
 \begin{figure}[p]
@@ -510,8 +509,8 @@ and the number of species in the genus as its parameters.
   \caption{Distribution of responses to the survey question ``What
     percentage of the world's vascular plant species are
     woody?''. Responses are broken up by familiarity with plants
-    (panel (a)) and formal training in botany or a related discipline
-    (panel (b)). The mean and 95\% confidence intervals for our
+    (panel A) and formal training in botany or a related discipline
+    (panel B). The mean and 95\% confidence intervals for our
     estimates of the proportion of woody species from the empirical
     data are depicted by the horizontal shaded rectangles; the blue
     upper rectangle corresponds to the ``weak prior'' approach and the
@@ -525,11 +524,11 @@ and the number of species in the genus as its parameters.
   \includegraphics{figs/fraction-by-genus}
   \caption{Distribution of the percentage of woodiness among genera.
     The distribution of the percentage of species that are woody within
-    a genus is strongly bimodal among genera (panel a -- showing
+    a genus is strongly bimodal among genera (panel A -- showing
     genera with at least 10 species only).
     % 
     The two different sampling approaches generate distributions that
-    differ in their bimodality (panel b). When assuming species are
+    differ in their bimodality (panel B). When assuming species are
     sampled with replacement from some pool, but having no prior on
     the fraction of woodiness within the pool generates a broad
     distribution with many polymorphic genera (blue lines), while
@@ -546,7 +545,7 @@ and the number of species in the genus as its parameters.
   \caption{Distribution of the percentage of woodiness among orders of
     vascular plants.  Each tip represents an order, with the width of
     the sector proportional to the log number of recognised species in
-    that order (data from accepted names in ref \citep{ThePlantList}).
+    that order (data from accepted names in \citet{ThePlantList}).
     The bars around the perimeter indicate the percentage of woody
     (brown) and herbaceous (green) species, estimated using the
     ``strong prior'' (sampling without replacement) approach.  Using
@@ -587,7 +586,7 @@ and the number of species in the genus as its parameters.
     corresponds to the ``strong prior'' approach (see Appendix for
     details).  
     % 
-    Panel a) includes all 292 responses.  In panel b), the 282
+    Panel A includes all 292 responses.  In panel B, the 282
     responses that indicated country are shown separated into
     ``tropical'' (orange distribution) and ``temperate'' (teal).
     Estimates from tropical countries were slightly, but
@@ -609,15 +608,14 @@ and the number of species in the genus as its parameters.
     Distribution of the fraction of woodiness among orders of vascular
     plants.  Each tip represents an order, with the fraction of
     circumference proportional to the log number of recognised species
-    in that order (data from accepted names in ref
-    \citep{ThePlantList}).  The bars around the perimeter indicate the
-    percentage of woody (brown) and herbaceous (green) species,
-    estimated using the ``weak prior'' (sampling with replacement)
-    approach.  Using the ``strong prior'' approach generally leads to
-    an estimated percentage that is further away from 50\% (see
-    Figures \ref{fig:phylogeny} and \ref{fig:distribution-genera}).
-    Phylogeny from \citep{Zanne}.  Orders not placed by APG-III
-    \citep{APG3} are not displayed.}
+    in that order (data from accepted names in \citet{ThePlantList}).
+    The bars around the perimeter indicate the percentage of woody
+    (brown) and herbaceous (green) species, estimated using the ``weak
+    prior'' (sampling with replacement) approach.  Using the ``strong
+    prior'' approach generally leads to an estimated percentage that
+    is further away from 50\% (see Figures \ref{fig:phylogeny} and
+    \ref{fig:distribution-genera}).  Phylogeny from \citep{Zanne}.
+    Orders not placed by APG-III \citep{APG3} are not displayed.}
   \label{fig:phylogeny-supp}
 \end{figure}
 
