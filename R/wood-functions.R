@@ -9,7 +9,7 @@
 ## state, total species, and percentage of known species that are
 ## woody (i.e., W / K).
 load.clean.data <- function(regenerate=FALSE) {
-  filename <- "dat.g.rds"
+  filename <- "output/dat.g.rds"
   if ( !regenerate && file.exists(filename) )
     return(readRDS(filename))
   
@@ -282,7 +282,7 @@ build.country.list <- function() {
 ## # Order level phylogeny
 
 build.order.tree <- function(dat.g, regenerate=FALSE) {
-  filename <- "phy.o.rds"
+  filename <- "output/phy.o.rds"
   if ( !regenerate && file.exists(filename) ) {
     phy.o <- readRDS(filename)
   } else {

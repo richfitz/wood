@@ -84,7 +84,7 @@ rhyper2 <- function(nn, s0, s1, xn, fraction=FALSE) {
 
 ## Caching simulation run:
 do.simulation <- function(type, nrep, regenerate=FALSE) {
-  filename <- sprintf("sim.%s.rds", type)
+  filename <- sprintf("output/sim.%s.rds", type)
   if ( !regenerate && file.exists(filename) )
     return(readRDS(filename))
   dat.g.split <- split(dat.g, dat.g$order)

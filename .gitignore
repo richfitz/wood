@@ -5,10 +5,7 @@ how-much-wood.md
 how-much-wood.html
 old
 
-phy.o.rds
-dat.g.rds
-sim.weak.rds
-sim.strong.rds
+output/
 
 doc/wood-ms.pdf
 heir
