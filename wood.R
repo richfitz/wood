@@ -7,8 +7,8 @@ if ( !interactive() ) {
   options(show.signif.stars=FALSE)
   ## Suppress a warning about incompatibility with results from R < 2.2.0
   invisible(suppressWarnings(sample(1:250, 1, pr=rep(1, 250), replace=TRUE)))
-  dir.create("output", FALSE)
 }
+dir.create("output", FALSE)
 
 library(multicore)
 library(diversitree)
