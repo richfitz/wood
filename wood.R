@@ -7,12 +7,13 @@ if ( !interactive() ) {
   options(show.signif.stars=FALSE)
   ## Suppress a warning about incompatibility with results from R < 2.2.0
   invisible(suppressWarnings(sample(1:250, 1, pr=rep(1, 250), replace=TRUE)))
+  dir.create("output", FALSE)
 }
 
 library(multicore)
 library(diversitree)
 path.forest <- readLines("~/.forest_path")
-source("wood-functions.R")
+source("R/wood-functions.R")
 
 ## Colours used throughout:
 cols.methods <- c(strong="#a63813",        # red
@@ -175,7 +176,7 @@ fig.fraction.by.genus(res.strong, res.weak)
 
 fig.fraction.on.phylogeny <- function(phy.o, res) {
   ## Higher level taxonomy
-  hlt <- read.csv("high-level-taxonomy.csv", stringsAsFactors=FALSE)
+  hlt <- read.csv("data/high-level-taxonomy.csv", stringsAsFactors=FALSE)
   phy.group <- hlt$Group[match(phy.o$tip.label, hlt$Order)]
   tmp <- 
     lapply(seq_len(max(phy.o$edge)), function(x)

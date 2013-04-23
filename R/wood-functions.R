@@ -289,7 +289,7 @@ build.order.tree <- function(dat.g, regenerate=FALSE) {
     mrca.tipset <- diversitree:::mrca.tipset
     drop.tip <- diversitree:::drop.tip.fixed
 
-    phy <- read.tree("large-phylogeny.tre")
+    phy <- read.tree("data/large-phylogeny.tre")
 
     ## Two phylogenetic errors in ferns need fixing:
     phy.order <- dat.g$order[match(sub("_.+$", "", phy$tip.label),
