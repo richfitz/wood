@@ -65,29 +65,40 @@ Amsterdam, The Netherlands
 \addtolength{\parskip}{.3em}
 
 \begin{abstract}
-  The question posed by the title of this paper is a basic one; it is
-  surprising that the answer is not known given that the
-  woody/herbaceous divide is perhaps the most fundamental axis of
-  functional diversity among plants.
+\singlespacing
+\begin{enumerate}
+\item{
+  A global understanding of plant diversity has taxonomic, genetic, and functional components.  
+  Considering plant functional diversity, the question posed by the title of this paper is a basic one, and it is
+  surprising that the answer is not known.   The main challenge to answering this question and in all scaling of functional datasets to the global scale is dataset bias.  
+  We currently have data on XX\% of taxonomically resolved species across the globe.  However, these data are not a random sample of global diversity: 
+  some clades are over-sampled, while others have little to no functional data.  This sampling bias means that the global mean value may be very different from a simple dataset average.
+  }
   % 
-  We informally surveyed a broad community of biologists to
-  determine whether a consensus answer to our question existed ---
-  even if not documented in the peer-reviewed literature.  No such
-  consensus existed, with estimates ranging from 1\% to 90\% (mean:
+\item{
+ Starting with a database of woodiness for 49,064 species of vascular plants (XX\% woody)
+  we estimated the status of the remaining 235,668 taxonomically resolved species using two
+  randomisation approaches.  
+  To compare the results of our method to conventional wisdom, we informally surveyed a broad community of biologists.  No 
+  consensus answer to the question existed, with estimates ranging from 1\% to 90\% (mean:
   31.7\%).
-  % 
-  With a database of woodiness for 49,064 species of vascular plants
-  we estimated the status of the remaining 235,668 species using two
-  randomisation approaches.  We estimated the proportion of woodiness
-  among the world's vascular plants to be between 45\% and 48\%.
+}
   %
-  This estimate is larger than 81\% of the estimates in our survey.
-  % 
+\item{
+ After accounting for sampling bias, we estimated the proportion of woodiness
+  among the world's vascular plants to be between 45\% and 48\%.  This was much lower than the raw dataset average and much higher than the mean of the survey.  
   Our study highlights that that global datasets can show patterns at
-  odds with conventional wisdom.
+  odds with both simple dataset means and with conventional wisdom.
+}
+  %
+\item{
+  \emph{Synthesis}: Alongside an understanding of global taxonomic diversity (i.e. number of species globally), building a functional understanding of global diversity is an important new research direction.  This approach represents a new way to use functional trait datasets to answer basic questions at a global scale.
+}
+\end{enumerate}
 \end{abstract}
 
 \newpage
+\doublespacing
 \section{Introduction}
 
 The distinction between a woody and non-woody growth-form is
@@ -125,7 +136,14 @@ number around 8.7 million species with approximately 300,000 of those
 being plants \citep{mora2011plos}, although considerable variation
 still exists among estimates \citep{costello2011}.
 
-We aim to use similar tools to re-ask Theophrastus' 2000 year old
+%NEW PARAGRAPH ON SAMPLING BIAS AND WHY IT MATTERS HERE
+Functional trait datasets are almost without exception biased.  Researchers collect data for specific questions on a local scale, and
+assembling these local datasets is a very useful step (TRY REF), but as with GenBank's assembly of genetic data (SMITH REF),
+the simple compilation of data is not a unbiased sample of global diversity.  Understanding and accounting for the biases in these datasets is a 
+important and necessary next step.  
+......%NEED NEW TRANSITION HERE
+
+We aim to use  re-ask Theophrastus' 2000 year old
 question at a global scale: how many of the world's plant species are
 woody?
 %
@@ -143,47 +161,7 @@ poorly understood.
 
 \section{Methods and Materials}
 
-\subsection{Survey}
 
-We first investigated whether a general consensus among biologists
-existed.  The motivation for this was to determine whether a consensus
-answer existed --- even if not formalised in the literature --- and if
-so, whether it was consistent with the data.
-% 
-In a similar study, botanical experts largely agreed with the
-model--estimated number of species in several Angiosperm groups
-\citep{joppa2010}, and we were interested in whether there was similar
-anecdotal knowledge for the relative prevalence of this key trait.
-%
-We created an English-language survey asking for an estimate of the
-percentage of species that are woody according to the above
-definition.  We also asked respondents to indicate their level of
-familiarity with plants, level of formal training, and the country in
-which they received their training (see supplementary Figure
-\ref{fig:survey-text} for details).
-%
-We distributed the survey to the community via several electronic
-mailing lists with wide circulation among biologists: \emph{EvolDir},
-\emph{ECOLOG}, \emph{\mbox{r-sig-phylo}}, \emph{Taxacom},
-\emph{Herbaria}, as well as local lists. We also posted links on the
-social-networking platforms \textsc{google+}, \textsc{twitter} and
-\textsc{facebook} to reach a broad audience.
-%
-In order to increase representation of survey responses from Latin
-America, we translated the survey into Portuguese and distributed it
-to Brazilian biology \textsc{facebook} groups and university mailing
-lists.
-
-To analyse the survey data, we used linear regression on
-logit-transformed percent woodiness as \citep[see][]{wartonarcsine}
-and treated the self-reported level of botanical familiarity and
-education as factors.  We converted country of training to coarse
-latitude using shapefiles
-from the GBIF dataportal\\
-(\texttt{http://code.google.com/p/gbif-dataportal/wiki/ConfiguringGeoserver}),
-and converted these into ``tropical'' and ``temperate'' using an
-absolute latitude of 23$^\circ$~26$^\prime$.  All analyses were
-conducted with R version 2.15.1 \citep{R}.
 
 \subsection{Dataset}
 
@@ -192,8 +170,9 @@ vascular plant species, which is the largest such database assembled
 to date \citep[see][]{Zanne}. The core of the woodiness dataset came
 from Kew Royal Botanic Gardens dataset on growth form \citep{Kew}.  We
 reduced the original 103 growth form categories to a binary
-classification following a ``functional'' definition of woodiness as a
-plant with a ``prominent, persistent above-ground stem''.  Fifty seven
+classification following a ``functional'' definition of woodiness %ADD ASA GREY REFERENCE HERE
+as a
+plant with a ``prominent, persistent above-ground stem''.  Fifty-seven
 of the 103 categories provided enough information to classify species
 as either woody or herbaceous according to our definition (see Table
 \ref{tab:kew} for specific decisions).  In addition, several smaller
@@ -224,7 +203,7 @@ for misspellings, followed by manual verification.
 Theophrastus both recognised the fundamental importance of the
 distinction between woody and herbaceous plants, and that this
 distinction is in some cases difficult to make.  There are a number of
-species which are intermediate in form \citep{beaulieuHiddenRates}; in
+species which are intermediate (or variable) in form \citep{beaulieuHiddenRates}; in
 this dataset 633 species (1.3\%) were coded as variable and were
 excluded from our analysis.
 %
@@ -271,6 +250,14 @@ Conversely, systematic under-sampling of tropical species, believed to
 be more woody than temperate species \citep{Molesheihgt}, would bias
 the global woodiness estimate downwards.
 
+%WKC: After doing all that annoying dataset checking for Amy's paper
+%I figured out where the bias is from:  there are several forestry datasets 
+% of exclusively woody species that got pulled in.  So basically in the tropics, esp. the paleo-tropics
+% various British people were trying to figure out what makes good wood to build the buildings of the british 
+% empire so they 
+% did a rather systemtic inventory of woody properties of the local species
+% since 
+
 To impute the state (i.e., woody or herbaceous) of species with
 unknown states, we used a simple Monte Carlo method to sample species
 states.  We either assumed that (a) the observed species were drawn
@@ -291,8 +278,52 @@ This procedure is described in detail in the appendix.  The analysis
 script and full dataset are available on bitbucket (reference to be
 added) and Dryad (reference to be added).
 
+\subsection{Survey}
+
+We first investigated whether a general consensus among biologists
+existed.  The motivation for this was to determine whether a consensus
+answer existed --- even if not formalised in the literature --- and if
+so, whether it was consistent with the data.
+% 
+In a similar study, botanical experts largely agreed with the
+model--estimated number of species in several Angiosperm groups
+\citep{joppa2010}, and we were interested in whether there was similar
+anecdotal knowledge for the relative prevalence of this key trait.
+%
+We created an English-language survey asking for an estimate of the
+percentage of species that are woody according to the above
+definition.  We also asked respondents to indicate their level of
+familiarity with plants, level of formal training, and the country in
+which they received their training (see supplementary Figure
+\ref{fig:survey-text} for details).
+%
+We distributed the survey to the community via several electronic
+mailing lists with wide circulation among biologists: \emph{EvolDir},
+\emph{ECOLOG}, \emph{\mbox{r-sig-phylo}}, \emph{Taxacom},
+\emph{Herbaria}, as well as local lists. We also posted links on the
+social-networking platforms \textsc{google+}, \textsc{twitter} and
+\textsc{facebook} to reach a broad audience.
+%
+In order to increase representation of survey responses from Latin
+America, we translated the survey into Portuguese and distributed it
+to Brazilian biology \textsc{facebook} groups and university mailing
+lists.
+
+To analyse the survey data, we used linear regression on
+logit-transformed percent woodiness as \citep[see][]{wartonarcsine}
+and treated the self-reported level of botanical familiarity and
+education as factors.  We converted country of training to coarse
+latitude using shapefiles
+from the GBIF dataportal\\
+(\texttt{http://code.google.com/p/gbif-dataportal/wiki/ConfiguringGeoserver}),
+and converted these into ``tropical'' and ``temperate'' using an
+absolute latitude of 23$^\circ$~26$^\prime$.  All analyses were
+conducted with R version 2.15.1 \citep{R}.
+
 
 \section{Results and Discussion}
+
+%WKC: I know this now doesn't mirror the order of the methods, but I think it could be okay
 
 There was strikingly little consensus among researchers as to the
 percentage of species that are woody.  We received 292 responses from
@@ -401,6 +432,7 @@ characterizing large--scale patterns of functional diversity and these
 should be taken into consideration when conducting downstream
 analyses. The sampling procedures we used in this paper might be a
 useful and general way of addressing this issue.
+
 
 We conclude with two observations.
 %
