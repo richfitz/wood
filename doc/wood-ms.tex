@@ -200,12 +200,12 @@ Binomials remaining unmatched were compared first to the Plant List
 and if needed to IPNI with an approximate matching algorithm to allow
 for misspellings, followed by manual verification.
 
-Theophrastus both recognised the fundamental importance of the
+Theophrastus recognised both the fundamental importance of the
 distinction between woody and herbaceous plants, and that this
 distinction is in some cases difficult to make.  There are a number of
-species which are intermediate (or variable) in form \citep{beaulieuHiddenRates}; in
-this dataset 633 species (1.3\%) were coded as variable and were
-excluded from our analysis.
+species which are intermediate (or variable) in form
+\citep{beaulieuHiddenRates}; in this dataset 633 species (1.3\%) were
+coded as variable and were excluded from our analysis.
 %
 Our final database contained 37,488 records with both information on
 woodiness and documented taxonomy --- 15,657 herbs and 21,831 woody
@@ -276,8 +276,8 @@ We used two different approaches for imputing the values of these
 unknown species. First, we assumed that the known species were sampled
 without replacement from a pool of species with $N_w$ woody and $N_h$
 herbaceous species ($N_w + N_h = N$), following a hypergeometric
-distribution. The probability that $x$ of the species are woody ($x =
-0, 1, \ldots, N - n_w - n_h$) is proportional to
+distribution. The probability that $x$ of the species of unknown state
+are woody ($x = 0, 1, \ldots, N - n_w - n_h$) is proportional to
 \begin{equation}
   \Pr(N_w = x) \propto {n_w + x \choose n_w}
   {N - n_w - x \choose n_h}
@@ -374,7 +374,7 @@ The different approaches generate different distributions of the
 per-genus percentage of woodiness (Figure
 \ref{fig:distribution-genera}), with a less strongly bimodal
 distribution using the ``weak prior'' approach.  However, the two different approaches (strong
-versus weak priors) led to similar taxonomic distributions of
+versus weak priors) led to similar phylogenetic distributions of
 estimated woodiness (Figure \ref{fig:phylogeny} versus Figure
 \ref{fig:phylogeny-supp}), differing only in detail.
 
@@ -417,12 +417,13 @@ temperate countries ($p$=0.02), but this effect was very small
 \section{Discussion}
 
 % No consensus
-Our estimates of woodiness differed from both the survey and
-from the simple mean of the global database --- neither simple statistics nor 
-expert intuition were accurate in this case.  The difference from expert knowledge is in striking
-contrast to \citep{joppa2010}, who found that that expert opinion on
-the number of species within different Angiosperm groups agreed
-closely with results based on analyses of data and their bias.
+Our estimates of woodiness differed from both the survey and the
+simple mean of the global database: neither simple statistics nor
+expert intuition were accurate in this case.  The difference from
+expert knowledge is in striking contrast to \citet{joppa2010}, who
+found that that expert opinion on the number of species within
+different Angiosperm groups agreed closely with results based on
+analyses of data and their bias.
 %Surprisingly, there was no consensus of opinion as to how woody the
 %world is.  We find it very surprising that this most basic aspect of
 %plant natural history was not generally known.  
@@ -436,9 +437,9 @@ cultivated crops, or the fact that people --- including researchers
 %
 %less woody than the database mean
 Our estimate of the percentage of species that are woody (45--47\%)
-differs markedly from the raw estimate based on species in our
-database (58\%).  This difference is caused by the interaction between biased sampling and 
- clustered trait data at a variety of taxonomic scales.  
+differs from the raw estimate based on species in our database (58\%).
+This difference is caused by the interaction between biased sampling
+and clustered trait data at a variety of taxonomic scales.
 %
 The distribution of woodiness is bimodal
 among genera.  Furthermore, the distribution of sizes of those genera differs with woodiness.  Genera that are primarily herbaceous (less than 10\% woody species for
@@ -474,22 +475,23 @@ rarefaction analysis could estimate the number of species remaining to
 be discovered in different groups, but this is not possible for many
 plant clades \citep{costello2011}.
 
-While we have focused on one dataset, sampling biases are pervasive in ecological datasets, and need to be addressed.
+While we have focused on one trait, sampling biases are pervasive in ecological datasets, and need to be addressed.
 Global databases of functional traits
-\citep[e.g. TRY;][]{kattge2011try} are central to biodiversity
+\citep[e.g., TRY;][]{kattge2011try} are central to biodiversity
 research, but through no fault of database collator they are inevitably biased in terms of taxonomic breadth
 and this may have serious consequences for the reliability of
 inferences drawn from them.  
-This bias also effects a whole array of different methods in ecological and evolutionary research \citep{ackerly2000taxon,nakagawa2008missing,pennell2013integrative} in addition to its well understood effects on conventional statistics.  In this case, taking the data at face--value, 
+This bias also effects a whole array of different methods in ecological and evolutionary research \citep[e.g.,][]{ackerly2000taxon,nakagawa2008missing,pennell2013integrative} in addition to its well understood effects on conventional statistics.  In this case, taking the data at face--value, 
 we would have greatly overestimated
-the global percentage of woody species.  Inferring the global frequency of any trait including 
-nitrogen--fixing, mycorrhizal symbioses and pollinator syndrome would face the same problem.  We have presented here a method for binary traits
-but a similar approach could be developed for multi--state categorical or continuous traits.  
+the global percentage of woody species.  Inferring the global
+frequency of any trait including would face the same problem.  For
+example, the ecologically important traits of nitrogen--fixing, mycorrhizal symbioses and pollinator syndrome would face the same problem.  We have presented here a method for binary traits
+but a similar approach could be developed for multi--state categorical or continuous traits.
 
-The availability of global databases for genetic and functional traits is one of the recent key developments in ecology and evolutionary research.  These database have the promise of allowing researchers to address broad--reaching and long--standing questions by drawing on huge amounts of accumulated research.  
-Just as Theophrastus' garden was a nonrandom sample of the Greek
+The availability of global databases for genetic and functional traits is one of the recent key developments in ecology and evolutionary research.  These databases have the promise of allowing researchers to address broad--reaching and long--standing questions by drawing on huge amounts of accumulated research.  
+Just as Theophrastus' garden was a non-random sample of the Greek
 flora, our trait databases contain diverse biases; accounting for
-these biases will be important in making inferences about broad-scale
+them will be important in making inferences about broad-scale
 ecological and evolutionary patterns and processes.
 
 \section{Acknowledgements}
@@ -517,12 +519,6 @@ University of Idaho Bioinformatics and Computational Biology graduate fellowship
 WKC was supported by Netherlands Organisation for
 Scientific Research (NWO) through its Open Competition Program of the
 section Earth and Life Sciences (ALW) grant nr. 820.01.016.
-
-
-% MWP: Did we want to add a short paragraph here describing how this could
-% be applied to other traits as well or used before downstream comparative analysis?
-% I think no. People need to be smacked in the fact to see connections
-% and any face smacking would inevitably disrupt the flow of the ms.
 
 \section{Appendix: Survey details}
 %
