@@ -56,7 +56,7 @@ $^{11}$ School of BEES, The University of New South Wales, Sydney 2052 NSW, Aust
 %\paragraph{Article type:} Note.
 }
 \runninghead{How much of the world is woody?}
-\keywords{Databases, Taxonomic bias, Macroecology, Herbaceousness, Woodiness, Functional diversity}
+\keywords{Databases, Sampling bias, Macroecology, Herbaceousness, Woodiness, Functional diversity}
 
 \begin{document}
 % \raggedright
@@ -70,6 +70,8 @@ $^{11}$ School of BEES, The University of New South Wales, Sydney 2052 NSW, Aust
 \singlespacing
 \begin{enumerate}
 \item{
+    % RGF: I don't love the first sentence of the abstract (I
+    % preferred our original one!).
   A global understanding of plant diversity has taxonomic, genetic, and functional components.  
   Considering plant functional diversity, the question posed by the title of this paper is a basic one, and it is
   surprising that the answer is not known.   The main challenge in the scaling of functional datasets to the global scale is sampling bias.  
@@ -166,31 +168,36 @@ to the broader community of botanists and other biologists.
 
 \subsection{Dataset}
 
+We use a ``functional'' definition of woodiness; woody species have a
+prominent aboveground stem through time, and herbaceous species lack
+such a stem \citep[see an early use of this definition
+by][]{gray1887elements}.  Note that in addition to species producing
+true wood (i.e., consisting of secondary xylem), this definition
+classifies, among other groups, palms, tree ferns, and bamboo as
+woody.
+%
 We used a recently assembled database with growth-form data for 49,064
 vascular plant species (i.e., lycopods, ferns,
 gymnosperms, and angiosperms), which is the largest such database assembled
-to date \citep{Zanne}. The largest contribution to that  dataset came
-from Kew Royal Botanic Gardens dataset on growth form \citep{Kew}.  
-For that dataset, the original 103 growth form categories was reduced to a binary
-classification following a ``functional'' definition of woodiness: 
-woody species have a prominent aboveground stem through time, and herbaceous species lack such a stem
-\citep[see an early use of this definition by Asa Gray:][]{gray1887elements}.  
-Fifty-seven of the 103 categories provided enough information to classify species
-as either woody or herbaceous according to this definition (see Table
-\ref{tab:kew} for specific decisions).  Note that in addition to species producing true wood
-(i.e., consisting of secondary xylem), this definition classifies,
-among other groups, palms, tree ferns, and bamboo as woody.  
-In addition, several smaller
-datasets (collected for a variety of reasons including forestry inventories) were added 
-according to the same categorisation
-\citep{Zanne}.  
-Like all data assembles (including GenBank), the sub-datasets here were collected for a variety of research goals 
-and have unknown and potentially large sampling biases.  
-
+to date \citep{Zanne}. 
 %
+The largest contribution to that dataset came from Kew Royal Botanic
+Gardens dataset on growth form \citep{Kew}.  For that dataset, the
+original 103 growth form categories was reduced to a binary
+classification.  Fifty-seven of the 103 categories provided enough
+information to classify species as either woody or herbaceous
+according to our definition (see Table \ref{tab:kew} for specific
+decisions).  In addition, several smaller datasets (collected for a
+variety of reasons including forestry inventories) were added
+according to the same categorisation \citep{Zanne}.  Like all data
+assemblies (including GenBank;
+\citealt[see][]{smith2011understanding}), the component datasets here
+were collected for a variety of research goals and have unknown and
+potentially large sampling biases.
+
 Because the effort to organise plant taxonomy, especially synonymy, is
-on-going, there was uncertainty regarding the status of many 
-plant names.  
+on-going, there was uncertainty regarding the status of many plant
+names.
 %
 To bring species binomials to a common taxonomy among datasets, names
 were matched against accepted names in the Plant List
@@ -262,11 +269,10 @@ the global woodiness estimate downwards.
 % did a rather systemtic inventory of woody properties of the local species
 % since 
 
-We developed a novel method to account for this taxonomic bias when estimating
-the percentage of woody species. 
-In our approach, we treat each genus separately,
-and in all cases know that there are are $n_w$ woody and $n_h$ species
-and a total of $N$ species in the genus.
+We developed a novel method to account for this sampling bias when
+estimating the percentage of woody species.  In our approach, we treat
+each genus separately, and in all cases know that there are are $n_w$
+woody and $n_h$ species and a total of $N$ species in the genus.
 %
 For example, the genus \textit{Microcoelia} (Orchidaceae) has 30
 species in total, and we know that 13 are herbaceous and none are
@@ -278,11 +284,11 @@ biological and mathematical intuition suggest that most of them will
 be.
 
 We used two different approaches for imputing the values of these
-unknown species. First, we assumed that the known species were
-sampled without replacement from a pool of species with $N_w$ woody
-and $N_h$ herbaceous species ($N_w + N_h = N$). The probability that
-$x$ of the species are woody ($x = 0, 1, \ldots, N - n_w - n_h$) is
-proportional to
+unknown species. First, we assumed that the known species were sampled
+without replacement from a pool of species with $N_w$ woody and $N_h$
+herbaceous species ($N_w + N_h = N$), following a hypergeometric
+distribution. The probability that $x$ of the species are woody ($x =
+0, 1, \ldots, N - n_w - n_h$) is proportional to
 \begin{equation}
   \Pr(N_w = x) \propto {n_w + x \choose n_w}
   {N - n_w - x \choose n_h}
@@ -348,32 +354,20 @@ and the number of species in the genus as its parameters.
 % The point of the survey is that not only are we not aware of the
 % bias, but our *guesses* as to what the mean actually is is also
 % biased.
-%
-% TODO: fixme on the [?]
-%
-% \textit{We are interested in whether expert opinion can substitute for
-%   careful calculation}.
-% %
-% \citet{joppa2010} found that expert--estimate
-% largely agreed with the model--estimated number of
-% species in several Angiosperm groups \citep{joppa2010}, and we were
-% interested in whether there was similar anecdotal knowledge for the
-% relative prevalence of this key trait.
-
-
-The motivation for including a survey alongside our empirical analysis was to determine whether a consensus
-answer existed --- even if not formalised in the literature --- and if
-so, whether it was consistent with the data.
+In estimating the number of species within Angiosperm families,
+\citet{joppa2010} found that expert opinion generally agreed closely
+with estimates from a statistical model.  We were interested in
+whether a consensus answer existed --- even if not formalised in the
+literature --- and if so, whether it was consistent with the data.
 % 
-We created an English-language survey (which we also translated into Portuguese) 
-asking for an estimate of the
-percentage of species that are woody according to the above
-definition.  We also asked respondents to indicate their level of
-familiarity with plants, level of formal training, and the country in
-which they received their training. We sent out the survey to a variety of internet mailing lists 
-and social media websites
-(see Appendix and Supplementary Figure
-\ref{fig:survey-text} for details on the survey). 
+We created an English-language survey (which we also translated into
+Portuguese) asking for an estimate of the percentage of species that
+are woody according to the above definition.  We also asked
+respondents to indicate their level of familiarity with plants, level
+of formal training, and the country in which they received their
+training. We sent out the survey to several internet mailing lists and
+social media websites (see Appendix and Supplementary Figure
+\ref{fig:survey-text} for details on the survey).
 
 \section{Results}
 
