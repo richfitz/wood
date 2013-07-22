@@ -44,8 +44,9 @@ ID 83844, U.S.A.
 \texttt{dtank@uidaho.edu}\\
 $^{10}$ Department of Systems Ecology, VU University, 1081 HV
 Amsterdam, The Netherlands\\
-$^{11}$ University of New South Wales, School of BEES, Sydney, NSW 2052, Australia
-\texttt{w.k.cornwell@vu.nl}}\\
+$^{11}$ School of BEES, The University of New South Wales, Sydney 2052 NSW, Australia
+\texttt{w.cornwell@unsw.edu.au}}\\
+
 \vfill
 % \raggedright, no line numbers, \pagestyle{empty}, copy and paste,
 % remove figures (draft mode would be faster) and don't count
@@ -126,65 +127,69 @@ markedly different rates of molecular evolution \citep{SmithDonoghue}.
 However, we have no idea about what proportion of species are actually
 woody.
 
-With the rise of bioinformatics, the similar biodiversity question of
-``how many species are there on earth'' has been approached with a
-variety of different methods \citep{may1988many,erwin1991many,
-  stork1993many, joppa2010, costello2011, mora2011plos}.  These
-statistical estimates have improved, narrowing in most recently on a
-number around 8.7 million species with approximately 300,000 of those
-being plants \citep{mora2011plos}, although considerable variation
-still exists among estimates \citep{costello2011}.
+%DELETE:
+%With the rise of bioinformatics, the similar biodiversity question of
+%``how many species are there on earth'' has been approached with a
+%variety of different methods \citep{may1988many,erwin1991many,
+ % stork1993many, joppa2010, costello2011, mora2011plos}.  These
+%statistical estimates have improved, narrowing in most recently on a
+%number around 8.7 million species with approximately 300,000 of those
+%being plants \citep{mora2011plos}, although considerable variation
+%still exists among estimates \citep{costello2011}.
 
 %NEW PARAGRAPH ON SAMPLING BIAS AND WHY IT MATTERS HERE
-Functional trait datasets are almost without exception biased.  Researchers collect data for specific questions on a local scale, and
-assembling these local datasets is a very useful step (TRY REF), but as with GenBank's assembly of genetic data (SMITH REF),
-the simple compilation of data is not a unbiased sample of global diversity.  Understanding and accounting for the biases in these datasets is a 
+Functional trait datasets are almost without exception biased.  
+Researchers collect data for specific questions on a local scale, and
+assembling these local datasets is a very useful step \citep{kattge2011try}, 
+but as with GenBank's assembly of genetic data \citep{smith2011understanding},
+the simple compilation of data is not a unbiased sample of global diversity, and 
+these biases have a variety of detrimental effects.  
+%Possibly refer to the problems caused by bias
+Understanding and accounting for the biases in these datasets is a 
 important and necessary next step.  
-......%NEED NEW TRANSITION HERE
 
-We aim to use  re-ask Theophrastus' 2000 year old
+We sought to develop an approach that accounts for this bias.  In doing so, we 
+were able to re-ask Theophrastus' 2000--year old
 question at a global scale: how many of the world's plant species are
 woody?
-%
-We felt that such a basic question would be essentially known, but
-aside from an almost 100-year old paper \citep{sinnott1915evolution}
-we found very little published research.
-%
-Because of this, we took the unconventional approach of coupling our
+
+We also sought to understand how well scientists were able to overcome this bias and make a reasonable estimate.  To do this 
+we took the unconventional approach of coupling our
 analysis with with an informal survey in which we asked our question
 to the broader community of botanists and other biologists.
 % 
-The tremendous variety of answers in response suggests that this
-fundamental aspect of plant functional diversity is surprisingly
-poorly understood.
+%DELETE OR MOVE:
+%The tremendous variety of answers in response suggests that at least for this problem overcoming bias requires more than just expert opinion.  
+%
 
 \section{Methods and Materials}
-
-
 
 \subsection{Dataset}
 
 We used a recently assembled database with growth-form data for 49,064
-vascular plant species, which is the largest such database assembled
-to date \citep[see][]{Zanne}. The core of the woodiness dataset came
-from Kew Royal Botanic Gardens dataset on growth form \citep{Kew}.  We
-reduced the original 103 growth form categories to a binary
-classification following a ``functional'' definition of woodiness %ADD ASA GREY REFERENCE HERE
-as a
-plant with a ``prominent, persistent above-ground stem''.  Fifty-seven
-of the 103 categories provided enough information to classify species
-as either woody or herbaceous according to our definition (see Table
-\ref{tab:kew} for specific decisions).  In addition, several smaller
-datasets were added according to the same categorisation
-\citep{Zanne}.  Note that in addition to species producing true wood
+vascular plant species (i.e., lycopods, ferns,
+gymnosperms, and angiosperms), which is the largest such database assembled
+to date \citep{Zanne}. The largest contribution to that  dataset came
+from Kew Royal Botanic Gardens dataset on growth form \citep{Kew}.  
+For that dataset, the original 103 growth form categories was reduced to a binary
+classification following a ``functional'' definition of woodiness : 
+woody species have a prominent aboveground stem through time, and herbaceous species lack such a stem
+\citep[see an early use of this definition by Asa Gray:][]{gray1887elements}.  
+Fifty-seven of the 103 categories provided enough information to classify species
+as either woody or herbaceous according to this definition (see Table
+\ref{tab:kew} for specific decisions).  Note that in addition to species producing true wood
 (i.e., consisting of secondary xylem), this definition classifies,
-among other groups, palms, tree ferns, and bamboo as woody.
+among other groups, palms, tree ferns, and bamboo as woody.  
+In addition, several smaller
+datasets (collected for a variety of reasons including forestry inventories) were added 
+according to the same categorisation
+\citep{Zanne}.  
+Like all data assembles (including genbank), the sub-datasets here were collected for a variety of research goals 
+and have unknown and potentially large sampling biases.  
 
-Taxonomically, we included vascular plants (i.e., lycopods, ferns,
-gymnosperms, and angiosperms).
 %
 Because the effort to organise plant taxonomy, especially synonymy, is
-on-going, there was uncertainty regarding the status of many of these
+on-going, there was uncertainty regarding the status of many 
 plant names.  
 %
 To bring species binomials to a common taxonomy among datasets, names
