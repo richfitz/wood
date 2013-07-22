@@ -341,6 +341,26 @@ and the number of species in the genus as its parameters.
 
 \subsection{Survey}
 
+% The idea is that the above shows how our biological data sets are
+% biased vs the actual data (as in, we've collected the information in
+% a biased way).
+%
+% The point of the survey is that not only are we not aware of the
+% bias, but our *guesses* as to what the mean actually is is also
+% biased.
+%
+% TODO: fixme on the [?]
+%
+% \textit{We are interested in whether expert opinion can substitute for
+%   careful calculation}.
+% %
+% \citet{joppa2010} found that expert--estimate
+% largely agreed with the model--estimated number of
+% species in several Angiosperm groups \citep{joppa2010}, and we were
+% interested in whether there was similar anecdotal knowledge for the
+% relative prevalence of this key trait.
+
+
 We first investigated whether a general consensus among biologists
 existed.  The motivation for this was to determine whether a consensus
 answer existed --- even if not formalised in the literature --- and if
@@ -356,14 +376,35 @@ and social media websites
 (see Appendix and Supplementary Figure
 \ref{fig:survey-text} for details on the survey). 
 
-\section{Results and Discussion}
+\section{Results}
 
-%WKC: I know this now doesn't mirror the order of the methods, but I think it could be okay
+Across all vascular plants, we estimated the fraction of woody species
+to be between 45\% to 48\%.
+% round(100*res.strong$overall, 1)
+% round(100*res.weak$overall, 1)
+Specifically, using our ``strong prior'' sampling approach we
+estimated 45.0\% of species are woody (95\% confidence interval of
+44.7--45.3\%) and with the ``weak prior'' approach we estimated 47.2\%
+(95\% CI of 46.6--47.8\%).
+% mean(d.survey$Estimate < 45)
+% mean(d.survey$Estimate < 100*res.strong$overall[["mean"]])
+The different approaches generate different distributions of the
+per-genus percentage of woodiness (Figure
+\ref{fig:distribution-genera}), with a less strongly bimodal
+distribution using the ``weak prior'' approach.
+%
+Because the observed distribution of woodiness fraction among genera
+is itself strongly bimodal, we believe that the true result lies
+closer to 45\% than to 47\%.  A more sophisticated hierarchical
+modelling approach could lead to a more precise answer, but we feel
+that our values probably span the range of estimates that such an
+approach would generate.
 
 There was strikingly little consensus among researchers as to the
 percentage of species that are woody.  We received 292 responses from
 28 countries, with estimates that ranged from 1\% to 90\% with a mean
-of 31.7\% (Figure \ref{fig:survey-distribution}).
+of 31.7\% (Figure \ref{fig:survey-distribution}).  Our smallest
+estimate is greater than 81\% of our survey estimates.
 % nrow(d.survey)
 % range(d.survey$Estimate)
 % mean(d.survey$Estimate)
@@ -384,64 +425,38 @@ estimates from tropical countries were slightly higher than those from
 temperate countries ($p=$0.02), but this effect was very small
 ($r^2$=0.02, Figure \ref{fig:survey-distribution}).
 
-Across all vascular plants, we estimated the fraction of woody species
-to be between 45\% to 48\%.
-% round(100*res.strong$overall, 1)
-% round(100*res.weak$overall, 1)
-Specifically, using our ``strong prior'' sampling approach we
-estimated 45.0\% of species are woody (95\% confidence interval of
-44.7--45.3\%) and with the ``weak prior'' approach we estimated 47.2\%
-(95\% CI of 46.6--47.8\%).  Our smallest estimate is greater than 81\%
-of our survey estimates.
-% mean(d.survey$Estimate < 45)
-% mean(d.survey$Estimate < 100*res.strong$overall[["mean"]])
-The different approaches generate different distributions of the
-per-genus percentage of woodiness (Figure
-\ref{fig:distribution-genera}), with a less strongly bimodal
-distribution using the ``weak prior'' approach, as we describe in the
-appendix.
-%
-This difference in the per-genus distribution drives the difference in
-the overall estimates of woodiness.  Genera that are primarily
-herbaceous (percentage of woody species less than 10\% for genera with
-at least 10 records) were on average larger than primarily woody
-genera (more than 90\% woody species), with a mean of 202 species
-rather than 138.
+\section{Discussion}
 
-Because the observed distribution of woodiness fraction among genera
-is itself strongly bimodal, we believe that the true result lies
-closer to 45\% than to 47\%.  A more sophisticated hierarchical
-modelling approach could lead to a more precise answer, but we feel
-that our values probably span the range of estimates that such an
-approach would generate.
+The difference between the survey and analysis estimates of woodiness
+most respondants perceived there to be substantially fewer woody
+species in the world than there probably are.  This herb-centric view
+of the world may arise from the importance of our (mostly herbaceous)
+cultivated crops, or the fact that people --- including researchers
+--- likely spend more time in the garden than in the forest.
 %
-A larger source of error is the likely nonrandom woodiness of
-undiscovered species.  In principle, rarefaction analysis could
-estimate the number of species remaining to be discovered in different
-groups, but this is not possible for many plant clades
-\citep{costello2011}.
-%
-In any case, we feel that such a simple question as this deserves a
-simple answer.
+Surprisingly, there was no consensus of opinion as to how woody the
+world is.  We find it very surprising that this most basic aspect of
+plant natural history was not generally known.  This is in striking
+contrast to \citep{joppa2010}, who found that that expert opinion on
+the number of species within different Angiosperm groups agreed
+closely with results based on analyses of data and their bias.
 
-% RGF: Peter Stevens writes:
+Our estimate of the percentage of species that are woody (45--47\%)
+differs markedly from the raw estimate based on species in our
+database (58\%).
 %
-% "major structuring in Hutchinson's ( Hutchinson, J. 1973. The
-% Families of Flowering Plants, Ed. 3, 2 vols. Clarendon Press,
-% Oxford.) classification reflected the wood/herb distinction, which
-% led to some strange suggestions...."
-Higher--order classifications are at least as much a product of human
-pattern matching as any biological processes.  Genera probably
-correspond to the morphological discontinuities that humans deem
-important \citep{scotland2004significance}, which likely includes
-woodiness \citep[e.g.,][]{Hutchinson}, albeit now tempered by
-monophyly.  The relative rarity of genera with significant numbers of
-both woody and herbaceous species (Figure
-\ref{fig:distribution-genera}) reinforces the importance of this
-trait.
+This difference is driven by the bimodal distribution of woodiness
+among genera, and the distribution of sizes of those genera with
+resepect to woodiness itself.
+%
+Genera that are primarily herbaceous (less than 10\% woody species for
+genera with at least 10 records) were on average larger than primarily
+woody genera (more than 90\% woody species), with a mean of 202
+species compared to 138.
 
-The distribution of woodiness varies widely among different taxonomic
-groups (Figure \ref{fig:phylogeny} and 
+This bias is driven further by the distribution of woodiness at higher
+taxonomic level, with families or even orders often being
+characterised as woody or herbaceous (Figure \ref{fig:phylogeny} and
 \citealt{sinnott1915evolution}).  There are two major clades that are
 primarily herbaceous --- the monocots and ferns
 (Monilophyta). However, there are many primarily herbaceous clades
@@ -452,35 +467,54 @@ versus weak priors) led to similar taxonomic distributions of
 estimated woodiness (Figure \ref{fig:phylogeny} versus Figure
 \ref{fig:phylogeny-supp}), differing only in detail.
 
-% RGF: This is pasted in from Matt's email.  Could possibly be worked on.
+Higher--order classifications are at least as much a product of human
+pattern matching as biological processes.  Genera correspond to the
+morphological discontinuities among species that humans deem important
+\citep{scotland2004significance}, which likely includes woodiness
+\citep[e.g.,][]{Hutchinson}.  The relative rarity of genera with
+significant numbers of both woody and herbaceous species (Figure
+\ref{fig:distribution-genera}) reinforces the importance of this
+trait.
+
+% RGF: Not sure if this goes here, or just before the survey
+% discussion.  It probably need expanding in any case.
+A significant, but unaccounted for, source of error is the likely
+nonrandom woodiness of undiscovered species.  In principle,
+rarefaction analysis could estimate the number of species remaining to
+be discovered in different groups, but this is not possible for many
+plant clades \citep{costello2011}.
+%
+In any case, we feel that such a simple question as this deserves a
+simple answer.
+
+% Something extra to help lead into this.
+Global databases of functional traits
+\citep[e.g. TRY;][]{kattge2011try} are central to biodiversity
+research, but they are inevitably biased in terms of taxonomic breadth
+and this may have serious consequences for the reliability of
+inferences drawn from them.
+%
+Taking the data at face--value, we would have greatly overestimated
+the global percentage of woody species.  
+%
+[Add something about other traits here: mycorrhiza]
+
+[This paragraph should verge into discussion about methods that use
+such data; how they assume unbiased sampling of states, etc]
+%
+Similar biases may mislead other research characterising large--scale
+patterns of functional diversity and these should be taken into
+consideration when conducting downstream analyses.
+%
+% RGF: We should give examples of such methods here.  I know it will
+% affect BiSSE (and related methods) and Mk.  Matt believes that it
+% will affect BM.  Moles style global analyses.
+%
 While the question we sought to address in this paper is a simple one,
-the methodologies we used for imputing data for missing species could
-potentially be applied to a wide variety of macroecological
-questions. Global databases of functional traits
-\citep[e.g. TRY;][]{kattge2011try} are undoubtedly extremely useful in
-biodiversity research, but they are inevitably biased in terms of
-taxonomic breadth and this may have serious consequences for the
-reliability of inferences drawn from them. Taking the data at
-face--value, we would have greatly overestimated the global percentage
-of woody species.  Similar biases may mislead other research
-characterizing large--scale patterns of functional diversity and these
-should be taken into consideration when conducting downstream
-analyses. The sampling procedures we used in this paper might be a
-useful and general way of addressing this issue.
+the methods we used for imputing data for missing species could
+potentially be applied to a wide variety of macroecological questions.
 
-
-We conclude with two observations.
-%
-First, most people perceive there to be substantially fewer woody
-species in the world than there probably are.  This herb-centric view
-of the world may arise from the importance of our (mostly herbaceous)
-cultivated crops, or the fact that people --- including researchers
---- likely spend more time in the garden than in the forest.
-%
-Second, there is no consensus as to how woody the world is.  We find
-it very surprising that this most basic aspect of plant natural
-history was not generally known.  Global plant functional diversity is
-much woodier than we thought.
+[Something general and future-directionsy]
 
 \section{Acknowledgements}
 
