@@ -256,25 +256,82 @@ the global woodiness estimate downwards.
 % did a rather systemtic inventory of woody properties of the local species
 % since 
 
-To impute the state (i.e., woody or herbaceous) of species with
-unknown states, we used a simple Monte Carlo method to sample species
-states.  We either assumed that (a) the observed species were drawn
-with no replacement from a pool of species while making no assumption
-about the distribution of states within the pool (``weak prior'') or
-(b) that the observed species were drawn from a very large pool of
-species with a proportion of woody species equal to the proportion of
-woodiness among known species within the genus (``strong prior'').
+We developed a novel method to account for this taxonomic bias when estimating
+the percentage of woody species. 
+In our approach, we treat each genus separately,
+and in all cases know that there are are $n_w$ woody and $n_h$ species
+and a total of $N$ species in the genus.
 %
-For genera with no known states, we sampled a woodiness proportion
-from the empirical distribution of woodiness proportion for other
-genera within the same order.
-%
-We repeated this sampling approach 1,000 times and report means and
-confidence intervals over this distribution.
-%
-This procedure is described in detail in the appendix.  The analysis
-script and full dataset are available on bitbucket (reference to be
-added) and Dryad (reference to be added).
+For example, the genus \textit{Microcoelia} (Orchidaceae) has 30
+species in total, and we know that 13 are herbaceous and none are
+known to be woody ($N = 30$, $n_w = 0$, $n_h = 13$). We do not know
+the state of the remaining 17 species, so the true number of woody
+species, $N_w$, must lie between 0 and 17. In general, we cannot
+assume that these species are all herbaceous, even though both
+biological and mathematical intuition suggest that most of them will
+be.
+
+We used two different approaches for imputing the values of these
+unknown species. First, we assumed that the known species were
+sampled without replacement from a pool of species with $N_w$ woody
+and $N_h$ herbaceous species ($N_w + N_h = N$). The probability that
+$x$ of the species are woody ($x = 0, 1, \ldots, N - n_w - n_h$) is
+proportional to
+\begin{equation}
+  \Pr(N_w = x) \propto {n_w + x \choose n_w}
+  {N - n_w - x \choose n_h}
+\end{equation}
+For \textit{Microcoelia} this gives a 45\% probability that all
+species are herbaceous, and a 92\% chance that at most three species
+are woody.
+
+This approach probably overestimates the number of woody species in
+this case, and in other cases where all known species are woody (e.g.,
+\textit{Actinidia} [Ericaceae]) it will probably underestimate the
+number of species that are woody. We see this as corresponding to a
+very weak prior on the shape of the distribution of the fraction of
+woody species within a genus.
+
+However, the distribution of woodiness among genera and families is
+strongly bimodal; most genera are either all-woody or all-herbaceous
+(Figure \ref{fig:distribution-genera} and 
+\citealt{sinnott1915evolution}).  Among the 748 genera with at least 10
+records, 392 are entirely woody, 248 are entirely herbaceous, and only
+50 have between 10\% and 90\% woody species. As a result, knowing the
+state of a handful of species within a genus can give a reasonable
+guess at the remaining species.
+% tmp <- dat.g$p[dat.g$K >= 10] # genera with 10 records
+% sum(tmp == 1) # 100% woody
+% sum(tmp == 0) # 100% herbaceous
+To model the other extreme of sampling, we used an approach where we
+computed the observed fraction of woody species ($p_w = n_w / (n_w +
+n_h)$) and sampled the state of the unobserved species using a
+binomial distribution, so that the probability that $x$ of the species
+are woody is
+\begin{equation}
+  \Pr(x = k) = {N - n_w - n_h \choose k - n_w} 
+  p^k (1-p)^{N - n_h - k}.
+\end{equation}
+
+In cases where all known species are woody (or herbaceous) this will
+assign all unknown species to be woody (or herbaceous). In polymorphic
+cases this will give similar results to the hypergeometric sampling
+approach above. This approach corresponds to a very strong prior on
+the shape of the distribution of woodiness among genera.
+While neither of these approaches is ``correct'', they probably
+span the range of possible outcomes.
+
+For genera where there was no information on woodiness for any
+species, we sampled a fraction of species that might be woody from the
+empirical distribution of woodiness fractions \textit{among genera}
+within the same order. We did this after imputing the missing species
+values within those other genera. So, if a genus is found in an order
+with genera that had woodiness fractions of $\{0, 0, 0.1, 1\}$ we would
+have approximately a 50\% chance of sampling a 0\% woodiness fraction
+for a genus, with probabilities from 0.1 to 1 being fairly evenly
+spread.  Given this woodiness fraction, we then sampled the number of
+species that are woody from a binomial distribution with this fraction
+and the number of species in the genus as its parameters.
 
 \subsection{Survey}
 
@@ -283,41 +340,15 @@ existed.  The motivation for this was to determine whether a consensus
 answer existed --- even if not formalised in the literature --- and if
 so, whether it was consistent with the data.
 % 
-In a similar study, botanical experts largely agreed with the
-model--estimated number of species in several Angiosperm groups
-\citep{joppa2010}, and we were interested in whether there was similar
-anecdotal knowledge for the relative prevalence of this key trait.
-%
-We created an English-language survey asking for an estimate of the
+We created a English-language survey (which we also translated into Portuguese) 
+asking for an estimate of the
 percentage of species that are woody according to the above
 definition.  We also asked respondents to indicate their level of
 familiarity with plants, level of formal training, and the country in
-which they received their training (see supplementary Figure
-\ref{fig:survey-text} for details).
-%
-We distributed the survey to the community via several electronic
-mailing lists with wide circulation among biologists: \emph{EvolDir},
-\emph{ECOLOG}, \emph{\mbox{r-sig-phylo}}, \emph{Taxacom},
-\emph{Herbaria}, as well as local lists. We also posted links on the
-social-networking platforms \textsc{google+}, \textsc{twitter} and
-\textsc{facebook} to reach a broad audience.
-%
-In order to increase representation of survey responses from Latin
-America, we translated the survey into Portuguese and distributed it
-to Brazilian biology \textsc{facebook} groups and university mailing
-lists.
-
-To analyse the survey data, we used linear regression on
-logit-transformed percent woodiness as \citep[see][]{wartonarcsine}
-and treated the self-reported level of botanical familiarity and
-education as factors.  We converted country of training to coarse
-latitude using shapefiles
-from the GBIF dataportal\\
-(\texttt{http://code.google.com/p/gbif-dataportal/wiki/ConfiguringGeoserver}),
-and converted these into ``tropical'' and ``temperate'' using an
-absolute latitude of 23$^\circ$~26$^\prime$.  All analyses were
-conducted with R version 2.15.1 \citep{R}.
-
+which they received their training. We sent out the survey to a variety of internet mailing lists 
+and social media websites
+(see Appendix and Supplementary Figure
+\ref{fig:survey-text} for details on the survey). 
 
 \section{Results and Discussion}
 
@@ -471,88 +502,39 @@ WKC was supported by Netherlands Organisation for
 Scientific Research (NWO) through its Open Competition Program of the
 section Earth and Life Sciences (ALW) grant nr. 820.01.016.
 
-\section{Appendix: Sampling procedure}
-
-Here, we describe our algorithm for sampling the states of species
-that lack information on woodiness. We treat each genus separately,
-and in all cases know that there are are $n_w$ woody and $n_h$ species
-and a total of $N$ species in the genus.
-%
-For example, the genus \textit{Microcoelia} (Orchidaceae) has 30
-species in total, and we know that 13 are herbaceous and none are
-known to be woody ($N = 30$, $n_w = 0$, $n_h = 13$). We do not know
-the state of the remaining 17 species, so the true number of woody
-species, $N_w$, must lie between 0 and 17. In general, we cannot
-assume that these species are all herbaceous, even though both
-biological and mathematical intuition suggest that most of them will
-be.
-
-We used two different approaches for imputing the values of these
-unknown species. First, we assumed that the known species were
-sampled without replacement from a pool of species with $N_w$ woody
-and $N_h$ herbaceous species ($N_w + N_h = N$). The probability that
-$x$ of the species are woody ($x = 0, 1, \ldots, N - n_w - n_h$) is
-proportional to
-\begin{equation}
-  \Pr(N_w = x) \propto {n_w + x \choose n_w}
-  {N - n_w - x \choose n_h}
-\end{equation}
-For \textit{Microcoelia} this gives a 45\% probability that all
-species are herbaceous, and a 92\% chance that at most three species
-are woody.
-
-This approach probably overestimates the number of woody species in
-this case, and in other cases where all known species are woody (e.g.,
-\textit{Actinidia} [Ericaceae]) it will probably underestimate the
-number of species that are woody. We see this as corresponding to a
-very weak prior on the shape of the distribution of the fraction of
-woody species within a genus.
-
-However, the distribution of woodiness among genera and families is
-strongly bimodal; most genera are either all-woody or all-herbaceous
-(Figure \ref{fig:distribution-genera} and 
-\citealt{sinnott1915evolution}).  Among the 748 genera with at least 10
-records, 392 are entirely woody, 248 are entirely herbaceous, and only
-50 have between 10\% and 90\% woody species. As a result, knowing the
-state of a handful of species within a genus can give a reasonable
-guess at the remaining species.
-% tmp <- dat.g$p[dat.g$K >= 10] # genera with 10 records
-% sum(tmp == 1) # 100% woody
-% sum(tmp == 0) # 100% herbaceous
-To model the other extreme of sampling, we used an approach where we
-computed the observed fraction of woody species ($p_w = n_w / (n_w +
-n_h)$) and sampled the state of the unobserved species using a
-binomial distribution, so that the probability that $x$ of the species
-are woody is
-\begin{equation}
-  \Pr(x = k) = {N - n_w - n_h \choose k - n_w} 
-  p^k (1-p)^{N - n_h - k}.
-\end{equation}
-
-In cases where all known species are woody (or herbaceous) this will
-assign all unknown species to be woody (or herbaceous). In polymorphic
-cases this will give similar results to the hypergeometric sampling
-approach above. This approach corresponds to a very strong prior on
-the shape of the distribution of woodiness among genera.
-While neither of these approaches is ``correct'', they probably
-span the range of possible outcomes.
-
-For genera where there was no information on woodiness for any
-species, we sampled a fraction of species that might be woody from the
-empirical distribution of woodiness fractions \textit{among genera}
-within the same order. We did this after imputing the missing species
-values within those other genera. So, if a genus is found in an order
-with genera that had woodiness fractions of $\{0, 0, 0.1, 1\}$ we would
-have approximately a 50\% chance of sampling a 0\% woodiness fraction
-for a genus, with probabilities from 0.1 to 1 being fairly evenly
-spread.  Given this woodiness fraction, we then sampled the number of
-species that are woody from a binomial distribution with this fraction
-and the number of species in the genus as its parameters.
 
 % MWP: Did we want to add a short paragraph here describing how this could
 % be applied to other traits as well or used before downstream comparative analysis?
 % I think no. People need to be smacked in the fact to see connections
 % and any face smacking would inevitably disrupt the flow of the ms.
+
+\section{Appendix: Survey details}
+%
+The survey we created is included as a Supplementary Figure to
+this paper (see \ref{fig:survey-text}). We distributed the survey to the 
+community via several electronic
+mailing lists with wide circulation among biologists: \emph{EvolDir},
+\emph{ECOLOG}, \emph{\mbox{r-sig-phylo}}, \emph{Taxacom},
+\emph{Herbaria}, as well as local lists. We also posted links on the
+social-networking platforms \textsc{google+}, \textsc{twitter} and
+\textsc{facebook} to reach a broad audience.
+%
+In order to increase representation of survey responses from Latin
+America, we translated the survey into Portuguese and distributed it
+to Brazilian biology \textsc{facebook} groups and university mailing
+lists.
+
+To analyse the survey data, we used linear regression on
+logit-transformed percent woodiness as \citep[see][]{wartonarcsine}
+and treated the self-reported level of botanical familiarity and
+education as factors.  We converted country of training to coarse
+latitude using shapefiles
+from the GBIF dataportal\\
+(\texttt{http://code.google.com/p/gbif-dataportal/wiki/ConfiguringGeoserver}),
+and converted these into ``tropical'' and ``temperate'' using an
+absolute latitude of 23$^\circ$~26$^\prime$.  All analyses were
+conducted with R version 2.15.1 \citep{R}.
+
 
 \bibliographystyle{jecol}
 \bibliography{wood.bib}
