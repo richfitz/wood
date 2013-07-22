@@ -384,7 +384,11 @@ estimated 45.0\% of species are woody (95\% confidence interval of
 The different approaches generate different distributions of the
 per-genus percentage of woodiness (Figure
 \ref{fig:distribution-genera}), with a less strongly bimodal
-distribution using the ``weak prior'' approach.
+distribution using the ``weak prior'' approach.  However, the two different approaches (strong
+versus weak priors) led to similar taxonomic distributions of
+estimated woodiness (Figure \ref{fig:phylogeny} versus Figure
+\ref{fig:phylogeny-supp}), differing only in detail.
+
 %
 Because the observed distribution of woodiness fraction among genera
 is itself strongly bimodal, we believe that the true result lies
@@ -418,47 +422,55 @@ estimates from tropical countries were slightly higher than those from
 temperate countries ($p$=0.02), but this effect was very small
 ($r^2$=0.02, Figure \ref{fig:survey-distribution}).
 
+
+
+
 \section{Discussion}
 
-The difference between the survey and analysis estimates of woodiness
-most respondants perceived there to be substantially fewer woody
-species in the world than there probably are.  This herb-centric view
-of the world may arise from the importance of our (mostly herbaceous)
-cultivated crops, or the fact that people --- including researchers
---- likely spend more time in the garden than in the forest.
-%
-Surprisingly, there was no consensus of opinion as to how woody the
-world is.  We find it very surprising that this most basic aspect of
-plant natural history was not generally known.  This is in striking
+% No consensus
+Our estimates of woodiness differed from both the survey and
+from the simple mean of the global database---neither simple statistics nor 
+expert intuition were accurate in this case.  The difference from expert knowledge is in striking
 contrast to \citep{joppa2010}, who found that that expert opinion on
 the number of species within different Angiosperm groups agreed
 closely with results based on analyses of data and their bias.
+%Surprisingly, there was no consensus of opinion as to how woody the
+%world is.  We find it very surprising that this most basic aspect of
+%plant natural history was not generally known.  
+%Fewer woody that we thought
+The respondents to the survey perceived there to be substantially fewer woody
+species in the world than there probably are.  This herb-centric view
+of the world may arise from the importance of our (mostly herbaceous)
+cultivated crops, or the fact that people --- including researchers
+--- likely spend more time in the garden than in the forest, especially in tropical forests where most diversity lies.
 
+%
+%less woody than the database mean
 Our estimate of the percentage of species that are woody (45--47\%)
 differs markedly from the raw estimate based on species in our
-database (58\%).
+database (58\%).  This difference is caused by the interaction between biased sampling and 
+ clustered trait data at a variety of taxonomic scales.  
 %
-This difference is driven by the bimodal distribution of woodiness
-among genera, and the distribution of sizes of those genera with
-resepect to woodiness itself.
-%
-Genera that are primarily herbaceous (less than 10\% woody species for
+The distribution of woodiness is bimodal
+among genera.  Furthermore, the distribution of sizes of those genera differs with woodiness.  Genera that are primarily herbaceous (less than 10\% woody species for
 genera with at least 10 records) were on average larger than primarily
 woody genera (more than 90\% woody species), with a mean of 202
 species compared to 138.
+This means that even a random sampling above the level of species will lead to a biased estimate.  
+The biases in actual data are complex and extensive.  Such biases are likely to be present in every global dataset.  
+In this particular case it is likely that the economic importance of forestry species leads to their over-sampling in this dataset. 
 
-This bias is driven further by the distribution of woodiness at higher
+
+%Effects of sampling bias
+The selection bias's effect on the estimate is amplified by the distribution of woodiness at higher
 taxonomic level, with families or even orders often being
-characterised as woody or herbaceous (Figure \ref{fig:phylogeny} and
+predominantly either woody or herbaceous (Figure \ref{fig:phylogeny} and
 \citealt{sinnott1915evolution}).  There are two major clades that are
 primarily herbaceous --- the monocots and ferns
 (Monilophyta). However, there are many primarily herbaceous clades
 nested within woody clades, and vice versa, which makes the
 combination of taxonomic and functional information crucial for
-answering this type of question.  The two different approaches (strong
-versus weak priors) led to similar taxonomic distributions of
-estimated woodiness (Figure \ref{fig:phylogeny} versus Figure
-\ref{fig:phylogeny-supp}), differing only in detail.
+answering this type of question.  
 
 Higher--order classifications are at least as much a product of human
 pattern matching as biological processes.  Genera correspond to the
@@ -467,47 +479,27 @@ morphological discontinuities among species that humans deem important
 \citep[e.g.,][]{Hutchinson}.  The relative rarity of genera with
 significant numbers of both woody and herbaceous species (Figure
 \ref{fig:distribution-genera}) reinforces the importance of this
-trait.
-
-% RGF: Not sure if this goes here, or just before the survey
-% discussion.  It probably need expanding in any case.
-A significant, but unaccounted for, source of error is the likely
+trait.  A significant, but unaccounted for, source of error is the likely
 nonrandom woodiness of undiscovered species.  In principle,
 rarefaction analysis could estimate the number of species remaining to
 be discovered in different groups, but this is not possible for many
 plant clades \citep{costello2011}.
-%
-In any case, we feel that such a simple question as this deserves a
-simple answer.
 
-% Something extra to help lead into this.
+While we have focused on one dataset, sampling biases are pervasive in ecological datasets, and need to be addressed.
 Global databases of functional traits
 \citep[e.g. TRY;][]{kattge2011try} are central to biodiversity
-research, but they are inevitably biased in terms of taxonomic breadth
+research, but through no fault of database collator they are inevitably biased in terms of taxonomic breadth
 and this may have serious consequences for the reliability of
-inferences drawn from them.
-%
-Taking the data at face--value, we would have greatly overestimated
-the global percentage of woody species.  
-%
-[Add something about other traits here: mycorrhiza]
+inferences drawn from them.  
+This bias also effects a whole array of different methods in ecological and evolutionary research \citep{ackerly2000taxon; nakagawa2008missing; pennell2013integrative} in addition to its well understood effects on conventional statistics.  In this case, taking the data at face--value, 
+we would have greatly overestimated
+the global percentage of woody species.  Inferring the global frequency of any trait including 
+nitrogen-fixing, mycorrhizal symbioses, and pollinator syndrome would face the same problem.  We have presented here a method for binary traits
+but a similar approach could be developed for multi-state categorical or continuous traits.  
 
-[This paragraph should verge into discussion about methods that use
-such data; how they assume unbiased sampling of states, etc]
-%
-Similar biases may mislead other research characterising large--scale
-patterns of functional diversity and these should be taken into
-consideration when conducting downstream analyses.
-%
-% RGF: We should give examples of such methods here.  I know it will
-% affect BiSSE (and related methods) and Mk.  Matt believes that it
-% will affect BM.  Moles style global analyses.
-%
-While the question we sought to address in this paper is a simple one,
-the methods we used for imputing data for missing species could
-potentially be applied to a wide variety of macroecological questions.
-
-[Something general and future-directionsy]
+The availability of global databases for genetic and functional traits is one of the recent key developments in ecology and evolutionary research.  These database have the promise of allowing researchers to address broad-reaching and long-standing questions by drawing on huge amounts of accumulated research.  
+However, biases similar to those that we found for woodiness are likely to be widespread across datasets, and should be taken into
+consideration when conducting analyses.  
 
 \section{Acknowledgements}
 
