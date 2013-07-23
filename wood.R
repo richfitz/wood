@@ -196,8 +196,6 @@ fig.fraction.on.phylogeny <- function(phy.o, res) {
   op <- par(no.readonly=TRUE)
   on.exit(par(op))
 
-  tip.color <- 1:2
-
   ## Drop orders with < 100 species, execpt for a couple we can fit
   ## in.
   drop <- c("Isoetales",
@@ -226,10 +224,11 @@ fig.fraction.on.phylogeny <- function(phy.o, res) {
             "Berberidopsidales", # drop (borderline)
             "Paracryphiales", # drop
             "Escalloniales",  # drop
-            "Bruniales"       # drop
+            "Bruniales",      # drop
             #"Garryales"      # keep
+            "Schizeales"       # also drop
             )
-  tip.color <- ifelse(phy.o$tip.label %in% drop, "white", "black")
+  tip.color <- ifelse(phy.o$tip.label %in% drop, "#ffffff00", "black")
   plt <- 
     diversitree:::plot2.phylo(phy.o, type="fan", cex=.5, no.margin=TRUE,
                               label.offset=t * .15, font=1,
