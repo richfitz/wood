@@ -76,7 +76,7 @@ The question posed by the title of this paper is a basic one, and it is
   surprising that the answer is not known.   A major challenge in the scaling of functional datasets to the global scale is sampling bias.  
   Although we currently know the growth form of many species, these
   data are not a random sample of global diversity;
-  some clades are exhaustively characterised, while others we know little--to--nothing about.  The potential effects of this bias are unknown but potentially large.  
+  some clades are exhaustively characterised, while others we know little--to--nothing about.
   }
   % 
 \item{
@@ -127,19 +127,18 @@ patterns of decomposition and their effects on ecosystem function
 \citep{Cornwellwood}, and that woody and herbaceous species have
 markedly different rates of molecular evolution \citep{SmithDonoghue}.
 %
-However, we have no idea about what proportion of species are actually
-woody.
+However, we have no idea about what proportion of species in the world
+are actually woody.
 
-%NEW PARAGRAPH ON SAMPLING BIAS AND WHY IT MATTERS HERE
 Functional trait datasets are almost without exception biased.  
 Researchers collect data for specific questions on a local scale, and
-assembling these local datasets is a very useful step \citep{kattge2011try}, 
+assembling these local datasets creates a useful resource \citep{kattge2011try}, 
 but as with GenBank's assembly of genetic data \citep{smith2011understanding},
-the simple compilation of data is not a unbiased sample of global diversity, and 
-these biases have a variety of detrimental effects.  
+the simple compilation of data is not an unbiased sample of global diversity, and 
+these biases will in turn bias downstream analyses.
 %Possibly refer to the problems caused by bias
 Understanding and accounting for the biases in these datasets is a 
-important and necessary next step.  
+important and necessary next step.
 
 We sought to develop an approach that accounts for this bias.  In doing so, we 
 were able to re-ask Theophrastus' 2000--year old
@@ -173,7 +172,7 @@ gymnosperms and angiosperms), which is the largest such database assembled
 to date \citep{Zanne}. 
 %
 The largest contribution to that dataset came from Kew Royal Botanic
-Gardens dataset on growth form \citep{Kew}.  For that dataset, the
+Gardens dataset on growth form \citep{Kew}.  For the Kew dataset, the
 original 103 growth form categories was reduced to a binary
 classification.  Fifty-seven of the 103 categories provided enough
 information to classify species as either woody or herbaceous
@@ -407,8 +406,8 @@ researchers from more temperate regions due to the latitudinal
 gradient in woodiness \citep{Molesheihgt}.
 %
 Indeed, there was an effect of being in a tropical country, with the
-estimates from tropical countries were slightly higher than those from
-temperate countries ($p$=0.02), but this effect was very small
+estimates from tropical countries being slightly higher than those
+from temperate countries ($p$=0.02), but this effect was very small
 ($r^2$=0.02, Figure \ref{fig:survey-distribution}).
 
 
@@ -441,15 +440,13 @@ differs from the raw estimate based on species in our database (58\%).
 This difference is caused by the interaction between biased sampling
 and clustered trait data at a variety of taxonomic scales.
 %
-The distribution of woodiness is bimodal
-among genera.  Furthermore, the distribution of sizes of those genera differs with woodiness.  Genera that are primarily herbaceous (less than 10\% woody species for
-genera with at least 10 records) were on average larger than primarily
-woody genera (more than 90\% woody species), with a mean of 202
-species compared to 138.
-This means that even a random sampling above the level of species will lead to a biased estimate.  
-The biases in actual data are complex and extensive.  Such biases are likely to be present in every global dataset.  
-In this particular case it is likely that the economic importance of forestry species leads to their over-sampling in this dataset. 
-
+The distribution of woodiness is bimodal among genera, and the
+distribution of sizes of those genera differs with woodiness.  Genera
+that are primarily herbaceous (less than 10\% woody species for genera
+with at least 10 records) were on average larger than primarily woody
+genera (more than 90\% woody species), with a mean of 202 species
+compared to 138.  This means that even a random sampling above the
+level of species will lead to a biased estimate.
 
 %Effects of sampling bias
 The effect of selection bias on the estimate is amplified by the distribution of woodiness at higher
@@ -480,13 +477,20 @@ Global databases of functional traits
 \citep[e.g., TRY;][]{kattge2011try} are central to biodiversity
 research, but through no fault of database collator they are inevitably biased in terms of taxonomic breadth
 and this may have serious consequences for the reliability of
-inferences drawn from them.  
-This bias also effects a whole array of different methods in ecological and evolutionary research \citep[e.g.,][]{ackerly2000taxon,nakagawa2008missing,pennell2013integrative} in addition to its well understood effects on conventional statistics.  In this case, taking the data at face--value, 
+inferences drawn from them.
+For example, for woodiness the economic importance of forestry species
+likely leads to their
+over-sampling in this dataset.
+This bias also affects many commonly used methods in ecological and evolutionary research \citep[e.g.,][]{ackerly2000taxon,nakagawa2008missing,pennell2013integrative} in addition to its well understood effects on conventional statistics.  In this case, taking the data at face--value, 
 we would have greatly overestimated
 the global percentage of woody species.  Inferring the global
-frequency of any trait including would face the same problem.  For
-example, the ecologically important traits of nitrogen--fixing, mycorrhizal symbioses and pollinator syndrome would face the same problem.  We have presented here a method for binary traits
-but a similar approach could be developed for multi--state categorical or continuous traits.
+frequency of any trait would face the same problem.  For
+example, the ecologically important traits of nitrogen--fixing,
+mycorrhizal symbioses and pollinator syndrome are strongly
+taxonomically structured, and we would expect raw estimates to be
+biased in the same way as woodiness was.  Our approach was developed
+for binary traits
+but similar approaches could be developed for multi--state categorical or continuous traits.
 
 The availability of global databases for genetic and functional traits is one of the recent key developments in ecology and evolutionary research.  These databases have the promise of allowing researchers to address broad--reaching and long--standing questions by drawing on huge amounts of accumulated research.  
 Just as Theophrastus' garden was a non-random sample of the Greek
@@ -576,16 +580,16 @@ conducted with R version 2.15.1 \citep{R}.
   \includegraphics{figs/fraction-on-phylogeny}
   \caption{Distribution of the percentage of woodiness among orders of
     vascular plants.  Each tip represents an order, with the width of
-    the sector proportional to the log number of recognised species in
-    that order (data from accepted names in \citet{ThePlantList}).
-    The bars around the perimeter indicate the percentage of woody
-    (brown) and herbaceous (green) species, estimated using the
-    ``strong prior'' (sampling without replacement) approach.  Using
-    the ``weak prior'' approach generally leads to an estimated
-    percentage that is closer to 50\% (see Figures
-    \ref{fig:phylogeny-supp} and \ref{fig:distribution-genera}).
-    Phylogeny from \citep{Zanne}.  Orders not placed by APG-III
-    \citep{APG3} are not displayed.}
+    the sector proportional to the square root of the number of
+    recognised species in that order (data from accepted names in
+    \citet{ThePlantList}).  The bars around the perimeter indicate the
+    percentage of woody (brown) and herbaceous (green) species,
+    estimated using the ``strong prior'' (sampling without
+    replacement) approach.  Using the ``weak prior'' approach
+    generally leads to an estimated percentage that is closer to 50\%
+    (see Figures \ref{fig:phylogeny-supp} and
+    \ref{fig:distribution-genera}).  Phylogeny from \citep{Zanne}.
+    Orders not placed by APG-III \citep{APG3} are not displayed.}
 \label{fig:phylogeny}
 \end{figure}
 
@@ -656,15 +660,16 @@ conducted with R version 2.15.1 \citep{R}.
     %
     Distribution of the fraction of woodiness among orders of vascular
     plants.  Each tip represents an order, with the fraction of
-    circumference proportional to the log number of recognised species
-    in that order (data from accepted names in \citet{ThePlantList}).
-    The bars around the perimeter indicate the percentage of woody
-    (brown) and herbaceous (green) species, estimated using the ``weak
-    prior'' (sampling with replacement) approach.  Using the ``strong
-    prior'' approach generally leads to an estimated percentage that
-    is further away from 50\% (see Figures \ref{fig:phylogeny} and
-    \ref{fig:distribution-genera}).  Phylogeny from \citep{Zanne}.
-    Orders not placed by APG-III \citep{APG3} are not displayed.}
+    circumference proportional to the square root of the number of
+    recognised species in that order (data from accepted names in
+    \citet{ThePlantList}).  The bars around the perimeter indicate the
+    percentage of woody (brown) and herbaceous (green) species,
+    estimated using the ``weak prior'' (sampling with replacement)
+    approach.  Using the ``strong prior'' approach generally leads to
+    an estimated percentage that is further away from 50\% (see
+    Figures \ref{fig:phylogeny} and \ref{fig:distribution-genera}).
+    Phylogeny from \citep{Zanne}.  Orders not placed by APG-III
+    \citep{APG3} are not displayed.}
   \label{fig:phylogeny-supp}
 \end{figure}
 

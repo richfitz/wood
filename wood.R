@@ -195,11 +195,46 @@ fig.fraction.on.phylogeny <- function(phy.o, res) {
 
   op <- par(no.readonly=TRUE)
   on.exit(par(op))
+
+  tip.color <- 1:2
+
+  ## Drop orders with < 100 species, execpt for a couple we can fit
+  ## in.
+  drop <- c("Isoetales",
+            "Psilotales",
+            "Ophioglossales",
+            "Equisetales",
+            "Osmundales",
+            "Salviniales",
+            "Ginkgoales",
+            "Welwitschiales",
+            "Gnetales",
+            "Ephedrales",
+            "Nymphaeales",
+            "Amborellales",
+            "Austrobaileyales",
+            "Chloranthales",
+            "Ceratophyllales",
+            # "Canellales",    # keep
+            # "Acorales",      # keep
+            # "Petrosaviales", # keep
+            "Trochodendrales", # drop } could keep 1/2
+            "Gunnerales",      # drop }
+            "Crossosomatales", # drop
+            "Picramniales",    # drop
+            "Huerteales",      # drop
+            "Berberidopsidales", # drop (borderline)
+            "Paracryphiales", # drop
+            "Escalloniales",  # drop
+            "Bruniales"       # drop
+            #"Garryales"      # keep
+            )
+  tip.color <- ifelse(phy.o$tip.label %in% drop, "white", "black")
   plt <- 
     diversitree:::plot2.phylo(phy.o, type="fan", cex=.5, no.margin=TRUE,
                               label.offset=t * .15, font=1,
-                              edge.col=col2,
-                              n.taxa=log1p(phy.o$n.taxa))
+                              edge.col=col2, tip.color=tip.color,
+                              n.taxa=sqrt(phy.o$n.taxa)/10)
   xy <- plt$xy
 
   r <- max(xy$r)*(1+offset)
