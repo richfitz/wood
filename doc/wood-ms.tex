@@ -498,6 +498,20 @@ biased in the same way as woodiness was.  Our approach was developed
 for binary traits
 but similar approaches could be developed for multi--state categorical or continuous traits.
 
+Recently two related approaches have been developed to address the similar problem
+of missing data in trait databases, both focusing on continuous traits \citep{Swenson2013, PEM}. 
+While their details differ, both approaches are model--based in impute missing species
+based on the fitted parameters of
+phylogenetic models estimated from
+the species already in the database. This is conceptually different from our approach;
+we do not assume any model for the evolution of woodiness \citep[such as the `Mk' model;][]{Pagel1994, Lewis2001}.
+Methods which rely on a specific model
+of evolution are susceptible to the problem that if the sampling is biased with respect
+to the character states, the parameter estimates themselves will be biased, leading 
+to incorrect estimation of the states for the remaining species. As accounting for sampling bias
+was the imputus for developing our approach, it seems highly inappropriate to use a 
+method that assumes random sampling of trait values!
+
 The availability of global databases for genetic and functional traits is one of the recent key developments in ecology and evolutionary research.  These databases have the promise of allowing researchers to address broad--reaching and long--standing questions by drawing on huge amounts of accumulated research.  
 Just as Theophrastus' garden was a non-random sample of the Greek
 flora, our trait databases contain diverse biases; accounting for
