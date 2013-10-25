@@ -80,7 +80,7 @@ The question posed by the title of this paper is a basic one, and it is
   }
   % 
 \item{
- Starting with a database of woodiness for 49,064 species of vascular
+ Starting with a database of woodiness for 37,488 species of vascular
  plants (17.9\% of taxonomically resolved species, 58\% of which are woody)
   we estimated the status of the remaining taxonomically resolved
   species by randomisation.  
@@ -306,7 +306,8 @@ guess at the remaining species.
 To model the other extreme of sampling, we used an approach where we
 computed the observed fraction of woody species ($p_w = n_w / (n_w +
 n_h)$) and sampled the state of the unobserved species using a
-binomial distribution, so that the probability that $x$ of the species
+binomial distribution, which represents the case of sampling
+with replacement, so that the probability that $x$ of the species
 are woody is
 \begin{equation}
   \Pr(x = k) = {N - n_w - n_h \choose k - n_w} 
@@ -332,6 +333,10 @@ for a genus, with probabilities from 0.1 to 1 being fairly evenly
 spread.  Given this woodiness fraction, we then sampled the number of
 species that are woody from a binomial distribution with this fraction
 and the number of species in the genus as its parameters.
+
+For both the hypergeometric and binomial models, we drew 1000 samples 
+of $N_w$ per genus. We then combined the samples from all genera to 
+get a distribution of estimates for the global proportion of woodiness.
 
 \subsection{Survey}
 
@@ -418,8 +423,8 @@ from temperate countries ($p$=0.02), but this effect was very small
 % No consensus
 Our estimates of woodiness differed from both the survey and the
 simple mean of the global database: neither simple statistics nor
-expert intuition were accurate in this case.  The difference from
-expert knowledge is in striking contrast to \citet{joppa2010}, who
+biologists' intuition were accurate in this case.  The difference from
+community knowledge is in striking contrast to \citet{joppa2010}, who
 found that that expert opinion on the number of species within
 different Angiosperm groups agreed closely with results based on
 analyses of data and their bias.
