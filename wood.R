@@ -1,23 +1,15 @@
-## % How much of the world is woody?
+library(diversitree)
+source("wood-functions.R")
 
-### Set knitr options
-##+ echo=FALSE,results=FALSE
-if ( !interactive() ) {
-  knitr::opts_chunk$set(tidy=FALSE, fig.height=6)
-  options(show.signif.stars=FALSE)
-  ## Suppress a warning about incompatibility with results from R < 2.2.0
-  invisible(suppressWarnings(sample(1:250, 1, pr=rep(1, 250), replace=TRUE)))
-}
+## Suppress a warning about incompatibility with results from R < 2.2.0
+invisible(suppressWarnings(sample(1:250, 1, pr=rep(1, 250), replace=TRUE)))
+
+## We're going to put some partly processed data here.
 dir.create("output", FALSE)
 
-library(multicore)
-library(diversitree)
-path.forest <- readLines("~/.forest_path")
-source("R/wood-functions.R")
-
 ## Colours used throughout:
-cols.methods <- c(strong="#a63813",        # red
-                  weak="#4d697f")          # blue
+cols.methods <- c(binomial="#a63813",       # red
+                  hypergeometric="#4d697f") # blue
 cols.tree <- c(Monilophytes="#a63813",     # reddish brown
                Gymnosperms="#21313b",      # dark brown
                BasalAngiosperms="#eeb911", # yellow
@@ -26,52 +18,100 @@ cols.tree <- c(Monilophytes="#a63813",     # reddish brown
                Rest="gray15")              # dark grey
 cols.woody <- c(Woody="#533d0c",           # brown
                 Herbaceous="#799321")      # green
+cols.woody <- c(Woody="black",
+                Herbaceous="white")
 cols.shading <- "#eeb911"                  # yellow
 cols.tropical <- c(tropical="#ea7518",     # orange
                    temperate="#62a184")    # teal
 
-## Data at the level of genus: has taxonomic information and counts of
-## number of species that are woody, herbaceous, known, and known to
-## exist.
-dat.g <- load.clean.data()
-write.csv(dat.g, "analysis-for-review/dat.g.csv", row.names=FALSE)
+## The 'load.woodiness.data.genus' function hides a reasonable amount
+## of data cleaning required to load the data.  This mostly involves
+## matching the woodiness data set from Zanne et al. to our species
+## list (derived from The Plant List), cleaning up synonomies, and
+## then collapsing down to genus.
+##
+## The final object has columns
+## * genus, family, order -- taxonomic information
+## * W, V, H              -- number of species scored as woody,
+##                           variable, herbaceous (respectively)
+## * N                    -- number of species in the genus
+## * K                    -- number of species with known state,
+##                           after dropping all "variable" species
+## * p                    -- fraction of known species that are woody,
+##                           after dropping all "variable" species
+dat.g <- load.woodiness.data.genus()
 
-## Phylogeny at the level of order
-phy.o <- build.order.tree(dat.g)
+## Here is the simulator.
 
-## Here is the simulator.  For each genus, sample unknown species from
-## a hypergeometric distribution with parameters sampled from the
-## known number of woody, herbacious and known species.  With this
-## sampled data, sample proportions of woody species for the genera
-## with nothing known from the empirical distribution of woodiness,
-## and sample woody/herbacious species from a binomial.
-sim <- function(x, nrep, mode="weak") {
-  i <- is.na(x$p)
+## For each genus:
+
+## A. If the genus has a valid fraction of species (i.e. K > 0 so p is
+## defined), then sample the number of species that are woody from
+## either
+##    - the binomial distribution (strong prior; assuming known
+##      species were sampled with replacement from the pool of
+##      species); or
+##    - the hypergeometric distribution (weak prior; assuming that
+##      known species were sampled without replacement from the pool
+##      of species).
+
+## B. If the genus has no valid fraction of species (i.e., K == 0 so p
+## is undefined), then sample from the emperical distribution of
+## per-genus fractions.  We're going to feed data into this by
+## taxonomic order, so this will come from the per-order distribution.
+sim <- function(x, nrep, with.replacement=TRUE, p=1/20) {
+  ## First, focus on cases where we have a valid estimate of the
+  ## fraction of species that are woody (i.e., at least one known
+  ## species).
+  ok <- !is.na(x$p)
+
   w <- matrix(NA, nrow(x), nrep)
-  n.unk <- sum(i)
-  if ( mode == "weak" ) {
-    w[!i,] <- t(sapply(which(!i), function(j)
-                       rhyper2(nrep, x$H[j], x$W[j], x$N[j])))
-  } else {
-    j <- !i
-    w[j,] <- x$W[j] + rbinom(sum(j), x$N[j]-x$K[j], x$W[j]/x$K[j])
-  }
-  w[i,] <- apply(w[!i,,drop=FALSE] / x$N[!i], 2, function(y)
-                 rbinom(n.unk, x$N[i], quantile(y, runif(n.unk))))
 
-  ## This is surprisingly convoluted:
-  fam <- as.character(x$family)
-  ret <- t(sapply(split(as.data.frame(w), fam), colSums))
-  colnames(ret) <- NULL
+  ## A: genera with any known species
+  if (with.replacement)
+    w[ok,] <- x$W[ok] + rbinom(sum(ok), x$N[ok]-x$K[ok], x$W[ok]/x$K[ok])
+  else
+    w[ok,] <- t(sapply(which(ok), function(i)
+                       rhyper2(nrep, x$H[i], x$W[i], x$N[i])))
+
+  ## B: genera with no known species
+  n.unk <- sum(!ok)
+  w[!ok,] <- apply(w[ok,,drop=FALSE] / x$N[ok], 2, function(y)
+                   rbinom(n.unk, x$N[!ok], quantile(y, runif(n.unk))))
+  
+  rownames(w) <- x$genus
+
+  summarise.sim(w, x[c("order", "family", "genus", "N")])
+}
+
+## This collects up the results at different taxonomic levels.
+summarise <- function(x, p=1/20)
+  structure(c(mean(x), quantile(x, c(p/2, 1-p/2))),
+            names=c("mean", "lower", "upper"))
+summarise.sim <- function(w, info) {
+  order <- info$order[[1]]
+
+  ## Genus is easy;
+  w.g <- cbind(info, t(apply(w, 1, summarise)))
+
+  ## Family is a pain:
+  w.f <- do.call(rbind,
+                 lapply(split(as.data.frame(w), info$family), colSums))
+  w.f <- t(apply(w.f, 1, summarise))
+  w.f <- data.frame(order=order, family=rownames(w.f),
+                    N=as.integer(tapply(info$N, info$family, sum)),
+                    w.f, stringsAsFactors=TRUE)
+  rownames(w.f) <- NULL
+  
+  ## Order is easy; we are guaranteed to have just one order here, so:
+  w.o <- data.frame(order=order, N=sum(info$N),
+                    t(summarise(colSums(w))), stringsAsFactors=FALSE)
+
+  ret <- list(genus=w.g, family=w.f, order=w.o)
+  attr(ret, "total") <- colSums(w)
   ret
 }
 
-## Sample from the hypergeometric distribution.  For R's `rhyper`, we
-## have to provide the number of white and black balls from the urn,
-## and it samples them.  However, we don't know what this is.
-
-## What this does is samples the (estimated) true number of white
-## balls `nn` times and returns that.
 rhyper2 <- function(nn, s0, s1, xn, fraction=FALSE) {
   x1 <- seq(s1, xn - s0)
   x0 <- xn - x1
@@ -80,70 +120,69 @@ rhyper2 <- function(nn, s0, s1, xn, fraction=FALSE) {
   x1[sample(length(p1), nn, TRUE, p1)]
 }
 
-## Sample the fraction 1000 times.  This takes a while --- currently
-## about 1.5 minutes.
-
-## Caching simulation run:
-do.simulation <- function(type, nrep, regenerate=FALSE) {
-  filename <- sprintf("output/sim.%s.rds", type)
-  if ( !regenerate && file.exists(filename) )
-    return(readRDS(filename))
-  dat.g.split <- split(dat.g, dat.g$order)
-  set.seed(1) # repeatable seed
-  sim <- lapply(dat.g.split, sim, nrep, type)
-  saveRDS(sim, filename)
-  sim
-}
-
-## "Weak prior" sampling with replacement
-sim.weak <- do.simulation("weak", 1000)
-## "Strong prior" sampling based on observed fractions of species.
-sim.strong <- do.simulation("strong", 1000)
-
-## Need to process the simulated data to produce some summary
-## statistics.  We care about:
-##
-## * overall woodiness fraction
-## * per family woodiness fraction
-## * per order woodiness fraction
-process <- function(samples, dat.g) {
-  samples.f <- do.call(rbind, samples)
-  samples.f <- samples.f[!duplicated(rownames(samples.f)),]
-  samples.o <- do.call(rbind, lapply(samples, colSums))
-
-  n.f <- tapply(dat.g$N, dat.g$family, sum)
-  n.o <- tapply(dat.g$N, dat.g$order, sum)
-
-  ## From this, compute the per-family and per-order fraction
-  nrep <- ncol(samples[[1]])
-  prop.f <- samples.f / rep(n.f[rownames(samples.f)], nrep)
-  prop.o <- samples.o / rep(n.o[rownames(samples.o)], nrep)
-  prop.all <- colSums(samples.o) / sum(n.o)
-
-  ## And the mean/ci fraction woody per family and order:
-  f <- function(x) {
-    ret <- c(mean(x), quantile(x, c(1, 39)/40))
-    names(ret) <- c("mean", "lower", "upper")
+do.simulation <- function(dat.g, nrep, with.replacement) {
+  f <- function(level) {
+    ret <- do.call(rbind, lapply(res, "[[", level))
+    rownames(ret) <- NULL
+    ret[c("p.mean", "p.lower", "p.upper")] <-
+      ret[c("mean", "lower", "upper")] / ret[["N"]]
     ret
   }
 
-  list(overall=f(prop.all),
-       family=as.data.frame(t(apply(prop.f, 1, f))),
-       order=as.data.frame(t(apply(prop.o, 1, f))),
-       distribution=prop.all)
+  res <- lapply(split(dat.g, dat.g$order),
+                sim, nrep, with.replacement)
+  total <- rowSums(sapply(res, attr, "total"))
+  overall <- summarise(total)
+  overall.p <- overall / sum(dat.g$N)
+
+  list(genus=f("genus"), family=f("family"), order=f("order"),
+       overall=overall, overall.p=overall.p, total=total)
 }
 
-res.strong <- process(sim.strong, dat.g)
-res.weak   <- process(sim.weak,   dat.g)
+res.b <- do.simulation(dat.g, 1000, TRUE)  # binomial - with replacement
+res.h <- do.simulation(dat.g, 1000, FALSE) # hypergeometric - without
+
+fig.distribution.raw <- function(res.b, res.h) {
+  n.spp <- sum(res.b$order$N)
+  p.b <- res.b$total / n.spp * 100
+  p.h <- res.h$total / n.spp * 100
+  
+  r <- range(p.b, p.h)
+  br <- seq(r[1], r[2], length.out=30)
+
+  h.b <- hist(p.b, br, plot=FALSE)
+  h.h <- hist(p.h, br, plot=FALSE)
+
+  xlim <- c(42, 50)
+  ylim <- range(h.b$density, h.h$density)
+
+  cols <- cols.methods
+  
+  op <- par(mar=c(4.1, 4.1, .5, .5))
+  on.exit(par(op))
+  plot(h.b, col=cols[1], xlim=xlim, ylim=ylim, freq=FALSE, yaxt="n",
+       ylab="",
+       xlab="Percentage of woody species among all vascular plants",
+       main="")
+  box(bty="l")
+  lines(h.h, col=cols[2], freq=FALSE)
+  mtext("Probability density", 2, line=.5)
+}
+
+##+ distribution_raw,fig.cap="Distribution of simulated woodiness percentage"
+fig.distribution.raw(res.b, res.h)
 
 ## Now, look at the distributions of woodiness among families:
-fig.fraction.by.genus <- function(res.strong, res.weak) {
+fig.fraction.by.group <- function(res.b, res.h, dat.g, level="genus") {
   op <- par(mfrow=c(2, 1), mar=c(2, 2, .5, .5), oma=c(2, 0, 0, 0))
   on.exit(par(op))
   lwd <- 1.5
 
-  tmp <- dat.g$p[dat.g$K >= 10] # genera with 10 records
-  h <- hist(100*tmp, 50, plot=FALSE)
+  n.br <- c(genus=50, family=40, order=30)[[level]]
+  tmp <- aggregate(dat.g[c("W", "K")], dat.g[level], sum)
+  tmp <- tmp[tmp$K >= 10,] # at least 10 records per group
+  h <- hist(100 * tmp$W / tmp$K, n.br, plot=FALSE)
+
   plot(NA, xlim=c(0, 100), ylim=range(0, h$density),
        xaxt="n", yaxt="n", bty="l", xlab="", ylab="")
   mtext("Probability density", 2, line=.5)
@@ -153,151 +192,50 @@ fig.fraction.by.genus <- function(res.strong, res.weak) {
   
   cols <- cols.methods
 
-  h.strong <- hist(100*res.strong$family$mean, n=50, plot=FALSE)
-  h.weak   <- hist(100*res.weak$family$mean, n=50, plot=FALSE)
-  ylim <- range(h.strong$density, h.weak$density)
+  x.b <- res.b[[level]]
+  x.h <- res.h[[level]]
+  h.b <- hist(100*x.b$p.mean[x.b$N >= 10], n=n.br, plot=FALSE)
+  h.h <- hist(100*x.h$p.mean[x.h$N >= 10], n=n.br, plot=FALSE)
+  ylim <- range(h.b$density, h.h$density)
   plot(NA, xlim=c(0, 100), ylim=ylim,
        xlab="", ylab="", yaxt="n", bty="n", bty="l")
   mtext("Probability density", 2, line=.5)
-  mtext("Percentage of woody species in genus", 1, outer=TRUE,
+  mtext(paste("Percentage of woody species in", level), 1, outer=TRUE,
         line=.5)
 
-  hist.outline(h.strong, cols[1], lwd=lwd)
-  hist.outline(h.weak,   cols[2], lwd=lwd)
+  hist.outline(h.b, cols[1], lwd=lwd)
+  hist.outline(h.h, cols[2], lwd=lwd)
   
-  legend("topleft", c("No replacement (strong prior)",
-                      "Replacement (weak prior)"),
+  legend("topleft", c("Replacement (strong prior)",
+                      "No replacement (weak prior)"),
          col=cols, lty=1, bty="n", cex=.85, inset=c(.1, 0), lwd=lwd)
   label(.02, .96, 2)
 }
 
 ##+ fraction_by_genus,fig.cap="Fraction of woodiness by genus"
-fig.fraction.by.genus(res.strong, res.weak)
+fig.fraction.by.group(res.b, res.h, dat.g, "genus")
+##+ fraction_by_family,fig.cap="Fraction of woodiness by family"
+fig.fraction.by.group(res.b, res.h, dat.g, "family")
+##+ fraction_by_order,fig.cap="Fraction of woodiness by order"
+fig.fraction.by.group(res.b, res.h, dat.g, "order")
 
-fig.fraction.on.phylogeny <- function(phy.o, res) {
-  ## Higher level taxonomy
-  hlt <- read.csv("data/high-level-taxonomy.csv", stringsAsFactors=FALSE)
-  phy.group <- hlt$Group[match(phy.o$tip.label, hlt$Order)]
-  tmp <- 
-    lapply(seq_len(max(phy.o$edge)), function(x)
-           if ( x <= length(phy.o$tip.label) ) phy.group[[x]] else
-           unique(phy.group[get.descendants(x, phy.o, TRUE)]))
-  grp <- sapply(tmp, function(x) if (length(x) == 1) x else "Rest")
+## Phylogeny at the level of order
+phy.o <- build.order.tree(dat.g)
 
-  col <- unname(cols.tree[grp])
-  col2 <- col[match(phy.o$edge[,2], seq_along(grp))]
+##+ fraction_phy_binomial,fig.cap="Woodiness percentage by order"
+fig.fraction.on.phylogeny(phy.o, res.b)
 
-  p <- structure(res$order[["mean"]], names=rownames(res$order))
-  p <- p[phy.o$tip.label]
+##+ fraction_phy_hypergeometric,fig.cap="Woodiness percentage by order"
+fig.fraction.on.phylogeny(phy.o, res.h)
 
-  t <- max(branching.times(phy.o))
-  offset <- .15
-
-  op <- par(no.readonly=TRUE)
-  on.exit(par(op))
-
-  ## Drop orders with < 100 species, execpt for a couple we can fit
-  ## in.
-  drop <- c("Isoetales",
-            "Psilotales",
-            "Ophioglossales",
-            "Equisetales",
-            "Osmundales",
-            "Salviniales",
-            "Ginkgoales",
-            "Welwitschiales",
-            "Gnetales",
-            "Ephedrales",
-            "Nymphaeales",
-            "Amborellales",
-            "Austrobaileyales",
-            "Chloranthales",
-            "Ceratophyllales",
-            # "Canellales",    # keep
-            # "Acorales",      # keep
-            # "Petrosaviales", # keep
-            "Trochodendrales", # drop } could keep 1/2
-            "Gunnerales",      # drop }
-            "Crossosomatales", # drop
-            "Picramniales",    # drop
-            "Huerteales",      # drop
-            "Berberidopsidales", # drop (borderline)
-            "Paracryphiales", # drop
-            "Escalloniales",  # drop
-            "Bruniales",      # drop
-            #"Garryales"      # keep
-            "Schizeales"       # also drop
-            )
-  tip.color <- ifelse(phy.o$tip.label %in% drop, "#ffffff00", "black")
-  plt <- 
-    diversitree:::plot2.phylo(phy.o, type="fan", cex=.5, no.margin=TRUE,
-                              label.offset=t * .15, font=1,
-                              edge.col=col2, tip.color=tip.color,
-                              n.taxa=sqrt(phy.o$n.taxa)/10)
-  xy <- plt$xy
-
-  r <- max(xy$r)*(1+offset)
-  n.tip <- length(phy.o$tip.label)
-  xy <- plt$xy[seq_len(n.tip),]
-  xy.lab <- data.frame(x=cos(xy$theta)*r,
-                       y=sin(xy$theta)*r)
-  xrad <- .5 * diff(par("usr")[1:2])/50
-  pie <- cbind(p, 1 - p)
-  pie.col <- cols.woody
-
-  r <- 3/4
-  r0 <- max(xy$r) * (1 + offset * (1-r)/2)
-  r2 <- max(xy$r) * (1 + offset * (1 - (1-r)/2))
-  r1 <- r0 * p + r2 * (1-p)
-
-  w <- 3
-
-  xx1 <- c(rbind(r0 * cos(xy$theta) + w * cos(xy$theta + pi/2),
-                 r0 * cos(xy$theta) - w * cos(xy$theta + pi/2),
-                 r1 * cos(xy$theta) - w * cos(xy$theta + pi/2),
-                 r1 * cos(xy$theta) + w * cos(xy$theta + pi/2),
-                 NA))
-  yy1 <- c(rbind(r0 * sin(xy$theta) + w * sin(xy$theta + pi/2),
-                 r0 * sin(xy$theta) - w * sin(xy$theta + pi/2),
-                 r1 * sin(xy$theta) - w * sin(xy$theta + pi/2),
-                 r1 * sin(xy$theta) + w * sin(xy$theta + pi/2),
-                 NA))
-  
-  xx2 <- c(rbind(r2 * cos(xy$theta) + w * cos(xy$theta + pi/2),
-                 r2 * cos(xy$theta) - w * cos(xy$theta + pi/2),
-                 r1 * cos(xy$theta) - w * cos(xy$theta + pi/2),
-                 r1 * cos(xy$theta) + w * cos(xy$theta + pi/2),
-                 NA))
-  yy2 <- c(rbind(r2 * sin(xy$theta) + w * sin(xy$theta + pi/2),
-                 r2 * sin(xy$theta) - w * sin(xy$theta + pi/2),
-                 r1 * sin(xy$theta) - w * sin(xy$theta + pi/2),
-                 r1 * sin(xy$theta) + w * sin(xy$theta + pi/2),
-                 NA))
-
-  polygon(xx1, yy1, border=NA, col=pie.col[2])
-  polygon(xx2, yy2, border=NA, col=pie.col[1])
-
-  cex.legend <- 2/3
-  str <- str.leg <- setdiff(names(cols.tree), "Rest") # drop backbone
-  str.leg[str.leg == "BasalAngiosperms"] <- '"Basal Angiosperms"'
-  legend("topleft", str.leg, fill=cols.tree[str],
-         cex=cex.legend, bty="n", border=NA)
-  legend("topright", names(cols.woody), fill=cols.woody,
-         cex=cex.legend, bty="n", border=NA)
-}
-
-##+ fraction_phy_strong,fig.cap="Woodiness percentage by order"
-fig.fraction.on.phylogeny(phy.o, res.strong)
-
-##+ fraction_phy_weak,fig.cap="Woodiness percentage by order"
-fig.fraction.on.phylogeny(phy.o, res.weak)
+## # Survey:
 
 ## If you want to redo the lat/long calculations, this is the function
 ## to run:
 ##   `build.country.list()`
 ## before running `load.survey()` below.
 ## This downloads some files from GBIF and extracts country-level
-## lat/long values from it to rebuild `survey/country_coords.csv`.  This
+## lat/long values from it to rebuild `geo/country_coords.csv`.  This
 ## file is already available in the repository, so this will rarely be
 ## needed.  It is how this file was generated, however.
 d.survey <- load.survey()
@@ -325,8 +263,8 @@ res.tro <- lm(Estimate.logit ~ Tropical, d.survey)
 anova(res.tro)
 summary(res.tro)
 
-fig.survey.results <- function(d.survey, res.strong, res.weak) {
-  ci <- 100*cbind(res.strong$overall, res.weak$overall)
+fig.survey.results <- function(d.survey, res.b, res.h) {
+  ci <- 100*cbind(res.b$overall.p, res.h$overall.p)
   cols <- cols.methods
   cols.tr <- diversitree:::add.alpha(cols, .5)
 
@@ -364,40 +302,14 @@ fig.survey.results <- function(d.survey, res.strong, res.weak) {
 }
 
 ##+ survey_results,fig.cap="Survey results by predictor"
-fig.survey.results(d.survey, res.strong, res.weak)
+fig.survey.results(d.survey, res.b, res.h)
 
-fig.distribution.raw <- function(res.strong, res.weak) {
-  r <- range(res.strong$distribution, res.weak$distribution)
-  br <- seq(r[1], r[2], length.out=30)*100
-
-  h.strong <- hist(100*res.strong$distribution, br, plot=FALSE)
-  h.weak   <- hist(100*res.weak$distribution,   br, plot=FALSE)
-
-  xlim <- c(42, 50)
-  ylim <- range(h.strong$density, h.weak$density)
-
-  cols <- cols.methods
-  
-  op <- par(mar=c(4.1, 4.1, .5, .5))
-  on.exit(par(op))
-  plot(h.strong, col=cols[1], xlim=xlim, ylim=ylim, freq=FALSE, yaxt="n",
-       ylab="",
-       xlab="Percentage of woody species among all vascular plants",
-       main="")
-  box(bty="l")
-  lines(h.weak, col=cols[2], freq=FALSE)
-  mtext("Probability density", 2, line=.5)
-}
-
-##+ distribution_raw,fig.cap="Distribution of simulated woodiness percentage"
-fig.distribution.raw(res.strong, res.weak)
-
-fig.survey.distribution <- function(d.survey, res.strong, res.weak) {
+fig.survey.distribution <- function(d.survey, res.b, res.h) {
   op <- par(mfrow=c(2, 1), mar=c(2, 4, .5, .5), oma=c(2, 0, 0, 0))
   on.exit(par(op))
   lwd <- 1.5
 
-  ci <- 100*cbind(res.strong$overall, res.weak$overall)
+  ci <- 100*cbind(res.b$overall.p, res.h$overall.p)
   hist(d.survey$Estimate, xlim=c(0, 100), las=1, col=cols.shading,
        xaxt="n", xlab="", ylab="Number of responses", main="")
   box(bty="l")
@@ -408,7 +320,6 @@ fig.survey.distribution <- function(d.survey, res.strong, res.weak) {
   rect(ci["lower",], usr[3], ci["upper",], usr[4],
        col=diversitree:::add.alpha(cols.methods, .5), border=NA)
   abline(v=ci["mean",], col=cols.methods)
-  
 
   h.tropical <- hist(d.survey$Estimate[d.survey$Tropical], plot=FALSE)
   h.temperate <- hist(d.survey$Estimate[!d.survey$Tropical], plot=FALSE)
@@ -433,24 +344,29 @@ fig.survey.distribution <- function(d.survey, res.strong, res.weak) {
 }
 
 ##+ survey_distribution,fig.cap="Distribution of survey results"
-fig.survey.distribution(d.survey, res.strong, res.weak)
+fig.survey.distribution(d.survey, res.b, res.h)
 
-if ( !interactive() ) {
+## Produce versions for publication:
+if (!interactive()) {
   to.pdf("doc/figs/fraction-by-genus.pdf", 6, 6,
-         fig.fraction.by.genus(res.strong, res.weak))
+         fig.fraction.by.group(res.b, res.h, dat.g, "genus"))
+  to.pdf("doc/figs/fraction-by-family.pdf", 6, 6,
+         fig.fraction.by.group(res.b, res.h, dat.g, "family"))
+  to.pdf("doc/figs/fraction-by-order.pdf", 6, 6,
+         fig.fraction.by.group(res.b, res.h, dat.g, "order"))
 
   to.pdf("doc/figs/fraction-on-phylogeny.pdf", 6, 6,
-         fig.fraction.on.phylogeny(phy.o, res.strong))
+         fig.fraction.on.phylogeny(phy.o, res.b))
 
   to.pdf("doc/figs/fraction-on-phylogeny-supp.pdf", 6, 6,
-         fig.fraction.on.phylogeny(phy.o, res.weak))
+         fig.fraction.on.phylogeny(phy.o, res.h))
 
   to.pdf("doc/figs/distribution-raw.pdf", 6, 4,
-         fig.distribution.raw(res.strong, res.weak))
+         fig.distribution.raw(res.b, res.h))
 
   to.pdf("doc/figs/survey-results.pdf", 6, 4,
-         fig.survey.results(d.survey, res.strong, res.weak))
+         fig.survey.results(d.survey, res.b, res.h))
 
   to.pdf("doc/figs/survey-distribution.pdf", 6, 5,
-         fig.survey.distribution(d.survey, res.strong, res.weak))
+         fig.survey.distribution(d.survey, res.b, res.h))
 }

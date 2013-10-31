@@ -1,44 +1,105 @@
-## # Load the woodiness data
-
-## Load the data from the "forest" database.  This cleans up taxonomy,
-## duplicated and nonstandard entries, empty records.  It then
-## collapses things down to counts by genus, expanded to all known
-## genera according to the plant list.  Final columns are
-##   "genus", "family", "order", "W", "H", "K", "N", "p"
-## where the last 5 columns are known woody, known herbaceous, known
-## state, total species, and percentage of known species that are
-## woody (i.e., W / K).
-load.clean.data <- function(regenerate=FALSE) {
+load.woodiness.data.genus <- function(regenerate=FALSE) {
   filename <- "output/dat.g.rds"
-  if ( !regenerate && file.exists(filename) )
+  if (!regenerate && file.exists(filename))
     return(readRDS(filename))
   
-  read.forest.csv <- function(filename)
-    read.csv(file.path(path.forest, filename), stringsAsFactors=FALSE)
+  ## So now 'dat' has species names sanitised to the same list that the
+  ## plant list uses, and includes genus information.
+  dat <- load.woodiness.data(regenerate)
+
+  ## Next, compare the genus-> order lookup with the list of species
+  ## that we have in the plant list.
+  lookup <- read.csv("data/zae/genus_order_lookup.csv",
+                     stringsAsFactors=FALSE)
+  lookup <- lookup[c("genus", "family", "order")]
+
+  ## There are a handful of essentially unplaced families.  For now,
+  ## these get their own pseudo-family
+  i <- lookup$order == ""
+  lookup$order[i] <- paste0("UnknownOrder-", lookup$family[i])
+
+  ## All of the genera with data are present in the lookup table:
+  ## cases.
+  spp <-
+    read.csv("data/spermatophyta_synonyms_PLANTLIST.csv",
+             stringsAsFactors=FALSE)
+  spp$genus.synonym <- sub("_.+", "", spp$synonym)
+  
+  if (!all(dat$genus %in% spp$genus)) # should *never* fail
+    stop("Genera in data not known from Plant List")
+  if (!all(dat$genus %in% lookup$genus))
+    warning("Genera in data not known from lookup table",
+            immediate.=TRUE)
+
+  ## Collapse these to get counts for all the genera that we know about.
+  dat.g <- table(factor(dat$genus, sort(unique(spp$genus[spp$valid]))),
+                 factor(dat$woodiness))
+  dat.g <- data.frame(genus=rownames(dat.g),
+                      W=dat.g[,"W"],
+                      V=dat.g[,"variable"],
+                      H=dat.g[,"H"],
+                      stringsAsFactors=FALSE)
+  ## Assuming we drop all 
+  dat.g$K <- dat.g$H + dat.g$W
+  dat.g$p <- dat.g$W / dat.g$K
+  
+  ## Include the counts of known species:
+  spp.known <- table(spp$genus[spp$valid])
+  dat.g$N <- as.integer(spp.known[dat.g$genus])
+
+  ## Higher order taxonomy:
+  idx <- match(dat.g$genus, lookup$genus)
+  dat.g$family <- lookup$family[idx]
+  dat.g$order <- lookup$order[idx]
+
+  k <- dat.g$W + dat.g$H
+  message(sprintf("Final set: %d genera, %d with data, %d species known",
+                  nrow(dat.g), sum(k > 0), sum(k)))
+
+  ## Reorder columns
+  cols <- c("genus", "family", "order", "W", "V", "H", "N", "K", "p")
+  dat.g <- dat.g[cols]
+  rownames(dat.g) <- NULL
+
+  dat.g <- dat.g[order(dat.g$order, dat.g$family, dat.g$genus),]
+
+  saveRDS(dat.g, filename)
+  dat.g
+}
+
+load.woodiness.data <- function(regenerate=FALSE) {
+  filename <- "output/woodiness.rds"
+  if (!regenerate && file.exists(filename))
+    return(readRDS(filename))
 
   ## Start by getting the woodiness information from the database
-  dat <- read.forest.csv("export/speciesTraitData.csv")
+  dat <- read.csv("data/zae/GlobalWoodinessDatabase.csv",
+                  stringsAsFactors=FALSE)
+  names(dat)[names(dat) == "gs"] <- "species"
+  dat$species <- sub(" ", "_", dat$species)
 
-  ## Only the columns we care about:
-  dat <- data.frame(species=sub(" ", "_", dat$gs),
-                    woodiness=dat$woodiness,
-                    stringsAsFactors=FALSE)
+  ## Check the classification by pulling apart the count.
+  parse.count <- function(x) {
+    res <- t(sapply(strsplit(x, ";", fixed=TRUE), as.integer))
+    colnames(res) <- c("H", "V", "W")
+    drop(res)
+  }
+  summarise.count <- function(x) {
+    ans <- ifelse(x[,"W"] > x[,"H"], "W", "H")
+    ans[(x[,"W"] == 0 & x[,"H"] == 0 & x[,"V"] > 0) |
+        x[,"W"] == x[,"H"]] <- "variable"
+    ans
+  }
 
-  ## Filtered by whether or not they have woodiness information
-  to.drop.wood.NA <- is.na(dat$woodiness)
-  message(sprintf("Dropping %d species with NA woodiness values",
-                  sum(to.drop.wood.NA)))
-  dat <- dat[!to.drop.wood.NA,]
-
-  ## Score the 633 species with no known information as NA
-  to.drop.variable <- !(dat$woodiness %in% c("H", "W"))
-  message(sprintf("Dropping %d species with variable woodiness",
-                  sum(to.drop.variable)))
-  dat <- dat[!to.drop.variable,]
-
+  ## Check that we do recover the ZAE classes:
+  if (!identical(dat$woodiness,
+                 summarise.count(parse.count(dat$woodiness.count))))
+    stop("Database classification failure")
+  
   ## Next, normalise the species names.
   spp <-
-    read.forest.csv("taxonomic/spermatophyta_synonyms_PLANTLIST.csv")
+    read.csv("data/spermatophyta_synonyms_PLANTLIST.csv",
+             stringsAsFactors=FALSE)
   spp$genus.synonym <- sub("_.+", "", spp$synonym)
 
   ## Locate the species names within the Plant List lookup table,
@@ -52,12 +113,10 @@ load.clean.data <- function(regenerate=FALSE) {
   idx <- match(dat$species, spp$synonym)
 
   ## About 90% of names are valid:
-  message(sprintf("%2.1f%% of species have a valid name",
-                  100*mean(spp$valid[idx])))
-
+  message(sprintf("%2.1f%% of species have a valid name; resolving %d species",
+                  100*mean(spp$valid[idx]), sum(!spp$valid[idx])))
   ## Assign the correct/current species name and adding the genus
-  dat$species <- spp$species[idx]
-  dat$genus   <- spp$genus[idx]
+  dat[c("genus", "species")] <- spp[idx,c("genus", "species")]
 
   ## And look to see which species have now got duplicated records due
   ## to synonomy resolution:
@@ -65,114 +124,34 @@ load.clean.data <- function(regenerate=FALSE) {
   message(sprintf("After synonym correction, %d duplicated entries",
                   length(dups)))
 
-  ## Most duplicated species are of a single type (good) but a few
-  ## aren't:
-  f <- function(x)
-    if ( length(unique(x)) == 1 ) x[1] else NA
+  ## Merge the counts across the different instances of these names:
+  merge.counts <- function(x)
+    paste(colSums(parse.count(x)), collapse=";")
   dups.i <- which(dat$species %in% dups)
-  dups.fixed <- tapply(dat$woodiness[dups.i], dat$species[dups.i], f)
-  dups.fixed <- data.frame(species=names(dups.fixed),
-                           woodiness=dups.fixed,
-                           stringsAsFactors=FALSE, row.names=NULL)
-  dups.fixed$genus <- spp$genus[match(dups.fixed$species, spp$species)]
+  dups.count <- tapply(dat$woodiness.count[dups.i],
+                       dat$species[dups.i], merge.counts)
+  dups.woodiness <- summarise.count(parse.count(dups.count))
 
-  ## These species had conflicting records and will be dropped:
-  to.drop.conflict <- is.na(dups.fixed$woodiness)
-  message(sprintf("Dropping %d species due to trait confict after synonym",
-                  sum(to.drop.conflict)))
-  dups.fixed <- dups.fixed[!to.drop.conflict,]
+  dups.merged <- data.frame(species=names(dups.woodiness),
+                            woodiness=dups.woodiness,
+                            woodiness.count=dups.count,
+                            stringsAsFactors=FALSE, row.names=NULL)
+  dups.merged$genus <- spp$genus[match(dups.merged$species, spp$species)]
 
   ## Drop the duplicated records from the original vector, and add in
   ## the resolved entries here:
-  dat <- rbind(dat[-dups.i,], dups.fixed)
+  dat <- rbind(dat[-dups.i,], dups.merged)
 
-  ## So now 'dat' has species names sanitised to the same list that the
-  ## plant list uses, and includes genus information.
+  ## Tidy up, and we're done
+  dat <- dat[order(dat$genus, dat$species),
+             c("genus", "species", "woodiness", "woodiness.count")]
 
-  ## Next, compare the genus-> order lookup with the list of species
-  ## that we have in the plant list.
-  lookup <- read.forest.csv("taxonomic/genus_order_lookup.csv")
-  lookup <- lookup[c("genus", "family", "order")]
-  ## TODO: I've made this change here, because I want to confirm
-  ## before changing the lookup table.
-  lookup$order[lookup$family == "Adiantaceae"] <- "Polypodiales"
-
-  ## There are a handful of essentially unplaced families.  For now,
-  ## these get their own pseudo-family
-  i <- lookup$order == ""
-  lookup$order[i] <- paste0("UnknownOrder-", lookup$family[i])
-
-  ## All of the genera with data are present in the lookup table:
-  ## cases.
-  if ( !all(dat$genus %in% spp$genus) ) # should *never* fail
-    stop("Genera in data not known from Plant List")
-  if ( !all(dat$genus %in% lookup$genus) )
-    warning("Genera in data not known from lookup table",
-            immediate.=TRUE)
-
-  ## Collapse these to get counts for all the genera that we know about.
-  dat.g <- table(factor(dat$genus, sort(unique(spp$genus[spp$valid]))),
-                 factor(dat$woodiness))
-  dat.g <- data.frame(genus=rownames(dat.g),
-                      W=dat.g[,"W"],
-                      H=dat.g[,"H"],
-                      K=rowSums(dat.g),
-                      stringsAsFactors=FALSE)
-  ## Include the counts of known species:
-  spp.known <- table(spp$genus[spp$valid])
-  dat.g$N <- as.integer(spp.known[dat.g$genus])
-  dat.g$p <- dat.g$W / dat.g$K
-
-  ## Higher order taxonomy:
-  idx <- match(dat.g$genus, lookup$genus)
-  dat.g$family <- lookup$family[idx]
-  dat.g$order <- lookup$order[idx]
-
-  to.drop.no.order <- is.na(dat.g$order)
-  if ( any(to.drop.no.order) ) {
-    message(sprintf("Dropping %d genera (%d species, %d data) due to taxon fail",
-                    sum(to.drop.no.order),
-                    sum(dat.g$N[to.drop.no.order]),
-                    sum(dat.g$K[to.drop.no.order])))
-    dat.g <- dat.g[!to.drop.no.order,]
-  }
-
-  to.drop.no.family <- dat.g$family == ""
-  if ( any(to.drop.no.family) ) {
-    message(sprintf("Dropping %d genera (%d species, %d data) due to taxon fail (family)",
-                    sum(to.drop.no.family),
-                    sum(dat.g$N[to.drop.no.family]),
-                    sum(dat.g$K[to.drop.no.family])))
-    dat.g <- dat.g[!to.drop.no.family,]
-  }
-  rownames(dat.g) <- NULL
-
-  ## This is OK for Pteridales, as it got synonomysed into other
-  ## groups.  Where is it coming from though?
-  to.drop.no.data.order <-
-    which(tapply(dat.g$p, dat.g$order, function(x) all(is.nan(x))))
-  if ( any(to.drop.no.data.order) ) {
-    message(sprintf("Dropping %d orders because they have no data:\n\t%s",
-                    length(to.drop.no.data.order),
-                    paste(names(to.drop.no.data.order), collapse=", ")))
-    dat.g <- dat.g[!(dat.g$order %in% names(to.drop.no.data.order)),]
-  }
-
-  message(sprintf("Final set: %d genera, %d with data, %d species known",
-                  nrow(dat.g), sum(dat.g$K > 0), sum(dat.g$K)))
-
-  ## Reorder columns
-  cols <- c("genus", "family", "order", "W", "H", "K", "N", "p")
-  dat.g <- dat.g[cols]
-
-  saveRDS(dat.g, filename)
-  dat.g
+  saveRDS(dat, filename)
+  dat
 }
 
-## # Load the survey data
-
 load.survey <- function() {
-  d <- read.csv(file="survey/Plant_survey_final.csv",
+  d <- read.csv(file="data/dryad/survey_results.csv",
                 stringsAsFactors=FALSE)
   names(d) <- c("Time", "Estimate", "Familiarity", "Training",
                 "Continent", "Country")
@@ -195,13 +174,13 @@ load.survey <- function() {
   d$Training <- factor(d$Training, lvl.training, ordered=TRUE)
 
   ## Standardise the country names:
-  countries <- read.csv("survey/country_coords.csv",
+  countries <- read.csv("data/geo/country_coords.csv",
                         stringsAsFactors=FALSE)
   d$Country <- cleanup.country.names(d$Country)
   
   idx <- match(d$Country, countries$Country)
   mssg <- na.omit(d$Country[is.na(idx)])
-  if ( length(mssg) > 0 )
+  if (length(mssg) > 0)
     warning("Dropped countries %s", paste(mssg, collapse=", "))
   d <- cbind(d, countries[idx,c("Long", "Lat")])
   d$Tropical <- abs(d$Lat) < 23 + 26/60
@@ -210,7 +189,6 @@ load.survey <- function() {
   d
 }
 
-## Standardise the given country names into a common list.
 cleanup.country.names <- function(x) {
   ## In cases where multiple countries are given, take the first one:
   x <- sub("( and |, | / | & ).+", "", x)
@@ -243,7 +221,7 @@ add.coordinates.to.survey <- function() {
 
   d <- cbind(d, coords)
 
-  write.csv(d, "survey/survey_results.csv", row.names=FALSE)
+  write.csv(d, "data/dryad/survey_results.csv", row.names=FALSE)
   invisible(TRUE)
 }
 
@@ -256,40 +234,41 @@ add.coordinates.to.survey <- function() {
 build.country.list <- function() {
   ## Download files if they do not already exist.
   download.maybe <- function(url, dest) {
-    if ( length(url) != 1 )
+    if (length(url) != 1)
       stop("Scalar URL required")
     dest.file <- file.path(dest, basename(url))
-    if ( !file.exists(dest.file) )
+    if (!file.exists(dest.file))
       download.file(url, dest.file)
     invisible(TRUE)
   }
 
   library(rgdal)
-  dir.create("survey/country", FALSE)
+  path.raw <- "data/geo/raw"
+  dir.create(path.raw, showWarnings=FALSE, recursive=TRUE)
   ext <- c("dbf", "fix", "ORG.dbf", "prj", "qix", "shp", "shx")
   urls <- paste0("http://ogc.gbif.org/data/data/shapefiles/country.",
                  ext)
-  lapply(urls, download.maybe, "survey/country")
+  lapply(urls, download.maybe, path.raw)
 
-  country <- readOGR('survey/country/country.shp', 'country')
+  country <- readOGR(file.path(path.raw, "country.shp"), 'country')
   ret <- as.data.frame(coordinates(country))
   names(ret) <- c("Long", "Lat")
   ret <- data.frame(Country=as.character(country@data$CNTRY_NAME),
                     ret)
-  write.csv(ret, "survey/country_coords.csv", row.names=FALSE)
+  write.csv(ret, "data/geo/country_coords.csv", row.names=FALSE)
 }
 
 ## # Order level phylogeny
 
 build.order.tree <- function(dat.g, regenerate=FALSE) {
   filename <- "output/phy.o.rds"
-  if ( !regenerate && file.exists(filename) ) {
+  if (!regenerate && file.exists(filename)) {
     phy.o <- readRDS(filename)
   } else {
     mrca.tipset <- diversitree:::mrca.tipset
     drop.tip <- diversitree:::drop.tip.fixed
 
-    phy <- read.tree("data/large-phylogeny.tre")
+    phy <- read.tree("data/zae/tempo_scrubbed_CONSTRAINT_rooted.dated.tre")
 
     ## Two phylogenetic errors in ferns need fixing:
     phy.order <- dat.g$order[match(sub("_.+$", "", phy$tip.label),
@@ -319,7 +298,7 @@ build.order.tree <- function(dat.g, regenerate=FALSE) {
 
     f <- function(x) {
       spp.x <- phy$tip.label[phy.genus %in% dat.g$genus[dat.g$order == x]]
-      if ( length(spp.x) > 0 ) {
+      if (length(spp.x) > 0) {
         node <- mrca.tipset(phy, spp.x)
         desc.x <- descendants.spp(node, phy)
         gen.x <- unique(phy.genus[match(desc.x, phy$tip.label)])
@@ -337,7 +316,7 @@ build.order.tree <- function(dat.g, regenerate=FALSE) {
     ## These are going to be dropped.
     dropped.orders <- missing.orders[n == 0]
     dropped.orders <- dropped.orders[-grep("^Unknown", dropped.orders)]
-    if ( length(dropped.orders) > 0 )
+    if (length(dropped.orders) > 0)
       warning(sprintf("Dropping orders: %s",
                       paste(dropped.orders, collapse=", ")))
 
@@ -349,7 +328,7 @@ build.order.tree <- function(dat.g, regenerate=FALSE) {
     phy$node.label[nd[i]] <- names(nd[i])
     phy$tip.label[nd[!i]] <- names(nd[!i])
 
-    if ( any(n > 1) )
+    if (any(n > 1))
       warning("Dropping some orders!")
 
     nodes <- intersect(unique(dat.g$order), phy$node.label)
@@ -372,13 +351,125 @@ build.order.tree <- function(dat.g, regenerate=FALSE) {
   phy.o
 }
 
+fig.fraction.on.phylogeny <- function(phy.o, res) {
+  ## Higher level taxonomy
+  hlt <- read.csv("data/dryad/high-level-taxonomy.csv", stringsAsFactors=FALSE)
+  phy.group <- hlt$Group[match(phy.o$tip.label, hlt$Order)]
+  tmp <- 
+    lapply(seq_len(max(phy.o$edge)), function(x)
+           if ( x <= length(phy.o$tip.label) ) phy.group[[x]] else
+           unique(phy.group[get.descendants(x, phy.o, TRUE)]))
+  grp <- sapply(tmp, function(x) if (length(x) == 1) x else "Rest")
+
+  col <- unname(cols.tree[grp])
+  col2 <- col[match(phy.o$edge[,2], seq_along(grp))]
+
+  p <- structure(res$order[["p.mean"]], names=res$order$order)
+  p <- p[phy.o$tip.label]
+
+  t <- max(branching.times(phy.o))
+  offset <- .15
+
+  op <- par(no.readonly=TRUE)
+  on.exit(par(op))
+
+  ## Drop orders with < 100 species, execpt for a couple we can fit
+  ## in.
+  drop <- c("Isoetales",
+            "Psilotales",
+            "Ophioglossales",
+            "Equisetales",
+            "Osmundales",
+            "Salviniales",
+            "Ginkgoales",
+            "Welwitschiales",
+            "Gnetales",
+            "Ephedrales",
+            "Nymphaeales",
+            "Amborellales",
+            "Austrobaileyales",
+            "Chloranthales",
+            "Ceratophyllales",
+            # "Canellales",    # keep
+            # "Acorales",      # keep
+            # "Petrosaviales", # keep
+            "Trochodendrales", # drop } could keep 1/2
+            "Gunnerales",      # drop }
+            "Crossosomatales", # drop
+            "Picramniales",    # drop
+            "Huerteales",      # drop
+            "Berberidopsidales", # drop (borderline)
+            "Paracryphiales", # drop
+            "Escalloniales",  # drop
+            "Bruniales",      # drop
+            #"Garryales"      # keep
+            "Schizeales"       # also drop
+            )
+  tip.color <- ifelse(phy.o$tip.label %in% drop, "#ffffff00", "black")
+  plt <- 
+    diversitree:::plot2.phylo(phy.o, type="fan", cex=.5, no.margin=TRUE,
+                              label.offset=t * .15, font=1,
+                              edge.col=col2, tip.color=tip.color,
+                              n.taxa=sqrt(phy.o$n.taxa)/10)
+  xy <- plt$xy
+
+  r <- max(xy$r)*(1+offset)
+  n.tip <- length(phy.o$tip.label)
+  xy <- plt$xy[seq_len(n.tip),]
+  xy.lab <- data.frame(x=cos(xy$theta)*r,
+                       y=sin(xy$theta)*r)
+  xrad <- .5 * diff(par("usr")[1:2])/50
+  pie <- cbind(p, 1 - p)
+  pie.col <- cols.woody
+
+  r <- 3/4
+  r0 <- max(xy$r) * (1 + offset * (1-r)/2)
+  r2 <- max(xy$r) * (1 + offset * (1 - (1-r)/2))
+  r1 <- r0 * p + r2 * (1-p)
+
+  w <- 3
+
+  xx1 <- c(rbind(r0 * cos(xy$theta) + w * cos(xy$theta + pi/2),
+                 r0 * cos(xy$theta) - w * cos(xy$theta + pi/2),
+                 r1 * cos(xy$theta) - w * cos(xy$theta + pi/2),
+                 r1 * cos(xy$theta) + w * cos(xy$theta + pi/2),
+                 NA))
+  yy1 <- c(rbind(r0 * sin(xy$theta) + w * sin(xy$theta + pi/2),
+                 r0 * sin(xy$theta) - w * sin(xy$theta + pi/2),
+                 r1 * sin(xy$theta) - w * sin(xy$theta + pi/2),
+                 r1 * sin(xy$theta) + w * sin(xy$theta + pi/2),
+                 NA))
+  
+  xx2 <- c(rbind(r2 * cos(xy$theta) + w * cos(xy$theta + pi/2),
+                 r2 * cos(xy$theta) - w * cos(xy$theta + pi/2),
+                 r1 * cos(xy$theta) - w * cos(xy$theta + pi/2),
+                 r1 * cos(xy$theta) + w * cos(xy$theta + pi/2),
+                 NA))
+  yy2 <- c(rbind(r2 * sin(xy$theta) + w * sin(xy$theta + pi/2),
+                 r2 * sin(xy$theta) - w * sin(xy$theta + pi/2),
+                 r1 * sin(xy$theta) - w * sin(xy$theta + pi/2),
+                 r1 * sin(xy$theta) + w * sin(xy$theta + pi/2),
+                 NA))
+
+  polygon(xx1, yy1, border="black", col=pie.col[2], lwd=.3)
+  polygon(xx2, yy2, border="black", col=pie.col[1], lwd=.3)
+
+  cex.legend <- 2/3
+  str <- str.leg <- setdiff(names(cols.tree), "Rest") # drop backbone
+  str.leg[str.leg == "BasalAngiosperms"] <- '"Basal Angiosperms"'
+  legend("topleft", str.leg, fill=cols.tree[str],
+         cex=cex.legend, bty="n", border=NA)
+  legend("topright", names(cols.woody), fill=cols.woody,
+         cex=cex.legend, bty="n", border="black")
+}
+
 ## # Utilities
 
 ## Evaluate expression 'expr' that produces a figure as a side effect,
 ## saving the result in a pdf file.
 to.pdf <- function(filename, width, height, expr,
                    ..., pointsize=12, verbose=TRUE) {
-  if ( verbose )
+  if (verbose)
     cat(sprintf("Creating %s\n", filename))
   pdf(filename, width=width, height=height, pointsize=pointsize, ...)
   on.exit(dev.off())
@@ -408,3 +499,4 @@ hist.outline <- function(h, col, ..., density=TRUE) {
   yy <- c(0, rep(if (density) h$density else h$counts, each = 2), 0)
   lines(xx, yy, col = col, ...)
 }
+
