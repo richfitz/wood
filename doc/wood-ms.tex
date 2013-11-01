@@ -303,7 +303,7 @@ strongly bimodal; most genera are either all-woody or all-herbaceous
 records, 392 are entirely woody, 248 are entirely herbaceous, and only
 50 have between 10\% and 90\% woody species. As a result, knowing the
 state of a handful of species within a genus can give a reasonable
-guess at the remaining species.
+guess at the state of remaining species.
 % tmp <- dat.g$p[dat.g$K >= 10] # genera with 10 records
 % sum(tmp == 1) # 100% woody
 % sum(tmp == 0) # 100% herbaceous
@@ -402,6 +402,17 @@ estimate is greater than 81\% of our survey estimates.
 % nrow(d.survey)
 % range(d.survey$Estimate)
 % mean(d.survey$Estimate)
+%
+% To address reviewer's concern:
+% i <- !is.na(d.survey$Familiarity) & d.survey$Familiarity != "What's a Plant?"
+% mean(d.survey$Estimate[i])
+% range(d.survey$Estimate[i])
+%
+% i <- d.survey$Familiarity <= "Familiar" &
+%     d.survey$Training <= "Undergraduate degree in botany or a related field"
+% i[is.na(i)] <- FALSE
+% mean(d.survey$Estimate[i])
+% range(d.survey$Estimate[i])
 We found little effect of a respondent's level of training on their
 estimate (Figure \ref{fig:survey}).  There was a significant effect of
 the respondent's familiarity with plants on the estimates, primarily
