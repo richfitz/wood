@@ -178,7 +178,7 @@ to date \citep{Zanne}.
 One example of a sub-dataset (6\% of observations in the large dataset) came from Kew Royal Botanic
 Gardens dataset on growth form \citep{Kew}.  For the Kew dataset, the
 original 103 growth form categories was reduced to a binary
-classification.  Fifty-seven of the 103 categories provided enough
+classification.  Fifty--seven of the 103 categories provided enough
 information to classify species as either woody or herbaceous
 according to our definition (see Table \ref{tab:kew} for specific
 decisions).  In addition, many other datasets (collected for a
@@ -208,7 +208,11 @@ distinction between woody and herbaceous plants, and that this
 distinction is in some cases difficult to make.  There are a number of
 species which are intermediate (or variable) in form
 \citep{beaulieuHiddenRates}; in this dataset 633 species (1.3\%) were
-coded as variable and were excluded from our analysis.
+coded as variable and were excluded from our analysis. To ensure that 
+excluding these species did not influence our results, we re--ran all
+analyses coding variable species alternatively  as all herbaceous and all
+woody; these had virtually no impact on our final estimates
+(\textbf{see supp figures xx and yy}).
 %
 Our final database contained 37,488 records with both information on
 woodiness and documented taxonomy --- 15,657 herbs and 21,831 woody
@@ -285,7 +289,10 @@ are woody ($x = 0, 1, \ldots, N - n_w - n_h$) is proportional to
   \Pr(N_w = x) \propto {n_w + x \choose n_w}
   {N - n_w - x \choose n_h}
 \end{equation}
-For \textit{Microcoelia} this gives a 45\% probability that all
+Under this sampling model, the more species for which we do not have data,
+the greater the uncertainty in our estimates for the proportion of species
+which are woody.
+For \textit{Microcoelia} this model gives a 45\% probability that all
 species are herbaceous, and a 92\% chance that at most three species
 are woody.
 
@@ -301,7 +308,10 @@ strongly bimodal; most genera are either all-woody or all-herbaceous
 (Figure \ref{fig:distribution-genera} and 
 \citealt{sinnott1915evolution}).  Among the 748 genera with at least 10
 records, 392 are entirely woody, 248 are entirely herbaceous, and only
-50 have between 10\% and 90\% woody species. As a result, knowing the
+50 have between 10\% and 90\% woody species. Qualitatively similar patterns
+hold at both the family and order levels, though the distribution
+becomes progressively less bimodal as one moves up taxonomic ranks 
+\textbf{see fig xx,yy}. As a result, knowing the
 state of a handful of species within a genus can give a reasonable
 guess at the state of remaining species.
 % tmp <- dat.g$p[dat.g$K >= 10] # genera with 10 records
@@ -319,12 +329,17 @@ are woody is
 \end{equation}
 
 In cases where all known species are woody (or herbaceous) this will
-assign all unknown species to be woody (or herbaceous). In polymorphic
-cases this will give similar results to the hypergeometric sampling
-approach above. This approach corresponds to a very strong prior on
+assign all unknown species to be woody (or herbaceous). For such genera,
+increasing the number of unobserved species will not increase the uncertainty
+in the estimte, in contrast to sampling without replacement.
+In polymorphic
+cases the binomial sampling models will give similar results to the 
+hypergeometric sampling
+approach above. The binomial sampling approach corresponds to a very strong 
+prior on
 the shape of the distribution of woodiness among genera.
 While neither of these approaches is ``correct'', they probably
-span the range of possible outcomes.
+span the extremes of possible outcomes.
 
 For genera where there was no information on woodiness for any
 species, we sampled a fraction of species that might be woody from the
@@ -338,8 +353,10 @@ spread.  Given this woodiness fraction, we then sampled the number of
 species that are woody from a binomial distribution with this fraction
 and the number of species in the genus as its parameters.
 
-For both the hypergeometric and binomial models, we drew 1000 samples 
-of $N_w$ per genus. We then combined the samples from all genera to 
+For both the hypergeometric and binomial models, we parameterized the models
+based on the observed species and total number of species in each genus. 
+We then drew 1000 samples from the model and obtained a distribution of 
+estimates of $N_w$ per genus. We then combined the samples from all genera to 
 get a distribution of estimates for the global proportion of woodiness.
 
 \subsection{Survey}
@@ -363,8 +380,8 @@ are woody according to the above definition.  We also asked
 respondents to indicate their level of familiarity with plants, level
 of formal training, and the country in which they received their
 training. We sent out the survey to several internet mailing lists and
-social media websites (see Appendix and Supplementary Figure
-\ref{fig:survey-text} for details on the survey).
+social media websites (see Appendix and Supplementary Figures
+\ref{fig:survey-text} \textbf{portuguse-survey} for details on the survey).
 
 \section{Results}
 
@@ -381,13 +398,20 @@ estimated 45.0\% of species are woody (95\% confidence interval of
 The different approaches generate different distributions of the
 per-genus percentage of woodiness (Figure
 \ref{fig:distribution-genera}), with a less strongly bimodal
-distribution using the ``weak prior'' approach.  However, the two different approaches (strong
+distribution using the ``weak prior'' approach. (See \textbf{figxx}, 
+for the distributions at the level of families and orders.) 
+However, the two different approaches (strong
 versus weak priors) led to similar phylogenetic distributions of
 estimated woodiness (Figure \ref{fig:phylogeny} versus Figure
-\ref{fig:phylogeny-supp}), differing only in detail.
+\ref{fig:phylogeny-supp}), differing only in detail. We have compiled
+a table of the estimated number of woody species under both sampling
+approaches for all genera, families and orders included in our analysis.
+This is included in the Supplementary Material and is available on the 
+Dryad data repository (xxxxx).
 
 %
-Because the observed distribution of woodiness fraction among genera
+As stated above, neither of these approaches are ``correct''. However,
+as the observed distribution of woodiness fraction among genera
 is itself strongly bimodal, we believe that the true result lies
 closer to 45\% than to 47\%.  A more sophisticated hierarchical
 modelling approach could lead to a more precise answer, but we feel
@@ -418,7 +442,10 @@ estimate (Figure \ref{fig:survey}).  There was a significant effect of
 the respondent's familiarity with plants on the estimates, primarily
 driven by respondents with little botanical familiarity (the ``What's
 a Plant?'' category), whose estimates tended to be lower (less woody)
-than the estimates from other categories.
+than the estimates from other categories. However, excluding those with
+respondents with little familiarity with plants had virtually no effect
+on the mean estimate of respondents (32.4 \% excluding them as compared
+to 31.7 \% with them included).
 %
 Before carrying out the survey, we had hypothesised that researchers
 from tropical regions may perceive the world as woodier than
@@ -465,7 +492,8 @@ distribution of sizes of those genera differs with woodiness.  Genera
 that are primarily herbaceous (less than 10\% woody species for genera
 with at least 10 records) were on average larger than primarily woody
 genera (more than 90\% woody species), with a mean of 202 species
-compared to 138.  This means that even a random sampling above the
+compared to 138 \textbf{see fig zz}. 
+This means that even a random sampling above the
 level of species will lead to a biased estimate.
 
 %Effects of sampling bias
@@ -491,7 +519,10 @@ nonrandom woodiness of undiscovered species; we would predict that
 there are likely more herbs to discovered than woody plants.  In principle,
 rarefaction analysis could estimate the number of species remaining to
 be discovered in different groups, but this is not possible for many
-plant clades \citep{costello2011}.
+plant clades \citep{costello2011}; for many clades the ``collecting curve'' 
+shows little sign of saturation, which is required for such an analysis.
+We provide a example of this across the Orchidaceae in the supplemental material
+(\textbf{see orchid rarefaction analysis}).
 
 While we have focused on one trait, sampling biases are pervasive in ecological datasets, and need to be addressed.
 Global databases of functional traits
@@ -502,7 +533,7 @@ inferences drawn from them.
 For example, for woodiness the economic importance of forestry species
 likely leads to their
 over-sampling in this dataset.
-This bias also affects many commonly used methods in ecological and evolutionary research \citep[e.g.,][]{ackerly2000taxon,nakagawa2008missing,pennell2013integrative} in addition to its well understood effects on conventional statistics.  In this case, taking the data at face--value, 
+This bias also affects many commonly used methods in ecological and evolutionary research \citep[e.g.,][]{ackerly2000taxon,nakagawa2008missing,pennell2013integrative, Pakeman2013} in addition to its well understood effects on conventional statistics.  In this case, taking the data at face--value, 
 we would have greatly overestimated
 the global percentage of woody species.  Inferring the global
 frequency of any trait would face the same problem.  For
@@ -519,7 +550,7 @@ While their details differ, both approaches are model--based in impute missing s
 based on the fitted parameters of
 phylogenetic models estimated from
 the species already in the database. This is conceptually different from our approach;
-we do not assume any model for the evolution of woodiness \citep[such as the `Mk' model;][]{Pagel1994, Lewis2001}.
+we do not assume any model for the evolution of woodiness, such as the `Mk' model \citep{Pagel1994}.
 Methods which rely on a specific model
 of evolution may be susceptible to the problem that if the sampling is biased with respect
 to the character states, the parameter estimates themselves will be biased, leading 
