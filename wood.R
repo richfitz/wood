@@ -172,6 +172,63 @@ fig.distribution.raw <- function(res.b, res.h) {
 ##+ distribution_raw,fig.cap="Distribution of simulated woodiness percentage"
 fig.distribution.raw(res.b, res.h)
 
+## Try and get some extreme results; recode the results with more
+## inclusive criteria for being either woody or herbaceous:
+dat.g.w <- load.woodiness.data.genus(extreme="woody")
+dat.g.h <- load.woodiness.data.genus(extreme="herbaceous")
+
+## Redo the simulations with these more extreme codings to incorporate
+## these errors into the simulations:
+res.b.w <- do.simulation(dat.g.w, 1000, TRUE)  # binomial       & woody
+res.h.w <- do.simulation(dat.g.w, 1000, FALSE) # hypergeometric & woody
+res.b.h <- do.simulation(dat.g.h, 1000, TRUE)  # binomial       & herby
+res.h.h <- do.simulation(dat.g.h, 1000, FALSE) # hypergeometric & herby
+
+fig.distribution.raw.errors <- function(res.b,   res.h,
+                                        res.b.w, res.h.w,
+                                        res.b.h, res.h.h) {
+  n.spp <- sum(res.b$order$N)
+  res <- list(b  =res.b,   h  =res.h,
+              b.w=res.b.w, h.w=res.h.w,
+              b.h=res.b.h, h.h=res.h.h)
+  p <- lapply(res, function(x) x$total / n.spp * 100)
+
+  r <- range(unlist(p))
+  br <- seq(r[1], r[2], length.out=30)
+
+  h <- lapply(p, hist, br, plot=FALSE)
+
+  xlim <- c(42, 50)
+  ylim <- range(unlist(lapply(h, function(x) x$density)))
+
+  cols <- cols.methods
+  cols.fill <- mix(cols, "white", 0.5)
+
+  op <- par(mar=c(1.1, 0.5, .5, .5), mfrow=c(2, 1), oma=c(3.1, 2, 0, 0))
+  on.exit(par(op))
+  plot(NA, xlim=xlim, ylim=ylim, xaxt="n", yaxt="n", bty="l",
+       xlab="", ylab="", main="")
+  axis(1, labels=FALSE)
+  for (i in c(3, 5))
+    hist.fill(h[[i]], border=cols[[1]], col=cols.fill[[1]])
+  lines(h[["b"]], col=cols[1], freq=FALSE)
+  label(.02, .96, 1)
+
+  plot(NA, xlim=xlim, ylim=ylim, xaxt="n", yaxt="n", bty="l",
+       xlab="", ylab="", main="")
+  axis(1, labels=TRUE)
+  for (i in c(4, 6))
+    hist.fill(h[[i]], border=cols[[2]], col=cols.fill[[2]])
+  lines(h[["h"]], col=cols[2], freq=FALSE)
+  mtext("Probability density", 2, line=.5, outer=TRUE)
+  mtext("Percentage of woody species among all vascular plants", 1,
+        line=2.5, xpd=NA)
+  label(.02, .96, 2)
+}
+
+##+ distribution_errors,fig.cap="Effect of recoding on woodiness estimates"
+fig.distribution.raw.errors(res.b, res.h, res.b.w, res.h.w, res.b.h, res.h.h)
+
 ## Now, look at the distributions of woodiness among families:
 fig.fraction.by.group <- function(res.b, res.h, dat.g, level="genus") {
   op <- par(mfrow=c(2, 1), mar=c(2, 2, .5, .5), oma=c(2, 0, 0, 0))
@@ -188,7 +245,7 @@ fig.fraction.by.group <- function(res.b, res.h, dat.g, level="genus") {
   mtext("Probability density", 2, line=.5)
   axis(1, tick=TRUE, label=FALSE)
   label(.02, .96, 1)
-  hist.outline(h, "black", lwd=lwd)  
+  hist.outline(h, col="black", lwd=lwd)
   
   cols <- cols.methods
 
@@ -203,8 +260,8 @@ fig.fraction.by.group <- function(res.b, res.h, dat.g, level="genus") {
   mtext(paste("Percentage of woody species in", level), 1, outer=TRUE,
         line=.5)
 
-  hist.outline(h.b, cols[1], lwd=lwd)
-  hist.outline(h.h, cols[2], lwd=lwd)
+  hist.outline(h.b, col=cols[1], lwd=lwd)
+  hist.outline(h.h, col=cols[2], lwd=lwd)
   
   legend("topleft", c("Replacement (strong prior)",
                       "No replacement (weak prior)"),
@@ -329,8 +386,8 @@ fig.survey.distribution <- function(d.survey, res.b, res.h) {
        ylab="Number of responses", bty="n", bty="l")
   mtext("Estimate of percentage woodiness", 1, outer=TRUE, line=.5)
 
-  hist.outline(h.tropical,  cols.tropical[1], lwd=lwd, density=FALSE)
-  hist.outline(h.temperate, cols.tropical[2], lwd=lwd, density=FALSE)
+  hist.outline(h.tropical,  col=cols.tropical[1], lwd=lwd, density=FALSE)
+  hist.outline(h.temperate, col=cols.tropical[2], lwd=lwd, density=FALSE)
 
   usr <- par("usr")
   rect(ci["lower",], usr[3], ci["upper",], usr[4],
@@ -345,6 +402,28 @@ fig.survey.distribution <- function(d.survey, res.b, res.h) {
 
 ##+ survey_distribution,fig.cap="Distribution of survey results"
 fig.survey.distribution(d.survey, res.b, res.h)
+
+## In response to a reviewer; does the size of a genus predict the
+## probability of a genus being variable?
+fig.variability <- function(dat.g) {
+  op <- par(oma=c(0, 3.1, 0, 0), mar=c(4.1, 1.1, .5, .5),
+            mfrow=c(1, 2))
+  v <- (0.5 - abs(dat.g$p - 1/2)) * 2
+  pch <- 19
+  cex <- 0.5
+  col <- "#00000066"
+  plot(v ~ N, dat.g, yaxt="n", pch=pch, cex=cex, col=col,
+       xlab="Number of species in genus")
+  mtext("Variability", 2, line=2.75, xpd=NA)
+  axis(2, c(0, 1), c("Single type", "50:50"))
+  abline(lm(v ~ N, dat.g))
+  abline(lm(v ~ N, dat.g, subset=N >= 10), col="red")
+
+  plot(v ~ K, dat.g, yaxt="n",  pch=pch, cex=cex, col=col,
+       xlab="Number of species with known state", ylab="")
+  abline(lm(v ~ K, dat.g))
+  abline(lm(v ~ K, dat.g, subset=K >= 10), col="red")
+}
 
 ## Produce versions for publication:
 if (!interactive()) {
@@ -363,10 +442,16 @@ if (!interactive()) {
 
   to.pdf("doc/figs/distribution-raw.pdf", 6, 4,
          fig.distribution.raw(res.b, res.h))
+  to.pdf("doc/figs/distribution-raw-errors.pdf", 6, 4,
+         fig.distribution.raw.errors(res.b, res.h, res.b.w, res.h.w,
+                                     res.b.h, res.h.h))
 
   to.pdf("doc/figs/survey-results.pdf", 6, 4,
          fig.survey.results(d.survey, res.b, res.h))
 
   to.pdf("doc/figs/survey-distribution.pdf", 6, 5,
          fig.survey.distribution(d.survey, res.b, res.h))
+
+  to.pdf("doc/figs/variability.pdf", 8, 6,
+         fig.variability(dat.g))
 }

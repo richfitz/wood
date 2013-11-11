@@ -1,11 +1,16 @@
-load.woodiness.data.genus <- function(regenerate=FALSE) {
-  filename <- "output/dat.g.rds"
+load.woodiness.data.genus <- function(regenerate=FALSE,
+                                      regenerate.raw=FALSE,
+                                      extreme=FALSE) {
+  if (identical(extreme, FALSE))
+    filename <- "output/dat.g.rds"
+  else
+    filename <- sprintf("output/dat.g.%s.rds", substr(extreme, 1, 1))
   if (!regenerate && file.exists(filename))
     return(readRDS(filename))
   
   ## So now 'dat' has species names sanitised to the same list that the
   ## plant list uses, and includes genus information.
-  dat <- load.woodiness.data(regenerate)
+  dat <- load.woodiness.data(regenerate.raw)
 
   ## Next, compare the genus-> order lookup with the list of species
   ## that we have in the plant list.
@@ -31,9 +36,13 @@ load.woodiness.data.genus <- function(regenerate=FALSE) {
     warning("Genera in data not known from lookup table",
             immediate.=TRUE)
 
+  if (!identical(extreme, FALSE))
+    dat$woodiness <-
+      summarise.count(parse.count(dat$woodiness.count), extreme)
+
   ## Collapse these to get counts for all the genera that we know about.
   dat.g <- table(factor(dat$genus, sort(unique(spp$genus[spp$valid]))),
-                 factor(dat$woodiness))
+                 factor(dat$woodiness, c("W", "variable", "H")))
   dat.g <- data.frame(genus=rownames(dat.g),
                       W=dat.g[,"W"],
                       V=dat.g[,"variable"],
@@ -78,19 +87,6 @@ load.woodiness.data <- function(regenerate=FALSE) {
   names(dat)[names(dat) == "gs"] <- "species"
   dat$species <- sub(" ", "_", dat$species)
 
-  ## Check the classification by pulling apart the count.
-  parse.count <- function(x) {
-    res <- t(sapply(strsplit(x, ";", fixed=TRUE), as.integer))
-    colnames(res) <- c("H", "V", "W")
-    drop(res)
-  }
-  summarise.count <- function(x) {
-    ans <- ifelse(x[,"W"] > x[,"H"], "W", "H")
-    ans[(x[,"W"] == 0 & x[,"H"] == 0 & x[,"V"] > 0) |
-        x[,"W"] == x[,"H"]] <- "variable"
-    ans
-  }
-
   ## Check that we do recover the ZAE classes:
   if (!identical(dat$woodiness,
                  summarise.count(parse.count(dat$woodiness.count))))
@@ -133,8 +129,8 @@ load.woodiness.data <- function(regenerate=FALSE) {
   dups.woodiness <- summarise.count(parse.count(dups.count))
 
   dups.merged <- data.frame(species=names(dups.woodiness),
-                            woodiness=dups.woodiness,
-                            woodiness.count=dups.count,
+                            woodiness=unname(dups.woodiness),
+                            woodiness.count=unname(dups.count),
                             stringsAsFactors=FALSE, row.names=NULL)
   dups.merged$genus <- spp$genus[match(dups.merged$species, spp$species)]
 
@@ -149,6 +145,28 @@ load.woodiness.data <- function(regenerate=FALSE) {
   saveRDS(dat, filename)
   dat
 }
+
+## Check the classification by pulling apart the count.
+parse.count <- function(x) {
+  res <- t(sapply(strsplit(x, ";", fixed=TRUE), as.integer))
+  colnames(res) <- c("H", "V", "W")
+  drop(res)
+}
+summarise.count <- function(x, extreme=FALSE) {
+  if (identical(extreme, FALSE)) {
+    ans <- ifelse(x[,"W"] > x[,"H"], "W", "H")
+    ans[(x[,"W"] == 0 & x[,"H"] == 0 & x[,"V"] > 0) |
+        x[,"W"] == x[,"H"]] <- "variable"
+  } else if (identical(extreme, "woody")) {
+    ans <- ifelse(x[,"W"] > 0 | x[,"V"] > 0, "W", "H")
+  } else if (identical(extreme, "herbaceous")) {
+    ans <- ifelse(x[,"H"] > 0 | x[,"V"] > 0, "H", "W")
+  } else {
+    stop("Invalud argument for 'extreme'")
+  }
+  ans
+}
+
 
 load.survey <- function() {
   d <- read.csv(file="data/dryad/survey_results.csv",
@@ -492,11 +510,26 @@ descendants.spp <- function(node, phy) {
 }
 
 ## Draw the outline of a histogram
-hist.outline <- function(h, col, ..., density=TRUE) {
+hist.outline <- function(h, ..., density=TRUE) {
+  xy <- hist.xy(h, density)
+  lines(xy, ...)
+}
+hist.fill <- function(h, ..., density=TRUE) {
+  xy <- hist.xy(h, density)
+  polygon(xy, ...)
+}
+
+hist.xy <- function(h, density=TRUE) {
   dx <- diff(h$mids[1:2])
   xx <- rep(with(h, c(mids - dx/2, mids[length(mids)] + 
                       dx/2)), each = 2)
   yy <- c(0, rep(if (density) h$density else h$counts, each = 2), 0)
-  lines(xx, yy, col = col, ...)
+  list(x=xx, y=yy)
 }
 
+mix <- function(cols, col2, p) {
+  m <- col2rgb(cols)
+  m2 <- col2rgb(rep(col2, length=length(cols)))
+  m3 <- (m * p + m2 * (1-p))/255
+  rgb(m3[1,], m3[2,], m3[3,])
+}
