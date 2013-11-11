@@ -205,20 +205,37 @@ for misspellings, followed by manual verification.
 
 Theophrastus recognised both the fundamental importance of the
 distinction between woody and herbaceous plants, and that this
-distinction is in some cases difficult to make.  There are a number of
-species which are intermediate (or variable) in form
-\citep{beaulieuHiddenRates}; in this dataset 633 species (1.3\%) were
-coded as variable and were excluded from our analysis. To ensure that 
-excluding these species did not influence our results, we re--ran all
-analyses coding variable species alternatively  as all herbaceous and all
-woody; these had virtually no impact on our final estimates
-(\textbf{see supp figures xx and yy}).
+distinction is in some cases difficult to make.  There are two ways
+that species were recorded as ``variable'' in form
+\citep{beaulieuHiddenRates}.  First, different records of a species
+conflicted in form; this affected 313 of the 37,961 species in the
+database.
+% dat <- load.woodiness.data()
+% tmp <- parse.count(dat$woodiness.count)
+% multi <- rowSums(tmp > 0) > 1
+% sum(multi)  # 313
+% nrow(tmp)   # 37961
+% mean(multi) # 0.8%
+Second, 507 species (1.3\%) were coded as variable, possibly in
+addition to other records of woodiness or herbaceousness.
+% sum(tmp[,"V"] > 0)  # 507
+% nrow(tmp)           # 37961
+% mean(tmp[,"V"] > 0) # 0.013
+% TODO: Amy to check, but this lines up with the data set.
+Following \citet{beaulieuHiddenRates}, we coded species as ``woody''
+or ``herbaceous'' when a majority of records were either ``woody'' or
+``herbaceous'', respectively.  As such, records of ``variable'' do not
+contribute to the analysis.
 %
-Our final database contained 37,488 records with both information on
-woodiness and documented taxonomy --- 15,657 herbs and 21,831 woody
-species.  This included records from all flowering plant orders
-currently accepted by APG-III \citep{APG3} and those in the ferns
-taxonomy from \citet{apweb}.
+We also ran analyses where we aggressively coded species as either
+woody or herbaceous by coding species with \emph{any} record of woody
+or variable as ``woody'' (and similarly for herbaceous).
+%
+Our final database for the main analysis contained 37,494 records with
+both information on woodiness and documented taxonomy --- 15,653 herbs
+and 21,841 woody species.  This included records from all flowering
+plant orders currently accepted by APG-III \citep{APG3} and those in
+the ferns taxonomy from \citet{apweb}.
 % sum(dat.g$K) # known species
 % sum(dat.g$H) # herbs
 % sum(dat.g$W) # woody species
@@ -409,14 +426,40 @@ approaches for all genera, families and orders included in our analysis.
 This is included in the Supplementary Material and is available on the 
 Dryad data repository (xxxxx).
 
-%
 As stated above, neither of these approaches are ``correct''. However,
-as the observed distribution of woodiness fraction among genera
-is itself strongly bimodal, we believe that the true result lies
-closer to 45\% than to 47\%.  A more sophisticated hierarchical
-modelling approach could lead to a more precise answer, but we feel
-that our values probably span the range of estimates that such an
-approach would generate.
+as the observed distribution of woodiness fraction among genera is
+itself strongly bimodal, we believe that the true result lies closer
+to 45\% than to 47\%.  A more sophisticated hierarchical modelling
+approach could lead to a more precise answer, but we feel that our
+values probably span the range of estimates that such an approach
+would generate.
+
+% TODO: This is just jammed in here for now.
+% n.spp <- sum(res.b$order$N)
+% res <- list(b=res.b,h=res.h,b.w=res.b.w,h.w=res.h.w,b.h=res.b.h,h.h=res.h.h)
+% tmp <- do.call(rbind, lapply(res, function(x) x$overall/n.spp)) * 100
+% tmp2 <- round(tmp, 2)
+% c(tmp["b.w",1], tmp["h.w",1]) - c(tmp["b",1], tmp["h",1])
+% tmp["b.h",] - tmp["b",]
+Different codings of species significantly moved our estimates,
+despite affecting a small minorority of species.  With the most
+aggressive coding as woody, our estimates 
+% round(tmp["b.w",] - tmp["b",], 2)
+% round(tmp["b.w",], 2)
+increased by 1.5\% to 46.1\% with binomial sampling 
+% round(tmp["h.w",] - tmp["h",], 2)
+% round(tmp["h.w",], 2)
+and by 1\% to 48.2\% with hypergeometric (Figure
+\ref{fig:distribution-raw-errors}).  Similarly, with the most
+aggressive herbaceous coding, the fraction of woody species
+% -round(tmp["b.h",] - tmp["b",], 2)
+% round(tmp["b.h",], 2)
+decreased by 1.9\% to 43\% with binomial sampling
+% round(tmp["h.h",] - tmp["h",], 2)
+% round(tmp["h.h",], 2)
+and by 1.2\% to 45.9\% under with hypergeometric sampling (Figure
+\ref{fig:distribution-raw-errors}).
+
 
 There was strikingly little consensus among researchers as to the
 percentage of species that are woody.  We received 292 responses from
@@ -741,7 +784,7 @@ conducted with R version 2.15.1 \citep{R}.
 
 \begin{figure}[p]
   \centering
-  \includegraphics{figs/distribution-raw}  
+  \includegraphics{figs/distribution-raw}
   \caption{(Supplementary) The posterior probability distribution for
     the proportion of the world's flora that is woody, using our two
     sampling approaches.  The red (left) distribution samples missing species
@@ -749,6 +792,21 @@ conducted with R version 2.15.1 \citep{R}.
     (right) samples missing species without replacement (weak prior).
     See Appendix for details.}
   \label{fig:distribution-raw}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics{figs/distribution-raw-errors}
+  \caption{(Supplementary) The effect of different coding on estimates
+    of the fraction of species that are woody, under sampling with
+    replacement (panel A) and without replacement (panel B).  The dark
+    distributions are the results from our main analysis (Figure
+    \ref{fig:distribution-raw}).  Distributions to the left with lower
+    estimates of woodiness code all species with any record of
+    herbaceousness or variability as herbaceous.  Similarly,
+    distributions to the right with higher estimates of woodiness code
+    all species with any record of woodiness or variability as woody.}
+  \label{fig:distribution-raw-errors}
 \end{figure}
 
 \begin{table}[p]
