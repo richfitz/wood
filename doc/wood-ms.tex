@@ -82,7 +82,7 @@ The question posed by the title of this paper is a basic one, and it is
   }
   % 
 \item{
- Starting with a database of woodiness for 37,488 species of vascular
+ Starting with a database of woodiness for 37,961 species of vascular
  plants (17.9\% of taxonomically resolved species, 58\% of which are woody)
   we estimated the status of the remaining taxonomically resolved
   species by randomisation.  
@@ -201,7 +201,9 @@ investigated using the Plant List tools \citep{ThePlantList}.
 %
 Binomials remaining unmatched were compared first to the Plant List
 and if needed to IPNI with an approximate matching algorithm to allow
-for misspellings, followed by manual verification.
+for misspellings, followed by manual verification. As a result of this 
+cleaning, the number of species in the final dataset  was reduced 
+from 49,064 to 37,961. 
 
 Theophrastus recognised both the fundamental importance of the
 distinction between woody and herbaceous plants, and that this
@@ -227,10 +229,14 @@ or ``herbaceous'' when a majority of records were either ``woody'' or
 ``herbaceous'', respectively.  As such, records of ``variable'' do not
 contribute to the analysis.
 %
-We also ran analyses where we aggressively coded species as either
+We also ran analyses where we coded species as either
 woody or herbaceous by coding species with \emph{any} record of woody
-or variable as ``woody'' (and similarly for herbaceous).
+or variable as ``woody'' (and similarly for herbaceous). Neither of 
+these cases are biologically realistic but are `` worst--case'' scenarios
+that together allowed us to evaluate the possible effect of mis--coding 
+variable species.
 %
+% TODO: CHECK NUMBERS. DON'T SEEM TO ADD UP BUT PERHAPS I AM MISSING SOMETHING
 Our final database for the main analysis contained 37,494 records with
 both information on woodiness and documented taxonomy --- 15,653 herbs
 and 21,841 woody species.  This included records from all flowering
@@ -328,9 +334,9 @@ records, 392 are entirely woody, 248 are entirely herbaceous, and only
 50 have between 10\% and 90\% woody species. Qualitatively similar patterns
 hold at both the family and order levels, though the distribution
 becomes progressively less bimodal as one moves up taxonomic ranks 
-\textbf{see fig xx,yy}. As a result, knowing the
-state of a handful of species within a genus can give a reasonable
-guess at the state of remaining species.
+(Figures \ref{fig:distribution-family} and \ref{fig:distribution-order}). 
+As a result, knowing the state of a handful of species within a genus 
+can give a reasonable guess at the state of remaining species.
 % tmp <- dat.g$p[dat.g$K >= 10] # genera with 10 records
 % sum(tmp == 1) # 100% woody
 % sum(tmp == 0) # 100% herbaceous
@@ -398,7 +404,7 @@ respondents to indicate their level of familiarity with plants, level
 of formal training, and the country in which they received their
 training. We sent out the survey to several internet mailing lists and
 social media websites (see Appendix and Supplementary Figures
-\ref{fig:survey-text} \textbf{portuguse-survey} for details on the survey).
+\ref{fig:survey-text} \ref{fig:survey-text-port} for details on the survey).
 
 \section{Results}
 
@@ -413,10 +419,11 @@ estimated 45.0\% of species are woody (95\% confidence interval of
 % mean(d.survey$Estimate < 45)
 % mean(d.survey$Estimate < 100*res.strong$overall[["mean"]])
 The different approaches generate different distributions of the
-per-genus percentage of woodiness (Figure
+per--genus percentage of woodiness (Figure
 \ref{fig:distribution-genera}), with a less strongly bimodal
-distribution using the ``weak prior'' approach. (See \textbf{figxx}, 
-for the distributions at the level of families and orders.) 
+distribution using the ``weak prior'' approach. (See Figures
+\ref{fig:distribution-family} and \ref{fig:distribution-genera} 
+for the distributions at the level of families and orders, respectively.) 
 However, the two different approaches (strong
 versus weak priors) led to similar phylogenetic distributions of
 estimated woodiness (Figure \ref{fig:phylogeny} versus Figure
@@ -535,7 +542,7 @@ distribution of sizes of those genera differs with woodiness.  Genera
 that are primarily herbaceous (less than 10\% woody species for genera
 with at least 10 records) were on average larger than primarily woody
 genera (more than 90\% woody species), with a mean of 202 species
-compared to 138 \textbf{see fig zz}. 
+compared to 138 (See Figure \ref{fig:size-woody-herb}). 
 This means that even a random sampling above the
 level of species will lead to a biased estimate.
 
@@ -723,16 +730,66 @@ conducted with R version 2.15.1 \citep{R}.
 \renewcommand\thefigure{S.\arabic{figure}}
 \renewcommand\thetable{S.\arabic{table}}
 \setcounter{figure}{0}    
-\setcounter{table}{0}    
+\setcounter{table}{0}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics{figs/fraction-by-family}
+  \caption{Distribution of the percentage of woodiness among families.
+    The distribution of the percentage of species that are woody within
+    a family is strongly bimodal among families (panel A), though less
+    so than among genera.
+    % 
+    The two different sampling approaches generate distributions that
+    differ in their bimodality (panel B). When assuming species are
+    sampled with replacement from some pool, but having no prior on
+    the fraction of woodiness within the pool generates a broad
+    distribution with many polymorphic genera (blue lines), while
+    sampling with replacement assuming that species are drawn from a
+    pool of species that has a fraction of woody species equal to the
+    observed fraction of woodiness generates a strongly bimodal
+    distribution (red lines).}
+  \label{fig:distribution-family}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics{figs/fraction-by-order}
+  \caption{Distribution of the percentage of woodiness among orders.
+    The distribution of the percentage of species that are woody within
+    an order is also largely bimodal among orders (panel A), though
+    less so than that of genera and families.
+    % 
+    The two different sampling approaches generate distributions that
+    differ in their bimodality (panel B). When assuming species are
+    sampled with replacement from some pool, but having no prior on
+    the fraction of woodiness within the pool generates a broad
+    distribution with many polymorphic genera (blue lines), while
+    sampling with replacement assuming that species are drawn from a
+    pool of species that has a fraction of woody species equal to the
+    observed fraction of woodiness generates a strongly bimodal
+    distribution (red lines).}
+  \label{fig:distribution-order}
+\end{figure}    
 
 \begin{figure}[p]
   \centering
   \vspace{-20ex}
   \includegraphics[scale=0.7]{figs/Survey_supplemental}
-  \caption{(Supplementary) English-language version of the survey we
+  \caption{(Supplementary) English--language version of the survey we
     distributed}
   \label{fig:survey-text}
 \end{figure}
+
+\begin{figure}[p]
+  \centering
+  \vspace{-20ex}
+  \includegraphics[scale=0.8]{figs/Survey_supplemental_Portuguese}
+  \caption{(Supplementary) Portuguese--language version of the survey we
+    distributed}
+  \label{fig:survey-text-port}
+\end{figure}
+      
 
 \begin{figure}[p]
   \centering
@@ -807,6 +864,13 @@ conducted with R version 2.15.1 \citep{R}.
     distributions to the right with higher estimates of woodiness code
     all species with any record of woodiness or variability as woody.}
   \label{fig:distribution-raw-errors}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[scale=0.7]{figs/variability}
+  \caption{(Supplementary) Need caption for this}
+  \label{fig:size-woody-herb}
 \end{figure}
 
 \begin{table}[p]
