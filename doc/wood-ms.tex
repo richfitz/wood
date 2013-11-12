@@ -28,7 +28,7 @@ $^1$ Biodiversity Research Centre and Department of Zoology,
 University of British Columbia, Vancouver, BC V6G 1Z4, Canada
 \texttt{fitzjohn@zoology.ubc.ca}\\
 $^2$ Department of Biological Sciences, Macquarie University, Sydney, NSW 2109, Australia \\
-$^3$ Institute for Bioinformatics and Evolutionary Studies, University
+$^3$ Department of Biological Sciences and Institute for Bioinformatics and Evolutionary Studies, University
 of Idaho, Moscow, ID 83844, U.S.A.
 \texttt{mwpennell@gmail.com}\\
 $^4$ National Evolutionary Synthesis Center, Durham, NC 27705, U.S.A.\\
@@ -40,10 +40,7 @@ $^7$ Department of Biology, University of Missouri, St. Louis, MO
 63166, U.S.A.
 \texttt{stevensp@umsl.edu}\\
 $^8$ Missouri Botanical Garden, PO Box 299, St Louis, MO 63166-0299\\
-$^9$ Department of Forest, Rangeland, and Fire Sciences and Stillinger
-Herbarium, College of Natural Resources, University of Idaho, Moscow,
-ID 83844, U.S.A.
-\texttt{dtank@uidaho.edu}\\
+$^9$ \texttt{dtank@uidaho.edu}\\
 $^{10}$ Department of Systems Ecology, VU University, 1081 HV
 Amsterdam, The Netherlands\\
 $^{11}$ School of BEES, The University of New South Wales, Sydney 2052 NSW, Australia
@@ -232,8 +229,8 @@ contribute to the analysis.
 We also ran analyses where we coded species as either
 woody or herbaceous by coding species with \emph{any} record of woody
 or variable as ``woody'' (and similarly for herbaceous). Neither of 
-these cases are biologically realistic but are `` worst--case'' scenarios
-that together allowed us to evaluate the possible effect of mis--coding 
+these cases are likely to biologically realistic but allowed us
+allowed us to evaluate the maximal possible effect of mis--coding 
 variable species.
 %
 % TODO: CHECK NUMBERS. DON'T SEEM TO ADD UP BUT PERHAPS I AM MISSING SOMETHING
@@ -448,17 +445,17 @@ would generate.
 % tmp2 <- round(tmp, 2)
 % c(tmp["b.w",1], tmp["h.w",1]) - c(tmp["b",1], tmp["h",1])
 % tmp["b.h",] - tmp["b",]
-Different codings of species significantly moved our estimates,
-despite affecting a small minorority of species.  With the most
-aggressive coding as woody, our estimates 
+Different codings of variable  significantly moved our estimates,
+despite affecting a small minorority of species.  Coding all
+variable species as woody, our estimates 
 % round(tmp["b.w",] - tmp["b",], 2)
 % round(tmp["b.w",], 2)
 increased by 1.5\% to 46.1\% with binomial sampling 
 % round(tmp["h.w",] - tmp["h",], 2)
 % round(tmp["h.w",], 2)
 and by 1\% to 48.2\% with hypergeometric (Figure
-\ref{fig:distribution-raw-errors}).  Similarly, with the most
-aggressive herbaceous coding, the fraction of woody species
+\ref{fig:distribution-raw-errors}). Similarly, with coding
+all variable species as herbaceous, the fraction of woody species
 % -round(tmp["b.h",] - tmp["b",], 2)
 % round(tmp["b.h",], 2)
 decreased by 1.9\% to 43\% with binomial sampling
@@ -545,6 +542,19 @@ genera (more than 90\% woody species), with a mean of 202 species
 compared to 138 (See Figure \ref{fig:size-woody-herb}). 
 This means that even a random sampling above the
 level of species will lead to a biased estimate.
+
+%% TODO: THIS IS OUT OF PLACE HERE BUT I THINK IS IMPORTANT TO INCLUDE SOMEWHERE.
+We also found that the way in which we handled variable species at least
+has the potential to significantly affect the estimates.
+As stated above, we argue that 
+coding all variable species as either all woody or all herbaceous 
+makes little sense biologically and represent the extremes of possible
+outcomes. But the fact that changing the state of such a
+relatively small number of species has the potential to 
+alter inferences made at a global scale is rather surprising.
+Viewed more broadly, this result only serves to underscore 
+the general perspective of this paper that unaccounted for biases in 
+trait databases can have ``trickle--down'' effects on inferences made from them.
 
 %Effects of sampling bias
 The effect of selection bias on the estimate is amplified by the distribution of woodiness at higher
