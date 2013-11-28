@@ -1,5 +1,3 @@
-
-
 \documentclass[a4paper,12pt]{article}
 \usepackage[osf]{mathpazo}
 \usepackage{ms}
@@ -69,8 +67,6 @@ $^{11}$ School of BEES, The University of New South Wales, Sydney 2052 NSW, Aust
 \singlespacing
 \begin{enumerate}
 \item{
-    % RGF: I don't love the first sentence of the abstract (I
-    % preferred our original one!).
 The question posed by the title of this paper is a basic one, and it is
   surprising that the answer is not known.   A major challenge in the scaling of functional datasets to the global scale is sampling bias.  
   Although we currently know the growth form of many species, these
@@ -167,22 +163,24 @@ true wood (i.e., consisting of secondary xylem), this definition
 classifies, among other groups, palms, tree ferns and bamboo as
 woody.
 %
-We used a recently assembled database with growth--form data for 49,064
-vascular plant species (i.e., lycopods, ferns,
-gymnosperms and angiosperms), which is the largest such database assembled
-to date \citep{Zanne}. 
-%
-One example of a sub-dataset (6\% of observations in the large dataset) came from Kew Royal Botanic
-Gardens dataset on growth form \citep{Kew}.  For the Kew dataset, the
-original 103 growth form categories was reduced to a binary
-classification.  Fifty--seven of the 103 categories provided enough
-information to classify species as either woody or herbaceous
-according to our definition (see Table \ref{tab:kew} for specific
-decisions).  In addition, many other datasets (collected for a
-variety of reasons including forestry inventories) were added
-according to the same categorisation \citep{Zanne}.  Like all data
-assemblies the component datasets here were collected for a variety of
-research goals and have unknown and potentially large sampling biases.
+We used a recently assembled database with growth--form data for
+49,061 vascular plant species (i.e., lycopods, ferns, gymnosperms and
+angiosperms), which is the largest such database assembled to date
+\citep{Zanne}.
+% #rstats
+% nrow(read.csv("data/zae/GlobalWoodinessDatabase.csv"))
+One example of a sub-dataset (6\% of observations in the large
+dataset) came from Kew Royal Botanic Gardens dataset on growth form
+\citep{Kew}.  For the Kew dataset, the original 103 growth form
+categories was reduced to a binary classification.  Fifty--seven of
+the 103 categories provided enough information to classify species as
+either woody or herbaceous according to our definition (see Table
+\ref{tab:kew} for specific decisions).  In addition, many other
+datasets (collected for a variety of reasons including forestry
+inventories) were added according to the same categorisation
+\citep{Zanne}.  Like all data assemblies the component datasets here
+were collected for a variety of research goals and have unknown and
+potentially large sampling biases.
 
 Because the effort to organise plant taxonomy, especially synonymy, is
 on-going, there was uncertainty regarding the status of many plant
@@ -195,12 +193,15 @@ matched against the International Plant Name Index
 (http://www.ipni.org/) and Tropicos (http://www.tropicos.org/);
 potential synonymy in binomials arising from the three lists was
 investigated using the Plant List tools \citep{ThePlantList}.  
-%
+% NOTE: This is the cleaning step done by `load.woodiness.data()`.
 Binomials remaining unmatched were compared first to the Plant List
 and if needed to IPNI with an approximate matching algorithm to allow
 for misspellings, followed by manual verification. As a result of this 
 cleaning, the number of species in the final dataset  was reduced 
-from 49,064 to 37,961. 
+from 49,061 to 37,961. 
+% #rstats
+% nrow(read.csv("data/zae/GlobalWoodinessDatabase.csv")) # 49061
+% nrow(load.woodiness.data())                            # 37961
 
 Theophrastus recognised both the fundamental importance of the
 distinction between woody and herbaceous plants, and that this
@@ -209,81 +210,89 @@ that species were recorded as ``variable'' in form
 \citep{beaulieuHiddenRates}.  First, different records of a species
 conflicted in form; this affected 313 of the 37,961 species in the
 database.
+% #rstats
 % dat <- load.woodiness.data()
 % tmp <- parse.count(dat$woodiness.count)
 % multi <- rowSums(tmp > 0) > 1
-% sum(multi)  # 313
-% nrow(tmp)   # 37961
-% mean(multi) # 0.8%
+% sum(multi)        # 313
+% nrow(tmp)         # 37961
+% mean(multi) * 100 # 0.8%
 Second, 507 species (1.3\%) were coded as variable, possibly in
 addition to other records of woodiness or herbaceousness.
+% #rstats
 % sum(tmp[,"V"] > 0)  # 507
 % nrow(tmp)           # 37961
 % mean(tmp[,"V"] > 0) # 0.013
-% TODO: Amy to check, but this lines up with the data set.
+% sum(tmp[,"V"] > 0 & rowSums(tmp[,c("H", "W")]) > 0) # 56 (of 507)
 Following \citet{beaulieuHiddenRates}, we coded species as ``woody''
 or ``herbaceous'' when a majority of records were either ``woody'' or
 ``herbaceous'', respectively.  As such, records of ``variable'' do not
 contribute to the analysis.
 %
-We also ran analyses where we coded species as either
-woody or herbaceous by coding species with \emph{any} record of woody
-or variable as ``woody'' (and similarly for herbaceous). Neither of 
-these cases are likely to biologically realistic but allowed us
-allowed us to evaluate the maximal possible effect of mis--coding 
-variable species.
-%
-% TODO: CHECK NUMBERS. DON'T SEEM TO ADD UP BUT PERHAPS I AM MISSING SOMETHING
 Our final database for the main analysis contained 37,494 records with
 both information on woodiness and documented taxonomy --- 15,653 herbs
-and 21,841 woody species.  This included records from all flowering
-plant orders currently accepted by APG-III \citep{APG3} and those in
-the ferns taxonomy from \citet{apweb}.
-% sum(dat.g$K) # known species
-% sum(dat.g$H) # herbs
-% sum(dat.g$W) # woody species
-
-% WKC: compare family sampling to total number of families? Somehow
-% show the dataset is comprehensive?
+and 21,841 woody species.  
+% #rstats
+% sum(dat.g$K) # 37494 -- known species
+% sum(dat.g$H) # 15653 -- herbs
+% sum(dat.g$W) # 21841 -- woody species
+This included records from all flowering plant orders currently
+accepted by APG-III \citep{APG3} and those in the ferns taxonomy from
+\citet{apweb}, covering 14,680 genera and 477 families.
+% #rstats
+% sapply(dat.g[c("genus", "family")], function(x) length(unique(x)))
+The 467 species excluded at this step had identical numbers of records
+of being woody and herbaceous.
+% #rstats
+% nrow(dat) - sum(dat.g$K)
+% sum(tmp[,"W"] == tmp[,"H"])
+We also ran analyses where we coded species as either woody or
+herbaceous by coding species with \emph{any} record of woody or
+variable as ``woody'' (and similarly for herbaceous), using all 37961
+species.  Neither of these cases are likely to biologically realistic
+but allowed us allowed us to evaluate the maximal possible effect of
+mis--coding variable species.
 
 \subsection{Estimating the percentage of species that are woody}
 
 To estimate the percentage of species that are woody, we cannot simply
-use the fraction of species within our trait database (21,831 of
-37,488 = 58\%) as these records represent a biased sample of vascular
+use the fraction of species within our trait database (21,841 of
+37,494 = 58\%) as these records represent a biased sample of vascular
 plants.
-% sum(dat.g$W) # woody
-% sum(dat.g$K) # known
-% sum(dat.g$W) / sum(dat.g$K) # fraction
+% #rstats
+% sum(dat.g$W) # 21841 -- woody
+% sum(dat.g$K) # 37494 -- known
+% sum(dat.g$W) / sum(dat.g$K) # 0.58 -- fraction
 For example, most Orchidaceae are probably herbaceous; we have only
-one record of woodiness among the 1,574 species for which we have
+one record of woodiness among the 1,573 species for which we have
 data.
+% #rstats
 % i.orc <- dat.g$family == "Orchidaceae"
-% sum(dat.g$K[i.orc]) # known Orchidaceae
-% sum(dat.g$W[i.orc]) # woody Orchidaceae
-However, the fraction of Orchidaceae species with known data (1,574 of
-27,104 = 6\%)
-% sum(dat.g$K[i.orc]) # known Orchidaceae
-% sum(dat.g$N[i.orc]) # number of Orchidaceae
-% sum(dat.g$K[i.orc]) / sum(dat.g$N[i.orc]) # knowledge rate of Orchidaceae
+% sum(dat.g$K[i.orc]) # 1573 -- known Orchidaceae
+% sum(dat.g$W[i.orc]) # 1    -- woody Orchidaceae
+However, the fraction of Orchidaceae species with known data (1,573 of
+27,140 = 6\%)
+% sum(dat.g$K[i.orc]) #  1573 -- known Orchidaceae
+% sum(dat.g$N[i.orc]) # 27140 -- number of Orchidaceae
+% sum(dat.g$K[i.orc]) / sum(dat.g$N[i.orc]) # 0.58 -- fraction known
 is much lower than the overall rate of knowledge for all vascular
-plants (36,238 of 274,141 = 13\%), which will upwardly bias the global
+plants (37,494 of 284,732 = 13\%), which will upwardly bias the global
 estimate of woodiness.
-% sum(dat.g$K) # known vascular
-% sum(dat.g$N) # total vascular
-% sum(dat.g$K) / sum(dat.g$N) # knowlege rate for all vascular plants
-%
+% #rstats
+% sum(dat.g$K) #  37494 -- known vascular
+% sum(dat.g$N) # 284732 -- total vascular
+% sum(dat.g$K) / sum(dat.g$N) # 0.13 -- fraction known
 Conversely, systematic under-sampling of tropical species, believed to
 be more woody than temperate species \citep{Molesheihgt}, would bias
 the global woodiness estimate downwards.
 
-%WKC: After doing all that annoying dataset checking for Amy's paper
-%I figured out where the bias is from:  there are several forestry datasets 
-% of exclusively woody species that got pulled in.  So basically in the tropics, esp. the paleo-tropics
-% various British people were trying to figure out what makes good wood to build the buildings of the british 
-% empire so they 
-% did a rather systemtic inventory of woody properties of the local species
-% since 
+% WKC: After doing all that annoying dataset checking for Amy's paper
+% I figured out where the bias is from: there are several forestry
+% datasets of exclusively woody species that got pulled in.  So
+% basically in the tropics, esp. the paleo-tropics various British
+% people were trying to figure out what makes good wood to build the
+% buildings of the british empire so they did a rather systemtic
+% inventory of woody properties of the local species since
 
 We developed a novel method to account for this sampling bias when
 estimating the percentage of woody species.  In our approach, we treat
@@ -292,13 +301,16 @@ woody and $n_h$ herbaceous species and a total of $N$ species in the genus.
 %
 For example, the genus \textit{Microcoelia} (Orchidaceae) has 30
 species in total, and we know that 13 are herbaceous and none are
-known to be woody ($N = 30$, $n_w = 0$, $n_h = 13$). We do not know
-the state of the remaining 17 species, so the true number of woody
-species, $N_w$, must lie between 0 and 17. In general, we cannot
+known to be woody ($N = 30$, $n_w = 0$, $n_h = 12$). We do not know
+the state of the remaining 18 species, so the true number of woody
+species, $N_w$, must lie between 0 and 18. In general, we cannot
 assume that these species are all herbaceous, even though both
 biological and mathematical intuition suggest that most of them will
 be.
-
+% #rstats
+% i.mic <- which(dat.g$genus == "Microcoelia")
+% dat.g[i.mic,c("N", "W", "H")]   # 30, 0, 12
+% dat.g$N[i.mic] - dat.g$K[i.mic] # 18
 We used two different approaches for imputing the values of these
 unknown species. First, we assumed that the known species were sampled
 without replacement from a pool of species with $N_w$ woody and $N_h$
@@ -312,10 +324,19 @@ are woody ($x = 0, 1, \ldots, N - n_w - n_h$) is proportional to
 Under this sampling model, the more species for which we do not have data,
 the greater the uncertainty in our estimates for the proportion of species
 which are woody.
-For \textit{Microcoelia} this model gives a 45\% probability that all
-species are herbaceous, and a 92\% chance that at most three species
+%
+For \textit{Microcoelia} this model gives a 42\% probability that all
+species are herbaceous, and a 90\% chance that at most three species
 are woody.
-
+% #rstats
+% # Based on the code inside rhyper2()
+% n <- dat.g$N[i.mic]; w <- dat.g$W[i.mic]; h <- dat.g$H[i.mic]
+% xw <- seq(w, n - h) # possible number of woody species
+% xh <- n - xw
+% ph <- dhyper(h, xh, xw, h + w) # probability of (xh[i], xw[i])
+% ph <- ph / sum(ph) # normalise
+% ph[1]        # 0.42 -- all species herbaceous
+% sum(ph[1:4]) # 0.90 -- at most 3 species woody
 This approach probably overestimates the number of woody species in
 this case, and in other cases where all known species are woody (e.g.,
 \textit{Actinidia} [Ericaceae]) it will probably underestimate the
@@ -327,16 +348,21 @@ However, the distribution of woodiness among genera and families is
 strongly bimodal; most genera are either all-woody or all-herbaceous
 (Figure \ref{fig:distribution-genera} and 
 \citealt{sinnott1915evolution}).  Among the 748 genera with at least 10
-records, 392 are entirely woody, 248 are entirely herbaceous, and only
-50 have between 10\% and 90\% woody species. Qualitatively similar patterns
+records, 395 are entirely woody, 268 are entirely herbaceous, and only
+58 have between 10\% and 90\% woody species. Qualitatively similar patterns
 hold at both the family and order levels, though the distribution
 becomes progressively less bimodal as one moves up taxonomic ranks 
 (Figures \ref{fig:distribution-family} and \ref{fig:distribution-order}). 
 As a result, knowing the state of a handful of species within a genus 
 can give a reasonable guess at the state of remaining species.
-% tmp <- dat.g$p[dat.g$K >= 10] # genera with 10 records
-% sum(tmp == 1) # 100% woody
-% sum(tmp == 0) # 100% herbaceous
+% #rstats
+% tmp <- dat.g$p[dat.g$K >= 10] # select genera with 10 records
+% length(tmp)              # 769 -- genera with at least 10 records
+% sum(tmp == 1)            # 395 -- 100% woody
+% sum(tmp == 0)            # 268 -- 100% herbaceous
+% sum(tmp > 0 & tmp < 1)   # 106 -- variable
+% sum(tmp > .1 & tmp < .9) #  58 -- interestingly variable
+
 To model the other extreme of sampling, we used an approach where we
 computed the observed fraction of woody species ($p_w = n_w / (n_w +
 n_h)$) and sampled the state of the unobserved species using a
@@ -348,18 +374,16 @@ are woody is
   p^k (1-p)^{N - n_h - k}.
 \end{equation}
 
-In cases where all known species are woody (or herbaceous) this will
-assign all unknown species to be woody (or herbaceous). For such genera,
-increasing the number of unobserved species will not increase the uncertainty
-in the estimte, in contrast to sampling without replacement.
-In polymorphic
-cases the binomial sampling models will give similar results to the 
-hypergeometric sampling
-approach above. The binomial sampling approach corresponds to a very strong 
-prior on
-the shape of the distribution of woodiness among genera.
-While neither of these approaches is ``correct'', they probably
-span the extremes of possible outcomes.
+In cases where all known species are woody (or herbaceous as in
+\textit{Microcelia}) this will assign all unknown species to be woody
+(or herbaceous). For such genera, increasing the number of unobserved
+species will not increase the uncertainty in the estimte, in contrast
+to sampling without replacement.  In polymorphic cases the binomial
+sampling models will give similar results to the hypergeometric
+sampling approach above. The binomial sampling approach corresponds to
+a very strong prior on the shape of the distribution of woodiness
+among genera.  While neither of these approaches is ``correct'', they
+probably span the extremes of possible outcomes.
 
 For genera where there was no information on woodiness for any
 species, we sampled a fraction of species that might be woody from the
@@ -372,12 +396,17 @@ for a genus, with probabilities from 0.1 to 1 being fairly evenly
 spread.  Given this woodiness fraction, we then sampled the number of
 species that are woody from a binomial distribution with this fraction
 and the number of species in the genus as its parameters.
+% #rstats
+% hist(quantile(c(0, 0, 0.1, 1), runif(10000)))
 
-For both the hypergeometric and binomial models, we parameterized the models
-based on the observed species and total number of species in each genus. 
-We then drew 1000 samples from the model and obtained a distribution of 
-estimates of $N_w$ per genus. We then combined the samples from all genera to 
-get a distribution of estimates for the global proportion of woodiness.
+For both the hypergeometric and binomial models, we parameterized the
+models based on the observed species and total number of species in
+each genus.  We then drew 1,000 samples from the model and obtained a
+distribution of estimates of $N_w$ per genus. We then combined the
+samples from all 14,680 genera to get a distribution of estimates for
+the global proportion of woodiness.
+% #rstats
+% length(unique(dat.g$genus))
 
 \subsection{Survey}
 
@@ -401,20 +430,21 @@ respondents to indicate their level of familiarity with plants, level
 of formal training, and the country in which they received their
 training. We sent out the survey to several internet mailing lists and
 social media websites (see Appendix and Supplementary Figures
-\ref{fig:survey-text} \ref{fig:survey-text-port} for details on the survey).
+\ref{fig:survey-text} \ref{fig:survey-text-port} for details on the
+survey).
 
 \section{Results}
 
 Across all vascular plants, we estimated the fraction of woody species
 to be between 45\% to 48\%.
-% round(100*res.strong$overall, 1)
-% round(100*res.weak$overall, 1)
+% #rstats
+% round(100*res.b$overall.p, 1) # 45.0 (44.7 -- 45.3)
+% round(100*res.h$overall.p, 1) # 47.2 (46.6 -- 47.9)
 Specifically, using our ``strong prior'' sampling approach we
 estimated 45.0\% of species are woody (95\% confidence interval of
 44.7--45.3\%) and with the ``weak prior'' approach we estimated 47.2\%
 (95\% CI of 46.6--47.8\%).
-% mean(d.survey$Estimate < 45)
-% mean(d.survey$Estimate < 100*res.strong$overall[["mean"]])
+%
 The different approaches generate different distributions of the
 per--genus percentage of woodiness (Figure
 \ref{fig:distribution-genera}), with a less strongly bimodal
@@ -428,7 +458,7 @@ estimated woodiness (Figure \ref{fig:phylogeny} versus Figure
 a table of the estimated number of woody species under both sampling
 approaches for all genera, families and orders included in our analysis.
 This is included in the Supplementary Material and is available on the 
-Dryad data repository (xxxxx).
+Dryad data repository (\textit{DOI to be added}).
 
 As stated above, neither of these approaches are ``correct''. However,
 as the observed distribution of woodiness fraction among genera is
@@ -438,7 +468,7 @@ approach could lead to a more precise answer, but we feel that our
 values probably span the range of estimates that such an approach
 would generate.
 
-% TODO: This is just jammed in here for now.
+% #rstats
 % n.spp <- sum(res.b$order$N)
 % res <- list(b=res.b,h=res.h,b.w=res.b.w,h.w=res.h.w,b.h=res.b.h,h.h=res.h.h)
 % tmp <- do.call(rbind, lapply(res, function(x) x$overall/n.spp)) * 100
@@ -448,42 +478,38 @@ would generate.
 Different codings of variable  significantly moved our estimates,
 despite affecting a small minorority of species.  Coding all
 variable species as woody, our estimates 
+% #rstats
 % round(tmp["b.w",] - tmp["b",], 2)
 % round(tmp["b.w",], 2)
 increased by 1.5\% to 46.1\% with binomial sampling 
+% #rstats
 % round(tmp["h.w",] - tmp["h",], 2)
 % round(tmp["h.w",], 2)
 and by 1\% to 48.2\% with hypergeometric (Figure
 \ref{fig:distribution-raw-errors}). Similarly, with coding
 all variable species as herbaceous, the fraction of woody species
+% #rstats
 % -round(tmp["b.h",] - tmp["b",], 2)
 % round(tmp["b.h",], 2)
 decreased by 1.9\% to 43\% with binomial sampling
+% #rstats
 % round(tmp["h.h",] - tmp["h",], 2)
 % round(tmp["h.h",], 2)
 and by 1.2\% to 45.9\% under with hypergeometric sampling (Figure
 \ref{fig:distribution-raw-errors}).
 
-
 There was strikingly little consensus among researchers as to the
 percentage of species that are woody.  We received 292 responses from
-28 countries, with estimates that ranged from 1\% to 90\% with a mean
+29 countries, with estimates that ranged from 1\% to 90\% with a mean
 of 31.7\% (Figure \ref{fig:survey-distribution}).  Our smallest
-estimate is greater than 81\% of our survey estimates.
-% nrow(d.survey)
-% range(d.survey$Estimate)
-% mean(d.survey$Estimate)
-%
-% To address reviewer's concern:
-% i <- !is.na(d.survey$Familiarity) & d.survey$Familiarity != "What's a Plant?"
-% mean(d.survey$Estimate[i])
-% range(d.survey$Estimate[i])
-%
-% i <- d.survey$Familiarity <= "Familiar" &
-%     d.survey$Training <= "Undergraduate degree in botany or a related field"
-% i[is.na(i)] <- FALSE
-% mean(d.survey$Estimate[i])
-% range(d.survey$Estimate[i])
+estimate (45\% woody) is greater than 81\% of our survey estimates.
+% #rstats
+% nrow(d.survey)                   # 292
+% length(unique(d.survey$Country)) #  29
+% range(d.survey$Estimate) # 1 - 90
+% mean(d.survey$Estimate)  # 31.7
+% mean(d.survey$Estimate < 45) # 0.81
+% mean(d.survey$Estimate < 100*res.b$overall.p[["mean"]]) # 0.83
 We found little effect of a respondent's level of training on their
 estimate (Figure \ref{fig:survey}).  There was a significant effect of
 the respondent's familiarity with plants on the estimates, primarily
@@ -493,7 +519,19 @@ than the estimates from other categories. However, excluding those with
 respondents with little familiarity with plants had virtually no effect
 on the mean estimate of respondents (32.4 \% excluding them as compared
 to 31.7 \% with them included).
-%
+% #rstats
+% i <- !is.na(d.survey$Familiarity) & d.survey$Familiarity != "What's a Plant?"
+% mean(d.survey$Estimate[i])
+Restricting survey responses to only respondants at least ``Familiar''
+with plants, and with at least an undergraduate degreee in botany or a
+related field (143 responses), only increased the mean survey estimate
+to 32.9%.
+% #rstats
+% i <- d.survey$Familiarity <= "Familiar" &
+%     d.survey$Training <= "Undergraduate degree in botany or a related field"
+% i[is.na(i)] <- FALSE
+% sum(i) # 143
+% mean(d.survey$Estimate[i]) # 32.9%
 Before carrying out the survey, we had hypothesised that researchers
 from tropical regions may perceive the world as woodier than
 researchers from more temperate regions due to the latitudinal
@@ -503,9 +541,8 @@ Indeed, there was an effect of being in a tropical country, with the
 estimates from tropical countries being slightly higher than those
 from temperate countries ($p$=0.02), but this effect was very small
 ($r^2$=0.02, Figure \ref{fig:survey-distribution}).
-
-
-
+% #rstats
+% summary(res.tro)
 
 \section{Discussion}
 
