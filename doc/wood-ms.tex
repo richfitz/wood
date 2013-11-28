@@ -248,7 +248,7 @@ of being woody and herbaceous.
 % sum(tmp[,"W"] == tmp[,"H"])
 We also ran analyses where we coded species as either woody or
 herbaceous by coding species with \emph{any} record of woody or
-variable as ``woody'' (and similarly for herbaceous), using all 37961
+variable as ``woody'' (and similarly for herbaceous), using all 37,961
 species.  Neither of these cases are likely to biologically realistic
 but allowed us allowed us to evaluate the maximal possible effect of
 mis--coding variable species.
@@ -346,7 +346,7 @@ woody species within a genus.
 
 However, the distribution of woodiness among genera and families is
 strongly bimodal; most genera are either all-woody or all-herbaceous
-(Figure \ref{fig:distribution-genera} and 
+(Figure \ref{fig:distribution-genera}, \ref{fig:distribution-family}, and 
 \citealt{sinnott1915evolution}).  Among the 748 genera with at least 10
 records, 395 are entirely woody, 268 are entirely herbaceous, and only
 58 have between 10\% and 90\% woody species. Qualitatively similar patterns
@@ -430,7 +430,7 @@ respondents to indicate their level of familiarity with plants, level
 of formal training, and the country in which they received their
 training. We sent out the survey to several internet mailing lists and
 social media websites (see Appendix and Supplementary Figures
-\ref{fig:survey-text} \ref{fig:survey-text-port} for details on the
+\ref{fig:survey-text} and  \ref{fig:survey-text-port} for details on the
 survey).
 
 \section{Results}
@@ -449,24 +449,25 @@ The different approaches generate different distributions of the
 per--genus percentage of woodiness (Figure
 \ref{fig:distribution-genera}), with a less strongly bimodal
 distribution using the ``weak prior'' approach. (See Figures
-\ref{fig:distribution-family} and \ref{fig:distribution-genera} 
+\ref{fig:distribution-family} and \ref{fig:distribution-order} 
 for the distributions at the level of families and orders, respectively.) 
 However, the two different approaches (strong
 versus weak priors) led to similar phylogenetic distributions of
 estimated woodiness (Figure \ref{fig:phylogeny} versus Figure
-\ref{fig:phylogeny-supp}), differing only in detail. We have compiled
+\ref{fig:phylogeny-supp}), differing only in the details. We have compiled
 a table of the estimated number of woody species under both sampling
 approaches for all genera, families and orders included in our analysis.
 This is included in the Supplementary Material and is available on the 
 Dryad data repository (\textit{DOI to be added}).
 
-As stated above, neither of these approaches are ``correct''. However,
+As stated above, neither of these sampling approaches are ``correct''. However,
 as the observed distribution of woodiness fraction among genera is
 itself strongly bimodal, we believe that the true result lies closer
 to 45\% than to 47\%.  A more sophisticated hierarchical modelling
 approach could lead to a more precise answer, but we feel that our
 values probably span the range of estimates that such an approach
-would generate.
+would generate. And in any case, we felt that addressing a simple question
+warranted a simple approach.  
 
 % #rstats
 % n.spp <- sum(res.b$order$N)
@@ -476,7 +477,7 @@ would generate.
 % c(tmp["b.w",1], tmp["h.w",1]) - c(tmp["b",1], tmp["h",1])
 % tmp["b.h",] - tmp["b",]
 Different codings of variable  significantly moved our estimates,
-despite affecting a small minorority of species.  Coding all
+despite affecting a small minority of species.  Coding all
 variable species as woody, our estimates 
 % #rstats
 % round(tmp["b.w",] - tmp["b",], 2)
@@ -525,13 +526,14 @@ to 31.7 \% with them included).
 Restricting survey responses to only respondants at least ``Familiar''
 with plants, and with at least an undergraduate degreee in botany or a
 related field (143 responses), only increased the mean survey estimate
-to 32.9%.
+to 32.9 \%.
 % #rstats
 % i <- d.survey$Familiarity <= "Familiar" &
 %     d.survey$Training <= "Undergraduate degree in botany or a related field"
 % i[is.na(i)] <- FALSE
 % sum(i) # 143
 % mean(d.survey$Estimate[i]) # 32.9%
+
 Before carrying out the survey, we had hypothesised that researchers
 from tropical regions may perceive the world as woodier than
 researchers from more temperate regions due to the latitudinal
@@ -652,7 +654,7 @@ Methods which rely on a specific model
 of evolution may be susceptible to the problem that if the sampling is biased with respect
 to the character states, the parameter estimates themselves will be biased, leading 
 to incorrect estimation of the states for the remaining species. As accounting for sampling bias
-was the imputus for developing our approach, it seems problematic to use
+was the imputus for developing our approach, it seems undesirable to use
 a method which necessarily assumes random sampling of trait values.
 
 The availability of global databases for genetic and functional traits is one of the recent key developments in ecology and evolutionary research.  These databases have the promise of allowing researchers to address broad--reaching and long--standing questions by drawing on huge amounts of accumulated research.  
@@ -712,7 +714,7 @@ from the GBIF dataportal\\
 (\texttt{http://code.google.com/p/gbif-dataportal/wiki/ConfiguringGeoserver}),
 and converted these into ``tropical'' and ``temperate'' using an
 absolute latitude of 23$^\circ$~26$^\prime$.  All analyses were
-conducted with R version 2.15.1 \citep{R}.
+conducted with R version 3.0.2 \citep{R}.
 
 
 \bibliographystyle{jecol}
