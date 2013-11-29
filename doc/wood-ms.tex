@@ -67,7 +67,8 @@ $^{11}$ School of BEES, The University of New South Wales, Sydney 2052 NSW, Aust
 \singlespacing
 \begin{enumerate}
 \item The question posed by the title of this paper is a basic one,
-  and it is surprising that the answer is not known.  A major
+  and it is surprising that the answer is not known. Recently assembled
+  trait datasets provide an opportunity to address this. However, a major
   challenge in the scaling of functional datasets to the global
   scale is sampling bias.  Although we currently know the growth
   form of many species, these data are not a random sample of global
@@ -134,7 +135,8 @@ markedly different rates of molecular evolution \citep{SmithDonoghue}.
 However, we have no idea about what proportion of species in the world
 are actually woody.
 
-Functional trait datasets are almost without exception biased.  
+Recently assembled functional trait datasets provide an opportunity to address this
+question. However, such datasets are almost without exception biased.  
 Researchers collect data for specific questions on a local scale, and
 assembling these local datasets creates a useful resource \citep{kattge2011try}, 
 but as with GenBank's assembly of genetic data \citep{smith2011understanding},
@@ -453,8 +455,7 @@ are woody according to the above definition.  We also asked
 respondents to indicate their level of familiarity with plants, level
 of formal training, and the country in which they received their
 training. We sent out the survey to several internet mailing lists and
-social media websites (see Appendix and Supplementary Figures
-\ref{fig:survey-text} and  \ref{fig:survey-text-port} for details on the
+social media websites (see Appendix for details on the
 survey).
 
 \section{Results}
@@ -468,7 +469,7 @@ Specifically, using our ``strong prior'' sampling approach (binomial
 distribution) we estimated 45.0\% of species are woody (95\%
 confidence interval of 44.7--45.3\%) and with the ``weak prior''
 (hypergeometric distribution) approach we estimated 47.2\% (95\% CI of
-46.6--47.8\%).
+46.6--47.8\%) (Figure \ref{fig:distribution-raw}).
 %
 The different approaches generate different distributions of the
 per--genus percentage of woodiness (Figure
@@ -642,7 +643,7 @@ significant numbers of both woody and herbaceous species (Figure
 trait.  A significant, but unaccounted for, source of error is the
 likely nonrandom woodiness of undiscovered species. We would predict
 that there are likely more herbs to discovered than woody plants;
-larger genera tend to be more herbaceous \ref{fig:variability} and we
+larger genera tend to be more herbaceous (Figure \ref{fig:variability}) and we
 think it is more likely that new species are yet to be described in
 these large groups.  In principle, rarefaction analysis could estimate
 the number of species remaining to be discovered in different groups,
@@ -679,14 +680,15 @@ differ, both approaches are model--based in impute missing species
 based on the fitted parameters of phylogenetic models estimated from
 the species already in the database. This is conceptually different
 from our approach; we do not assume any model for the evolution of
-woodiness, such as the `Mk' model \citep{Pagel1994}.  Methods which
-rely on a specific model of evolution may be susceptible to the
-problem that if the sampling is biased with respect to the character
+woodiness, such as the `Mk' model \citep{Pagel1994}. Both types of
+approaches --- using taxonomic categories (this study) versus modeling
+trait evolution along a phylogeny --- have advantages and disadvantages.
+One disadvantage of a modeling--based approaches is that if the sampling is 
+biased with respect to the character
 states, the parameter estimates themselves will be biased, leading to
-incorrect estimation of the states for the remaining species. As
-accounting for sampling bias was the impetus for developing our
-approach, it seems undesirable to use a method which necessarily
-assumes random sampling of trait values.
+incorrect estimation of the states for the remaining species. While our
+approach avoids this issue, we ignore potentially useful information
+on the phylogenetic relationships within genera.
 
 The availability of global databases for genetic and functional traits
 is one of the recent key developments in ecology and evolutionary
@@ -727,7 +729,8 @@ section Earth and Life Sciences (ALW) grant nr. 820.01.016.
 \section{Appendix: Survey details}
 %
 The survey we created is included as a Supplementary Figure to
-this paper (see \ref{fig:survey-text}). We distributed the survey to the 
+this paper (see \ref{fig:survey-text} and \ref{fig:survey-text-port}).
+We distributed the survey to the 
 community via several electronic
 mailing lists with wide circulation among biologists: \emph{EvolDir},
 \emph{ECOLOG}, \emph{\mbox{r-sig-phylo}}, \emph{Taxacom},
@@ -846,27 +849,60 @@ conducted with R version 3.0.2 \citep{R}.
     genera (blue lines), while using the strong prior approach
     generates a strongly bimodal distribution (red lines).}
   \label{fig:distribution-order}
-\end{figure}    
-
-\begin{figure}[p]
-  \centering
-  \vspace{-20ex}
-  \includegraphics[scale=0.7]{figs/Survey_supplemental}
-  \caption{(Supplementary) English--language version of the survey we
-    distributed}
-  \label{fig:survey-text}
 \end{figure}
 
 \begin{figure}[p]
   \centering
-  \vspace{-20ex}
-  \includegraphics[scale=0.8]{figs/Survey_supplemental_Portuguese}
-  \caption{(Supplementary) Portuguese--language version of the survey we
-    distributed}
-  \label{fig:survey-text-port}
+  \includegraphics{figs/distribution-raw}
+  \caption{(Supplementary) The posterior probability distribution for
+    the proportion of the world's flora that is woody, using our two
+    sampling approaches.  The red (left) distribution samples missing
+    species using the strong prior approach (binomial distribution),
+    while the blue distribution (right) samples missing species using
+    the weak prior approach (hypergeometric distribution).}
+  \label{fig:distribution-raw}
 \end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics{figs/fraction-on-phylogeny-supp}
+
+  \caption{(Supplementary)
+    \textit{This is Figure \ref{fig:phylogeny} using the alternative
+      sampling approach.}\\
+    %
+    Distribution of the fraction of woodiness among orders of vascular
+    plants.  Each tip represents an order, with the fraction of
+    circumference proportional to the square root of the number of
+    recognised species in that order (data from accepted names in
+    \citet{ThePlantList}).  The bars around the perimeter indicate the
+    percentage of woody (black) and herbaceous (white) species,
+    estimated using the ``weak prior'' (hypergeometric) approach.
+    Using the ``strong prior'' (binomial) approach generally leads to
+    an estimated percentage that is further away from 50\% (see
+    Figures \ref{fig:phylogeny} and \ref{fig:distribution-genera}).
+    Phylogeny from \citep{Zanne}.  Orders not placed by APG-III
+    \citep{APG3} are not displayed.}
+  \label{fig:phylogeny-supp}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics{figs/distribution-raw-errors}
+  \caption{(Supplementary) The effect of different coding on estimates
+    of the fraction of species that are woody, under the strong prior
+    approach (binomial; panel A) and weak prior approach
+    (hypergeometric; panel B).  The dark distributions are the results
+    from our main analysis (Figure \ref{fig:distribution-raw}).
+    Distributions to the left (with lower estimates of woodiness) code
+    all species with any record of herbaceousness or variability as
+    herbaceous.  Similarly, distributions to the right (with higher
+    estimates of woodiness) code all species with any record of
+    woodiness or variability as woody.}
+  \label{fig:distribution-raw-errors}
+\end{figure}
+    
       
-
 \begin{figure}[p]
   \centering
   \includegraphics{figs/survey-distribution}
@@ -896,81 +932,52 @@ conducted with R version 3.0.2 \citep{R}.
   \label{fig:survey-distribution}
 \end{figure}
 
-\begin{figure}[p]
-  \centering
-  \includegraphics{figs/fraction-on-phylogeny-supp}
 
-  \caption{(Supplementary)
-    \textit{This is Figure \ref{fig:phylogeny} using the alternative
-      sampling approach.}\\
-    %
-    Distribution of the fraction of woodiness among orders of vascular
-    plants.  Each tip represents an order, with the fraction of
-    circumference proportional to the square root of the number of
-    recognised species in that order (data from accepted names in
-    \citet{ThePlantList}).  The bars around the perimeter indicate the
-    percentage of woody (black) and herbaceous (white) species,
-    estimated using the ``weak prior'' (hypergeometric) approach.
-    Using the ``strong prior'' (binomial) approach generally leads to
-    an estimated percentage that is further away from 50\% (see
-    Figures \ref{fig:phylogeny} and \ref{fig:distribution-genera}).
-    Phylogeny from \citep{Zanne}.  Orders not placed by APG-III
-    \citep{APG3} are not displayed.}
-  \label{fig:phylogeny-supp}
-\end{figure}
 
-\begin{figure}[p]
-  \centering
-  \includegraphics{figs/distribution-raw}
-  \caption{(Supplementary) The posterior probability distribution for
-    the proportion of the world's flora that is woody, using our two
-    sampling approaches.  The red (left) distribution samples missing
-    species using the strong prior approach (binomial distribution),
-    while the blue distribution (right) samples missing species using
-    the weak prior approach (hypergeometric distribution).}
-  \label{fig:distribution-raw}
-\end{figure}
 
-\begin{figure}[p]
-  \centering
-  \includegraphics{figs/distribution-raw-errors}
-  \caption{(Supplementary) The effect of different coding on estimates
-    of the fraction of species that are woody, under the strong prior
-    approach (binomial; panel A) and weak prior approach
-    (hypergeometric; panel B).  The dark distributions are the results
-    from our main analysis (Figure \ref{fig:distribution-raw}).
-    Distributions to the left (with lower estimates of woodiness) code
-    all species with any record of herbaceousness or variability as
-    herbaceous.  Similarly, distributions to the right (with higher
-    estimates of woodiness) code all species with any record of
-    woodiness or variability as woody.}
-  \label{fig:distribution-raw-errors}
-\end{figure}
 
 \begin{figure}[p]
   \centering
   \includegraphics[scale=0.7]{figs/variability}
   \caption{(Supplementary) The relationship between the size of a genus
-and it's chance of being ``variable'' for woodiness.
+and its chance of being ``variable'' for woodiness.
 %
 We plotted the relationship between the level of variablitiy in the
 dataset (from all of a single--type to equal numbers of woody and
 herbaceous species) against the number of species in a genus (panel A)
 and the number of species with known state (panel B). Larger genera
-gend to be more variable although this pattern is not strong. We then
+tend to be more variable although this pattern is not strong. We then
 coded all genera as being either variable or all of a single--type and
 examined the relationship between this binary characterization and the
-number of species per genera (panel C) and the number for which we
+number of species per genus (panel C) and the number for which we
 have known states (panel D). Using the binary characterization, it is
 clear that large genera have a higher probability of being variable,
 even if few species actually vary (compare with panels A and
-B). Though there is a great deal of scatter, larger genera tend to be
+B). Though there is a great deal of scatter, larger genera also tend to be
 more herbaceous than woody genera (panel E) but the genera for which
 we have more data tend to be more woody (panel F). This shows that the
 available data is generally biased towards woody species.  In all
-panels, the red line is the average over 20 (left column) of 15 (right
+panels, the red line is a moving average over 20 (left column) of 15 (right
 column) equally spaced bins on this log axis.}
   \label{fig:variability}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \vspace{-20ex}
+  \includegraphics[scale=0.7]{figs/Survey_supplemental}
+  \caption{(Supplementary) English--language version of the survey we
+    distributed}
+  \label{fig:survey-text}
+\end{figure}
+
+\begin{figure}[p]
+  \centering
+  \vspace{-20ex}
+  \includegraphics[scale=0.8]{figs/Survey_supplemental_Portuguese}
+  \caption{(Supplementary) Portuguese--language version of the survey we
+    distributed}
+  \label{fig:survey-text-port}
 \end{figure}
 
 \begin{table}[p]
