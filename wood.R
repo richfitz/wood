@@ -139,6 +139,7 @@ do.simulation <- function(dat.g, nrep, with.replacement) {
        overall=overall, overall.p=overall.p, total=total)
 }
 
+set.seed(1)
 res.b <- do.simulation(dat.g, 1000, TRUE)  # binomial - with replacement
 res.h <- do.simulation(dat.g, 1000, FALSE) # hypergeometric - without
 
@@ -263,8 +264,8 @@ fig.fraction.by.group <- function(res.b, res.h, dat.g, level="genus") {
   hist.outline(h.b, col=cols[1], lwd=lwd)
   hist.outline(h.h, col=cols[2], lwd=lwd)
   
-  legend("topleft", c("Replacement (strong prior)",
-                      "No replacement (weak prior)"),
+  legend("topleft", c("Strong prior (binomial)",
+                      "Weak prior (hypergeometric)"),
          col=cols, lty=1, bty="n", cex=.85, inset=c(.1, 0), lwd=lwd)
   label(.02, .96, 2)
 }
@@ -425,6 +426,93 @@ fig.variability <- function(dat.g) {
   abline(lm(v ~ K, dat.g, subset=K >= 10), col="red")
 }
 
+##+ variability,fig.cap="Variability by genus size"
+fig.variability(dat.g)
+
+fig.variability <- function(dat.g) {
+  dat.g$p.rare <- (0.5 - abs(dat.g$p - 1/2)) * 2
+  dat.g$variable <- dat.g$p.rare > 0
+
+  sub <- dat.g[!is.nan(dat.g$p),]
+
+  ## Breaks for the moving average:
+  br.N <- log.seq.range(sub$N, 20)
+  br.K <- log.seq.range(sub$K, 15)
+
+  ## Classify points:
+  i.N <- findInterval(sub$N, br.N, all.inside=TRUE)  
+  i.K <- findInterval(sub$K, br.K, all.inside=TRUE)  
+
+  ## Midpoints for plotting.
+  mid.N <- (br.N[-1] + br.N[-length(br.N)])/2
+  mid.K <- (br.K[-1] + br.K[-length(br.K)])/2
+
+  m.N <- tapply(sub$p.rare, i.N, mean)
+  m.K <- tapply(sub$p.rare, i.K, mean)
+  p.N <- tapply(sub$variable, i.N, mean)
+  p.K <- tapply(sub$variable, i.K, mean)
+  f.N <- tapply(sub$p, i.N, mean)
+  f.K <- tapply(sub$p, i.K, mean)
+
+  pch <- 19
+  cex <- 0.5
+  col <- "#00000066"
+
+  op <- par(oma=c(4.1, 4.1, 0, 0),
+            mar=c(1.1, 1.1, .5, .5),
+            mfrow=c(3, 2))
+  
+  plot(p.rare ~ N, sub, pch=pch, cex=cex, col=col, log="x",
+       axes=FALSE)
+  lines(m.N ~ mid.N, col="red")
+  axis(1, labels=FALSE) 
+  axis(2, c(0, 1), c("Single type", "50:50"), las=1)
+  mtext("Variability", 2, 3)
+  box(bty="l")
+  label(.02, .96, 1)
+
+  plot(p.rare ~ K, sub, pch=pch, cex=cex, col=col, log="x",
+       axes=FALSE)
+  lines(m.K ~ mid.K, col="red")
+  axis(1, labels=FALSE) 
+  axis(2, c(0, 1), labels=FALSE)
+  box(bty="l")
+  label(.02, .96, 2)
+
+  plot(variable ~ N, sub, pch=pch, cex=cex, col=col, log="x",
+       bty="l", las=1, axes=FALSE)
+  lines(p.N ~ mid.N, col="red")
+  axis(1, labels=FALSE)
+  axis(2, las=1)
+  mtext("Probability genus is variable", 2, 3) 
+  box(bty="l") 
+  label(.02, .96, 3)
+
+  plot(variable ~ K, sub, pch=pch, cex=cex, col=col, log="x",
+       bty="l", yaxt="n", las=1, axes=FALSE)
+  lines(p.K ~ mid.K, col="red")
+  axis(1, labels=FALSE)
+  axis(2, labels=FALSE) 
+  box(bty="l") 
+  label(.02, .96, 4)
+
+  plot(p ~ N, sub, pch=pch, cex=cex, col=col, log="x",
+       bty="l", las=1)
+  lines(f.N ~ mid.N, col="red")
+  mtext("Number of species in genus", 1, 3)
+  mtext("Proportion of species woody", 2, 3)
+  label(.02, .96, 3)
+
+  plot(p ~ K, sub, pch=pch, cex=cex, col=col, log="x",
+       bty="l", yaxt="n", las=1)
+  lines(f.K ~ mid.K, col="red")
+  axis(2, labels=FALSE)
+  mtext("Number of species with known state", 1, 3)
+  label(.02, .96, 4)
+}
+
+
+
 ## Produce versions for publication:
 if (!interactive()) {
   to.pdf("doc/figs/fraction-by-genus.pdf", 6, 6,
@@ -452,6 +540,6 @@ if (!interactive()) {
   to.pdf("doc/figs/survey-distribution.pdf", 6, 5,
          fig.survey.distribution(d.survey, res.b, res.h))
 
-  to.pdf("doc/figs/variability.pdf", 8, 6,
+  to.pdf("doc/figs/variability.pdf", 5, 8,
          fig.variability(dat.g))
 }

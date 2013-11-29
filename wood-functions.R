@@ -533,3 +533,6 @@ mix <- function(cols, col2, p) {
   m3 <- (m * p + m2 * (1-p))/255
   rgb(m3[1,], m3[2,], m3[3,])
 }
+
+log.seq.range <- function(x, n)
+  exp(seq(log(min(x)), log(max(x)), length=n))
