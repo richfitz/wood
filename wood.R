@@ -81,7 +81,8 @@ sim <- function(x, nrep, with.replacement=TRUE, p=1/20) {
   
   rownames(w) <- x$genus
 
-  summarise.sim(w, x[c("order", "family", "genus", "N")])
+  summarise.sim(w, x[c("order", "family", "genus",
+                       "W", "V", "H", "N", "K")])
 }
 
 ## This collects up the results at different taxonomic levels.
@@ -91,6 +92,8 @@ summarise <- function(x, p=1/20)
 summarise.sim <- function(w, info) {
   order <- info$order[[1]]
 
+  info.cols <- c("W", "V", "H", "N", "K")
+
   ## Genus is easy;
   w.g <- cbind(info, t(apply(w, 1, summarise)))
 
@@ -98,13 +101,14 @@ summarise.sim <- function(w, info) {
   w.f <- do.call(rbind,
                  lapply(split(as.data.frame(w), info$family), colSums))
   w.f <- t(apply(w.f, 1, summarise))
-  w.f <- data.frame(order=order, family=rownames(w.f),
-                    N=as.integer(tapply(info$N, info$family, sum)),
+  w.f <- data.frame(order=order,
+                    aggregate(info[info.cols], info["family"], sum),
                     w.f, stringsAsFactors=TRUE)
   rownames(w.f) <- NULL
   
   ## Order is easy; we are guaranteed to have just one order here, so:
-  w.o <- data.frame(order=order, N=sum(info$N),
+  w.o <- data.frame(order=order,
+                    as.data.frame(t(colSums(info[info.cols]))),
                     t(summarise(colSums(w))), stringsAsFactors=FALSE)
 
   ret <- list(genus=w.g, family=w.f, order=w.o)
@@ -404,31 +408,7 @@ fig.survey.distribution <- function(d.survey, res.b, res.h) {
 ##+ survey_distribution,fig.cap="Distribution of survey results"
 fig.survey.distribution(d.survey, res.b, res.h)
 
-## In response to a reviewer; does the size of a genus predict the
-## probability of a genus being variable?
-fig.variability <- function(dat.g) {
-  op <- par(oma=c(0, 3.1, 0, 0), mar=c(4.1, 1.1, .5, .5),
-            mfrow=c(1, 2))
-  v <- (0.5 - abs(dat.g$p - 1/2)) * 2
-  pch <- 19
-  cex <- 0.5
-  col <- "#00000066"
-  plot(v ~ N, dat.g, yaxt="n", pch=pch, cex=cex, col=col,
-       xlab="Number of species in genus")
-  mtext("Variability", 2, line=2.75, xpd=NA)
-  axis(2, c(0, 1), c("Single type", "50:50"))
-  abline(lm(v ~ N, dat.g))
-  abline(lm(v ~ N, dat.g, subset=N >= 10), col="red")
-
-  plot(v ~ K, dat.g, yaxt="n",  pch=pch, cex=cex, col=col,
-       xlab="Number of species with known state", ylab="")
-  abline(lm(v ~ K, dat.g))
-  abline(lm(v ~ K, dat.g, subset=K >= 10), col="red")
-}
-
-##+ variability,fig.cap="Variability by genus size"
-fig.variability(dat.g)
-
+## TODO: labels aren't working here.
 fig.variability <- function(dat.g) {
   dat.g$p.rare <- (0.5 - abs(dat.g$p - 1/2)) * 2
   dat.g$variable <- dat.g$p.rare > 0
@@ -511,7 +491,46 @@ fig.variability <- function(dat.g) {
   label(.02, .96, 4)
 }
 
+##+ variability,fig.cap="Variability by genus size"
+fig.variability(dat.g)
 
+## Export tables
+write.output <- function(d, type) {
+  for (tax in c("genus", "family", "order"))
+    write.csv(d[[tax]],
+              file.path("output", sprintf("%s-%s.csv", tax, type)),
+              row.names=FALSE)
+}
+## Core data sets:
+write.output(res.b, "binomial-strong-prior")
+write.output(res.h, "hypergeometric-weak-prior")
+
+## Extra data sets:
+write.output(res.b.w, "binomial-strong-prior-wood-biased")
+write.output(res.h.w, "hypergeometric-weak-prior-wood-biased")
+write.output(res.b.h, "binomial-strong-prior-herb-biased")
+write.output(res.h.h, "hypergeometric-weak-prior-herb-biased")
+
+## Meta data:
+metadata <- 
+  list(order="Taxonomic order",
+       family="Taxonomic family",
+       genus="Taxonomic genus",
+       W="Number of species known to be woody",
+       V="Number of species known to be variable",
+       H="Number of species known to be herbaceous",
+       N="Estimate of the number of species in the genus/family/order",
+       K="Number of species with known state (W + H)",
+       mean="Mean estimated number of woody species",
+       lower="0.025 quantile of estimated number of woody species",
+       upper="0.975 quantile of estimated number of woody species",
+       p.mean="Mean estimated fration of woody species",
+       p.lower="0.025 quantile of estimated fraction of woody species",
+       p.upper="0.975 quantile of estimated fraction of woody species")
+metadata <- data.frame(column=names(metadata),
+                       description=unlist(metadata),
+                       stringsAsFactors=FALSE)
+write.csv(metadata, "output/metadata.csv", row.names=FALSE)
 
 ## Produce versions for publication:
 if (!interactive()) {
