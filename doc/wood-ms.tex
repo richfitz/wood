@@ -290,9 +290,9 @@ estimate of woodiness.
 % sum(dat.g$K) #  37494 -- known vascular
 % sum(dat.g$N) # 284732 -- total vascular
 % sum(dat.g$K) / sum(dat.g$N) # 0.13 -- fraction known
-Conversely, systematic under-sampling of tropical species, believed to
-be more woody than temperate species \citep{Molesheihgt}, would bias
-the global woodiness estimate downwards.
+Conversely, systematic under--sampling of tropical species would bias
+the global woodiness estimate downwards, as tropical floras are thought to harbour
+a greater proportion of woody species than temperate ones \citep{Molesheihgt}.
 
 % WKC: After doing all that annoying dataset checking for Amy's paper
 % I figured out where the bias is from: there are several forestry
@@ -388,7 +388,7 @@ In cases where all known species are woody (or herbaceous as in
 \textit{Microcoelia}) this will assign all unknown species to be woody
 (or herbaceous). For such genera, increasing the number of unobserved
 species will not increase the uncertainty in the estimte, in contrast
-to the weak prior (hypergeometric) sampling approach.
+to the weak prior sampling approach.
 %
 We therefore see the binomial sampling approach as corresponding to a
 very strong prior on the bimodal distribution of woodiness among
@@ -466,16 +466,16 @@ to be between 45\% to 48\%.
 % #rstats
 % round(100*res.b$overall.p, 1) # 45.0 (44.7 -- 45.3)
 % round(100*res.h$overall.p, 1) # 47.2 (46.6 -- 47.9)
-Specifically, using our ``strong prior'' sampling approach (binomial
+Specifically, using our strong prior sampling approach (binomial
 distribution) we estimated 45.0\% of species are woody (95\%
-confidence interval of 44.7--45.3\%) and with the ``weak prior''
+confidence interval of 44.7--45.3\%) and with the weak prior
 (hypergeometric distribution) approach we estimated 47.2\% (95\% CI of
 46.6--47.8\%) (Figure \ref{fig:distribution-raw}).
 %
 The different approaches generate different distributions of the
 per--genus percentage of woodiness (Figure
 \ref{fig:distribution-genera}), with a less strongly bimodal
-distribution using the ``weak prior'' approach. (See Figures
+distribution using the weak prior approach. (See Figures
 \ref{fig:distribution-family} and \ref{fig:distribution-order} 
 for the distributions at the level of families and orders, respectively.) 
 However, the two different approaches (strong
@@ -677,7 +677,8 @@ for multi--state categorical or continuous traits.
 Recently two related approaches have been developed to address the
 similar problem of missing data in trait databases, both focusing on
 continuous traits \citep{Swenson2013, PEM}.  While their details
-differ, both approaches are model--based in impute missing species
+differ, both approaches are model--based in that they impute trait values
+for missing species
 based on the fitted parameters of phylogenetic models estimated from
 the species already in the database. This is conceptually different
 from our approach; we do not assume any model for the evolution of
@@ -689,7 +690,7 @@ if the sampling is biased with respect to the character states, the
 parameter estimates themselves will be biased, leading to incorrect
 estimation of the states for the remaining species. While our approach
 avoids this issue, we ignore potentially useful information on the
-phylogenetic relationships within genera, and requires that taxonomic
+phylogenetic relationships within genera, and assume that taxonomic
 rankings are relevant to the trait in question.
 
 The availability of global databases for genetic and functional traits
