@@ -169,10 +169,23 @@ We used a recently assembled database with growth--form data for
 angiosperms), which is the largest such database assembled to date
 \citep{Zanne}.
 %
-This database uses a ``functional'' definition of woodiness; woody
-species have a prominent aboveground stem through time, and herbaceous
-species lack such a stem \citep[see an early use of this definition
-by][]{gray1887elements}.  Note that in addition to species producing
+This database uses a functional definition of woodiness; woody species
+have a prominent aboveground stem that persists through time and changing
+environmental conditions and herbaceous species lack such a stem --- 
+a definition originally suggested by Asa Gray \citeyearpar{gray1887elements}. 
+\citet{Zanne}
+chose this simple definition because it best characterized the functional
+aspect of growth form that they investigated allowing them to compare 
+species that maintain an aboveground stem through freezing conditions to 
+ephemeral species that avoid freezing conditions.  More precise definitions 
+that rely on lignin content and/or secondary vascular tissue from a bifacial
+cambium are problematic because there are many exceptions depending on tissue 
+type, times of development, or environmental conditions 
+\citep{Groover2005, Spicer2010, Rowe2012}.  
+Because our analyses --- and survey --- were based on this database, 
+we present this functional definition of woodiness here for clarity 
+(see \citet{Zanne} for a discussion of the various definitions of woodiness, 
+their merits, and pitfalls).  Note that in addition to species producing
 true wood (i.e., consisting of secondary xylem), this definition
 classifies, among other groups, palms, tree ferns and bamboo as
 woody.
@@ -245,7 +258,7 @@ and 21,841 woody species.
 % sum(dat.g$H) # 15653 -- herbs
 % sum(dat.g$W) # 21841 -- woody species
 This included records from all flowering plant orders currently
-accepted by APG-III \citep{APG3} and those in the ferns taxonomy from
+accepted by APG-III \citep{APG3} and the fern taxonomy of
 \citet{apweb}, covering 14,680 genera and 477 families.
 % #rstats
 % sapply(dat.g[c("genus", "family")], function(x) length(unique(x)))
@@ -360,8 +373,8 @@ strongly bimodal; most genera are either all-woody or all-herbaceous
 \citealt{sinnott1915evolution}).  Among the 748 genera with at least 10
 records, 395 are entirely woody, 268 are entirely herbaceous, and only
 58 have between 10\% and 90\% woody species. Qualitatively similar patterns
-hold at both the family and order levels, though the distribution
-becomes progressively less bimodal as one moves up taxonomic ranks 
+hold at both the level of family and order, though the distribution
+becomes progressively less bimodal as one moves up the taxonomic hierarchy 
 (Figures \ref{fig:distribution-family} and \ref{fig:distribution-order}). 
 As a result, knowing the state of a handful of species within a genus 
 can give a reasonable guess at the state of remaining species.
@@ -418,7 +431,7 @@ parameters.
 
 In addition to the number of species known to be woody and herbaceous,
 we also require an estimate of the number of species per genus.  We
-use the number of names within each genus in the Plant List
+used the number of accepted names within each genus in the Plant List
 \citep{ThePlantList} for this.
 
 For each genus, we sampled the states of unobserved species, from
@@ -427,7 +440,7 @@ the observed data for that genus.
 %
 For each sample we can then combine these estimates to compute the
 number (or fraction) of species that are woody at higher taxonomic
-level (family, order or vascular plants).  We repeated this sampling
+levels (family, order or vascular plants).  We repeated this sampling
 1,000 times to generate distributions of the number (or fraction) of
 species that are woody.
 %
@@ -472,7 +485,7 @@ confidence interval of 44.7--45.3\%) and with the weak prior
 (hypergeometric distribution) approach we estimated 47.2\% (95\% CI of
 46.6--47.8\%) (Figure \ref{fig:distribution-raw}).
 %
-The different approaches generate different distributions of the
+The different approaches generated different distributions of the
 per--genus percentage of woodiness (Figure
 \ref{fig:distribution-genera}), with a less strongly bimodal
 distribution using the weak prior approach. (See Figures
@@ -545,7 +558,7 @@ driven by respondents with little botanical familiarity (the ``What's
 a Plant?'' category), whose estimates tended to be lower (less woody)
 than the estimates from other categories. However, excluding those with
 respondents with little familiarity with plants had virtually no effect
-on the mean estimate of respondents (32.4\% excluding them as compared
+on the mean estimate of respondents (32.4\% excluding this category as compared
 to 31.7\% with them included).
 % #rstats
 % i <- !is.na(d.survey$Familiarity) & d.survey$Familiarity != "What's a Plant?"
@@ -615,7 +628,7 @@ biased estimate.
 % TODO (RGF): I don't like this paragraph much - we should work out
 % what we are try to say more.
 We also found that the way in which we handled variable species
-significantly alters the estimates.  Changing the state of such a
+significantly altered the estimates.  Changing the state of such a
 relatively small number of species has the potential to alter
 inferences made at a global scale is rather surprising.  Viewed more
 broadly, this result only serves to underscore the general perspective
@@ -643,7 +656,7 @@ significant numbers of both woody and herbaceous species (Figure
 \ref{fig:distribution-genera}) reinforces the importance of this
 trait.  A significant, but unaccounted for, source of error is the
 likely nonrandom woodiness of undiscovered species. We would predict
-that there are likely more herbs to discovered than woody plants;
+that there are likely more herbs to be discovered than woody plants;
 larger genera tend to be more herbaceous (Figure \ref{fig:variability}) and we
 think it is more likely that new species are yet to be described in
 these large groups.  In principle, rarefaction analysis could estimate
@@ -655,7 +668,7 @@ saturation, which is required for such an analysis.
 While we have focused on one trait, sampling biases are pervasive in
 ecological datasets, and need to be addressed.  Global databases of
 functional traits \citep[e.g., TRY;][]{kattge2011try} are central to
-biodiversity research, but through no fault of database collator they
+biodiversity research, but through no fault of the database collator they
 are inevitably biased in terms of taxonomic breadth and this may have
 serious consequences for the reliability of inferences drawn from
 them.  For example, for woodiness the economic importance of forestry
@@ -670,7 +683,7 @@ species.  Inferring the global frequency of any trait would face the
 same problem.  For example, the ecologically important traits of
 nitrogen--fixing, mycorrhizal symbioses and pollinator syndrome are
 strongly taxonomically structured, and we would expect raw estimates
-to be biased in the same way as woodiness was.  Our approach was
+to be biased in the same way that woodiness was.  Our approach was
 developed for binary traits but similar approaches could be developed
 for multi--state categorical or continuous traits.
 
