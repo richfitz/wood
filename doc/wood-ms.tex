@@ -154,7 +154,7 @@ woody?
 %
 We also sought to understand how well scientists were able to overcome this bias and make a reasonable estimate.  To do this 
 we took the unconventional approach of coupling our
-analysis with with an informal survey in which we asked our question
+analysis with an informal survey in which we asked our question
 to the broader community of botanists and other biologists.
 % 
 %DELETE OR MOVE:
@@ -239,16 +239,15 @@ database.
 % sum(multi)        # 313
 % nrow(tmp)         # 37961
 % mean(multi) * 100 # 0.8%
-Second, 507 species (1.3\%) were coded as variable, possibly in
-addition to other records of woodiness or herbaceousness.
+Second, 507 species (1.3\%) were coded as variable.
 % #rstats
 % sum(tmp[,"V"] > 0)  # 507
 % nrow(tmp)           # 37961
 % mean(tmp[,"V"] > 0) # 0.013
 % sum(tmp[,"V"] > 0 & rowSums(tmp[,c("H", "W")]) > 0) # 56 (of 507)
-Following \citet{beaulieuHiddenRates}, we coded species as ``woody''
+Following \citet{beaulieuHiddenRates}, we coded species in these groups as ``woody''
 or ``herbaceous'' when a majority of records were either ``woody'' or
-``herbaceous'', respectively.  As such, records of ``variable'' do not
+``herbaceous'', respectively, and for these species, records of ``variable'' do not
 contribute to the analysis.
 %
 Our final database for the main analysis contained 37,494 records with
@@ -501,7 +500,7 @@ approaches for all genera, families and orders included in our analysis.
 This is included in the Supplementary Material and is available on the 
 Dryad data repository (\textit{DOI to be added}).
 
-As stated above, neither of these sampling approaches are ``correct''. However,
+As stated above, neither of these sampling approaches is ``correct''. However,
 as the observed distribution of woodiness fraction among genera is
 itself strongly bimodal, we believe that the true result lies closer
 to 45\% than to 47\%.  A more sophisticated hierarchical modelling
@@ -517,7 +516,7 @@ warranted a simple approach.
 % tmp2 <- round(tmp, 2)
 % c(tmp["b.w",1], tmp["h.w",1]) - c(tmp["b",1], tmp["h",1])
 % tmp["b.h",] - tmp["b",]
-Different codings of variable  significantly moved our estimates,
+Different codings of variable species (see above) significantly moved our estimates,
 despite affecting a small minority of species.  Coding all
 variable species as woody, our estimates 
 % #rstats
@@ -543,7 +542,7 @@ and by 1.2\% to 45.9\% under a weak prior (Figure
 There was strikingly little consensus among researchers as to the
 percentage of species that are woody.  We received 292 responses from
 29 countries, with estimates that ranged from 1\% to 90\% with a mean
-of 31.7\% (Figure \ref{fig:survey-distribution}).  Our smallest
+of 31.7\% (Figure \ref{fig:survey-distribution}).  Our lowest
 estimate (45\% woody) is greater than 81\% of our survey estimates.
 % #rstats
 % nrow(d.survey)                   # 292
@@ -552,20 +551,20 @@ estimate (45\% woody) is greater than 81\% of our survey estimates.
 % mean(d.survey$Estimate)  # 31.7
 % mean(d.survey$Estimate < 45) # 0.81
 % mean(d.survey$Estimate < 100*res.b$overall.p[["mean"]]) # 0.83
-We found little effect of a respondent's level of training on their
+We found little effect of respondents' level of training on their
 estimate (Figure \ref{fig:survey}).  There was a significant effect of
 the respondent's familiarity with plants on the estimates, primarily
 driven by respondents with little botanical familiarity (the ``What's
-a Plant?'' category), whose estimates tended to be lower (less woody)
-than the estimates from other categories. However, excluding those with
+a Plant?'' category in the survey), whose estimates tended to be lower (less woody)
+than the estimates of those with more familiarity. However, excluding those of
 respondents with little familiarity with plants had virtually no effect
 on the mean estimate of respondents (32.4\% excluding this category as compared
 to 31.7\% with them included).
 % #rstats
 % i <- !is.na(d.survey$Familiarity) & d.survey$Familiarity != "What's a Plant?"
 % mean(d.survey$Estimate[i])
-Restricting survey responses to only respondants at least ``Familiar''
-with plants, and with at least an undergraduate degreee in botany or a
+Restricting survey responses to only respondents at least ``Familiar''
+with plants, and with at least an undergraduate degree in botany or a
 related field (143 responses), only increased the mean survey estimate
 to 32.9\%.
 % #rstats
@@ -601,7 +600,7 @@ analyses of data and their bias.
 %world is.  We find it very surprising that this most basic aspect of
 %plant natural history was not generally known.  
 %Fewer woody that we thought
-The respondents to the survey perceived there to be substantially
+The respondents to our survey perceived there to be substantially
 fewer woody species in the world than there probably are.  This
 herb--centric view of the world may arise from the importance of our
 (mostly herbaceous) cultivated crops, or the fact that people ---
@@ -631,10 +630,7 @@ biased estimate.
 We also found that the way in which we handled variable species
 significantly altered the estimates. That changing the state of such a
 relatively small number of species has the potential to alter
-inferences made at a global scale is rather surprising.  Viewed more
-broadly, this result only serves to underscore the general perspective
-of this paper that unaccounted for biases in trait databases can have
-``trickle--down'' effects on inferences made from them.
+inferences made at a global scale is rather surprising. 
 
 %Effects of sampling bias
 The effect of sampling bias within our database on the estimate is
@@ -666,15 +662,18 @@ but this is not possible for many plant clades \citep{costello2011};
 for many clades the ``collecting curve'' shows little sign of
 saturation, which is required for such an analysis.
 
-While we have focused on one trait, sampling biases are pervasive in
+Viewed more broadly, this result only serves to underscore the general perspective
+of this paper that unaccounted for biases in trait databases can have
+``trickle--down'' effects on inferences made from them. 
+Sampling biases are pervasive in
 ecological datasets, and need to be addressed.  Global databases of
 functional traits \citep[e.g., TRY;][]{kattge2011try} are central to
 biodiversity research, but through no fault of the database collator they
 are inevitably biased in terms of taxonomic breadth and this may have
 serious consequences for the reliability of inferences drawn from
 them.  For example, for woodiness the economic importance of forestry
-species likely leads to their over--sampling in this dataset.  This
-bias also affects many commonly used methods in ecological and
+species likely leads to their over--sampling in this dataset.  Such
+biases also affects many commonly used methods in ecological and
 evolutionary research
 \citep[e.g.,][]{ackerly2000taxon,nakagawa2008missing,pennell2013integrative,
   Pakeman2013} in addition to its well understood effects on
@@ -704,8 +703,7 @@ if the sampling is biased with respect to the character states, the
 parameter estimates themselves will be biased, leading to incorrect
 estimation of the states for the remaining species. While our approach
 avoids this issue, we ignore potentially useful information on the
-phylogenetic relationships within genera, and assume that taxonomic
-rankings are relevant to the trait in question.
+phylogenetic relationships within genera.
 
 The availability of global databases for genetic and functional traits
 is one of the recent key developments in ecology and evolutionary
@@ -786,7 +784,7 @@ conducted with R version 3.0.2 \citep{R}.
     The two different sampling approaches generate distributions that
     differ in their bimodality (panel B). When assuming species are
     sampled with replacement from some pool, but having no prior on
-    the fraction of woodiness within the pool generates a broad
+    the fraction of woodiness within the pool, generates a broad
     distribution with many polymorphic genera (blue lines), while
     sampling with replacement assuming that species are drawn from a
     pool of species that has a fraction of woody species equal to the
