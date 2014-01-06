@@ -107,7 +107,7 @@ $^{11}$ Evolution \& Ecology Research Centre, School of Biological, Earth and En
 \doublespacing
 \section{Introduction}
 
-The distinction between a woody and non-woody growth-form is
+The distinction between a woody and non--woody growth--form is
 probably the most profound contrast among terrestrial plants and
 ecosystems: the difference between a forest and a grassland is the
 presence or absence of wood. The recognition of the fundamental
@@ -125,7 +125,7 @@ lost many times in diverse groups, both extant and extinct
 \citep{judd1994}, often as an adaptation to freezing temperatures
 \citep{Zanne}; that it has also been gained many times,
 particularly on island systems \citep{Carlquist1974,Givnish1998};
-and that many different forms of pseudo-woody growth
+and that many different forms of pseudo--woody growth
 habit have appeared across groups that have lost true woodiness or
 diverged before true woodiness evolved \citep{Cornwellwood}.  We know
 about its mechanical properties and developmental pathways, its
@@ -157,9 +157,6 @@ we took the unconventional approach of coupling our
 analysis with an informal survey in which we asked our question
 to the broader community of botanists and other biologists.
 % 
-%DELETE OR MOVE:
-%The tremendous variety of answers in response suggests that at least for this problem overcoming bias requires more than just expert opinion.  
-%
 
 \section{Methods and Materials}
 
@@ -168,7 +165,7 @@ to the broader community of botanists and other biologists.
 We used a recently assembled database with growth--form data for
 49,061 vascular plant species (i.e., lycopods, ferns, gymnosperms and
 angiosperms), which is the largest such database assembled to date
-\citep{Zanne}.
+\citep[][available on the Dryad data repository; doi:10.5061/dryad.63q27/2]{Zanne}.
 %
 This database uses a functional definition of woodiness; woody species
 have a prominent aboveground stem that persists through time and changing
@@ -198,7 +195,7 @@ woody.
 One example of a sub-dataset (6\% of observations in the large
 dataset) came from Kew Royal Botanic Gardens dataset on growth form
 \citep{Kew}.  For the Kew dataset, the original 103 growth form
-categories was reduced to a binary classification.  Fifty--seven of
+categories was reduced to a binary classification.  57 of
 the 103 categories were sufficiently unambiguous to classify species
 as either woody or herbaceous according to our definition (see Table
 \ref{tab:kew} for specific decisions).  In addition, many other
@@ -209,7 +206,7 @@ were collected for a variety of research goals and have unknown and
 potentially large sampling biases.
 
 Because the effort to organise plant taxonomy, especially synonymy, is
-on-going, there was uncertainty regarding the status of many plant
+on--going, there was uncertainty regarding the status of many plant
 names.
 %
 To bring species binomials to a common taxonomy among datasets, names
@@ -261,7 +258,7 @@ and 21,841 woody species.
 % sum(dat.g$H) # 15653 -- herbs
 % sum(dat.g$W) # 21841 -- woody species
 This included records from all flowering plant orders currently
-accepted by APG--III \citep{APG3} and the fern taxonomy of
+accepted by APG III \citep{APG3} and the fern taxonomy of
 \citet{apweb}, covering 14,680 genera and 477 families.
 % #rstats
 % sapply(dat.g[c("genus", "family")], function(x) length(unique(x)))
@@ -433,9 +430,10 @@ parameters.
 % hist(quantile(c(0, 0, 0.1, 1), runif(10000)))
 
 In addition to the number of species known to be woody and herbaceous,
-we also require an estimate of the number of species per genus.  We
+we also require an estimate of the number of species per genus.  For this, we
 used the number of accepted names within each genus in the Plant List
-\citep{ThePlantList} for this.
+\citep{ThePlantList}. The taxonomic resources were compiled by \citet{Zanne}
+are on available on Dryad (doi:10.5061/dryad.63q27/1). 
 
 For each genus, we sampled the states of unobserved species, from
 either the hypergeometric or binomial distribution, parametrised from
@@ -447,7 +445,7 @@ levels (family, order or vascular plants).  We repeated this sampling
 1,000 times to generate distributions of the number (or fraction) of
 species that are woody.
 %
-The code and data to replicate this analysis are available on github
+The R code and data to replicate this analysis are available on github
 (\textit{link to be added, but archive provided for review}).
 
 \subsection{Survey}
@@ -546,8 +544,8 @@ and by 1.2\% to 45.9\% under a weak prior (Figure
 There was strikingly little consensus among researchers as to the
 percentage of species that are woody.  We received 292 responses from
 29 countries, with estimates that ranged from 1\% to 90\% with a mean
-of 31.7\% (Figure \ref{fig:survey-distribution}).  Our lowest
-estimate (45\% woody) is greater than 81\% of our survey estimates.
+of 31.7\% (Figure \ref{fig:survey-distribution}).  The lowest
+estimate from our analyses (45\% woody) is greater than 81\% of our survey estimates.
 % #rstats
 % nrow(d.survey)                   # 292
 % length(unique(d.survey$Country)) #  29
@@ -630,10 +628,6 @@ biased estimate.
 
 % TODO (RGF): I don't like this paragraph much - we should work out
 % what we are try to say more.
-We also found that the way in which we handled variable species
-significantly altered the estimates. That changing the state of such a
-relatively small number of species has the potential to alter
-inferences made at a global scale is rather surprising. 
 
 % WKC: I also don't like this paragraph as is
 %
@@ -642,6 +636,7 @@ inferences made at a global scale is rather surprising.
 % globally significant but still small relative to the effect of sampling bias.  I would also shift it down a bit in the discussion until after the sampling bias bit, as that 
 % really is our main message
 %
+%% MWP: Agree with you both. See if you like what I have done here.
 
 %Effects of sampling bias
 The effect of sampling bias within our database on the estimate is
@@ -654,6 +649,17 @@ primarily herbaceous --- the monocots and ferns
 nested within woody clades, and vice versa, which makes the
 combination of taxonomic and functional information crucial for
 answering this type of question.
+
+We also found that the way in which we handled variable species
+significantly altered the estimates. That changing the state of such a
+relatively small number of species has the potential to alter
+inferences made at a global scale is rather surprising. Two points are worth
+nothing here. First, we reiterate
+that our alternate coding schemes (all variable species coded as herbaceous and all 
+variable species coding as woody) are rather extreme and unlikely to be
+biologically realistic. Second, while these alternate coding schemes certainly affected
+the estimates, the magnitude of their effect is much less than
+that of the overall sampling bias in the original database.
 
 Higher--order classifications are at least as much a product of human
 pattern matching as biological processes.  Genera correspond to the
@@ -673,9 +679,6 @@ but this is not possible for many plant clades \citep{costello2011};
 for many clades the ``collecting curve'' shows little sign of
 saturation, which is required for such an analysis.
 
-Viewed more broadly, this result only serves to underscore the general perspective
-of this paper that unaccounted for biases in trait databases can have
-``trickle--down'' effects on inferences made from them. 
 Sampling biases are pervasive in
 ecological datasets, and need to be addressed.  Global databases of
 functional traits \citep[e.g., TRY;][]{kattge2011try} are central to
@@ -706,7 +709,8 @@ for missing species
 based on the fitted parameters of phylogenetic models estimated from
 the species already in the database. This is conceptually different
 from our approach; we do not assume any model for the evolution of
-woodiness, such as the `Mk' model \citep{Pagel1994}. Both types of
+woodiness, such as the `Mk' model \citep{Pagel1994}, which is commonly used
+to model discrete characters evolving on a phylogeny. Both types of
 approaches --- using taxonomic categories (this study) versus modeling
 trait evolution along a phylogeny --- have advantages and
 disadvantages.  One disadvantage of a modeling--based approach is that
@@ -714,15 +718,14 @@ if the sampling is biased with respect to the character states, the
 parameter estimates themselves will be biased, leading to incorrect
 estimation of the states for the remaining species. While our approach
 avoids this issue, we ignore potentially useful information on the
-phylogenetic relationships within genera.
-% also we ignore branch lengths
+phylogenetic relationships within genera and branch lengths separating lineages.
 
 The availability of global databases for genetic and functional traits
 is one of the recent key developments in ecology and evolutionary
 research.  These databases have the promise of allowing researchers to
 address broad--reaching and long--standing questions by drawing on
 huge amounts of accumulated research.  Just as Theophrastus' garden
-was a non-random sample of the Greek flora, our trait databases
+was a non--random sample of the Greek flora, our trait databases
 contain diverse biases; accounting for them will be important in
 making inferences about broad--scale ecological and evolutionary
 patterns and processes.
@@ -818,7 +821,8 @@ conducted with R version 3.0.2 \citep{R}.
     the ``weak prior'' (hypergeometric) approach generally leads to an
     estimated percentage that is closer to 50\% (see Figures
     \ref{fig:phylogeny-supp} and \ref{fig:distribution-genera}).
-    Phylogeny from \citep{Zanne}.  Orders not placed by APG--III
+    Phylogeny from \citet{Zanne} (available on Dryad; 
+    doi:10.5061/dryad.63q27/3). Orders not placed by APG III
     \citep{APG3} are not displayed.}
 \label{fig:phylogeny}
 \end{figure}
@@ -908,7 +912,8 @@ conducted with R version 3.0.2 \citep{R}.
     Using the ``strong prior'' (binomial) approach generally leads to
     an estimated percentage that is further away from 50\% (see
     Figures \ref{fig:phylogeny} and \ref{fig:distribution-genera}).
-    Phylogeny from \citep{Zanne}.  Orders not placed by APG--III
+    Phylogeny from \citet{Zanne} (available on Dryad; 
+    doi:10.5061/dryad.63q27/3). Orders not placed by APG III
     \citep{APG3} are not displayed.}
   \label{fig:phylogeny-supp}
 \end{figure}
