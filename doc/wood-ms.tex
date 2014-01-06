@@ -41,7 +41,7 @@ $^8$ Missouri Botanical Garden, PO Box 299, St Louis, MO 63166-0299\\
 $^9$ \texttt{dtank@uidaho.edu}\\
 $^{10}$ Department of Systems Ecology, VU University, 1081 HV
 Amsterdam, The Netherlands\\
-$^{11}$ School of BEES, The University of New South Wales, Sydney 2052 NSW, Australia
+$^{11}$ Evolution \& Ecology Research Centre, School of Biological, Earth and Environmental Sciences, University of New South Wales, Sydney 2052 NSW, Australia
 \texttt{w.cornwell@unsw.edu.au}}\\
 
 \vfill
@@ -71,7 +71,7 @@ $^{11}$ School of BEES, The University of New South Wales, Sydney 2052 NSW, Aust
   trait datasets provide an opportunity to address this. However, a major
   challenge in the scaling of functional datasets to the global
   scale is sampling bias.  Although we currently know the growth
-  form of many species, these data are not a random sample of global
+  form of tens of thousands of species, these data are not a random sample of global
   diversity; some clades are exhaustively characterised, while
   others we know little--to--nothing about.
   % 
@@ -137,12 +137,12 @@ However, we have no idea about what proportion of species in the world
 are actually woody.
 
 Recently assembled functional trait datasets provide an opportunity to address this
-question. However, such datasets are almost without exception biased.  
+question. However, such datasets are almost without exception biased samples of global diversity.  
 Researchers collect data for specific questions on a local scale, and
 assembling these local datasets creates a useful resource \citep{kattge2011try}, 
 but as with GenBank's assembly of genetic data \citep{smith2011understanding},
-the simple compilation of data is not an unbiased sample of global diversity, and 
-these biases will in turn bias downstream analyses.
+the simple compilation of data is not an unbiased sample, and 
+these initial sampling biases will in turn bias downstream analyses.
 %Possibly refer to the problems caused by bias
 Understanding and accounting for the biases in these datasets is a 
 important and necessary next step.
@@ -187,9 +187,11 @@ Because our analyses and survey were based on this database,
 we present this functional definition of woodiness here for clarity 
 (see \citet{Zanne} for a discussion of the various definitions of woodiness, 
 their merits, and pitfalls).  Note that in addition to species producing
-true wood (i.e., consisting of secondary xylem), this definition
+secondary xylem, this definition
 classifies, among other groups, palms, tree ferns and bamboo as
 woody.
+%
+%WKC be nice to stop using a completely unusable definition for "true wood", even if it's what's in textbooks currently
 %
 % #rstats
 % nrow(read.csv("data/zae/GlobalWoodinessDatabase.csv"))
@@ -249,6 +251,7 @@ Following \citet{beaulieuHiddenRates}, we coded species in these groups as ``woo
 or ``herbaceous'' when a majority of records were either ``woody'' or
 ``herbaceous'', respectively, and for these species, records of ``variable'' do not
 contribute to the analysis.
+%
 %
 Our final database for the main analysis contained 37,494 records with
 both information on woodiness and documented taxonomy --- 15,653 herbs
@@ -390,8 +393,8 @@ To model the other extreme of sampling, we used an approach where we
 computed the observed fraction of woody species ($p_w = n_w / (n_w +
 n_h)$) and sampled the state of the unobserved species using a
 binomial distribution, which represents the case of sampling
-with replacement, so that the probability that $x$ of the species
-are woody is
+with replacement. In this case the probability that $x$ of the species
+are woody is:
 \begin{equation}
   \Pr(x = k) = {N - n_w - n_h \choose k - n_w} 
   p^k (1-p)^{N - n_h - k}.
@@ -400,22 +403,22 @@ are woody is
 In cases where all known species are woody (or herbaceous as in
 \textit{Microcoelia}) this will assign all unknown species to be woody
 (or herbaceous). For such genera, increasing the number of unobserved
-species will not increase the uncertainty in the estimte, in contrast
+species will not increase the uncertainty in the estimate, in contrast
 to the weak prior sampling approach.
 %
 We therefore see the binomial sampling approach as corresponding to a
 very strong prior on the bimodal distribution of woodiness among
 genera, and we will refer to this as the ``strong prior'' approach
-because it strongly constrains the state of missing species.
-
-While neither of these approaches is ``correct'', they probably span
+because it more strongly constrains the state of missing species within genera with no known polymophism.
+While neither of these approaches is ``correct'', they % probably WKC: can we be stronger here and take out the probably? 
+span
 the extremes of possible outcomes.
 %
 In polymorphic genera the two approaches will give similar results,
 especially where the number of unknown species is relatively large.
 
 For genera where there was no information on woodiness for any
-spe\-cies, we sampled a fraction of species that might be woody from
+species, we sampled a fraction of species that might be woody from
 the empirical distribution of woodiness fractions \textit{among
   genera} within the same order. We did this after imputing the
 missing species values within those other genera. So, if a genus is
@@ -507,7 +510,8 @@ to 45\% than to 47\%.  A more sophisticated hierarchical modelling
 approach could lead to a more precise answer, but we feel that our
 values probably span the range of estimates that such an approach
 would generate. And in any case, we felt that addressing a simple question
-warranted a simple approach.  
+warranted a %(relatively)
+simple approach.  
 
 % #rstats
 % n.spp <- sum(res.b$order$N)
@@ -604,9 +608,8 @@ The respondents to our survey perceived there to be substantially
 fewer woody species in the world than there probably are.  This
 herb--centric view of the world may arise from the importance of our
 (mostly herbaceous) cultivated crops, or the fact that people ---
-including researchers --- likely spend more time in the garden than in
-the forest, and especially not in tropical forests where much woody
-diversity lies.
+including most researchers --- likely spend more time in the garden than in
+the forest, and especially not in tropical forests where diversity is high and disproportionately woody.
 
 %
 %less woody than the database mean
@@ -631,6 +634,14 @@ We also found that the way in which we handled variable species
 significantly altered the estimates. That changing the state of such a
 relatively small number of species has the potential to alter
 inferences made at a global scale is rather surprising. 
+
+% WKC: I also don't like this paragraph as is
+%
+% I think this result is almost certainly because database errors turn homomorphic genera and orders into
+% polymorphic genera and orders.  My take home message for the readers would be that we took a rather extreme way to characterize potential database/classification errors is 
+% globally significant but still small relative to the effect of sampling bias.  I would also shift it down a bit in the discussion until after the sampling bias bit, as that 
+% really is our main message
+%
 
 %Effects of sampling bias
 The effect of sampling bias within our database on the estimate is
@@ -704,6 +715,7 @@ parameter estimates themselves will be biased, leading to incorrect
 estimation of the states for the remaining species. While our approach
 avoids this issue, we ignore potentially useful information on the
 phylogenetic relationships within genera.
+% also we ignore branch lengths
 
 The availability of global databases for genetic and functional traits
 is one of the recent key developments in ecology and evolutionary
