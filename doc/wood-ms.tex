@@ -192,18 +192,12 @@ woody.
 %
 % #rstats
 % nrow(read.csv("data/zae/GlobalWoodinessDatabase.csv"))
-One example of a sub-dataset (6\% of observations in the large
-dataset) came from Kew Royal Botanic Gardens dataset on growth form
-\citep{Kew}.  For the Kew dataset, the original 103 growth form
-categories was reduced to a binary classification.  57 of
-the 103 categories were sufficiently unambiguous to classify species
-as either woody or herbaceous according to our definition (see Table
-\ref{tab:kew} for specific decisions).  In addition, many other
-datasets, collected for a variety of reasons including forestry
-inventories, were added according to the same categorisation
-\citep{Zanne}.  Like all data assemblies the component datasets here
-were collected for a variety of research goals and have unknown and
-potentially large sampling biases.
+As with all large data assemblies, the underlying datasets were collected 
+for a variety of research goals. For example, a number of the datasets come
+from forestry inventories, which of course are biased towards recording
+woody species. Other sources of sampling bias may be less obvious but
+nonetheless may have major implications for the inferences drawn from 
+aggregate databases.
 
 Because the effort to organise plant taxonomy, especially synonymy, is
 on--going, there was uncertainty regarding the status of many plant
@@ -626,19 +620,6 @@ genera (more than 90\% woody species), with a mean of 202 species
 compared to 138 (See Figure \ref{fig:variability}).  This means that
 even a random sampling above the level of species will lead to a
 biased estimate.
-% TODO (RGF): check
-
-% TODO (RGF): I don't like this paragraph much - we should work out
-% what we are try to say more.
-
-% WKC: I also don't like this paragraph as is
-%
-% I think this result is almost certainly because database errors turn homomorphic genera and orders into
-% polymorphic genera and orders.  My take home message for the readers would be that we took a rather extreme way to characterize potential database/classification errors is 
-% globally significant but still small relative to the effect of sampling bias.  I would also shift it down a bit in the discussion until after the sampling bias bit, as that 
-% really is our main message
-%
-%% MWP: Agree with you both. See if you like what I have done here.
 
 %Effects of sampling bias
 The effect of sampling bias within our database on the estimate is
@@ -771,8 +752,6 @@ available on Dryad (doi:10.5061/dryad.63q27/3).
 
 \subsection{Data produced in this study}
 \begin{itemize}
-\item \textit{Growth form table:} included as a supplemental file and available
-on Dryad (\textit{to be added}).
 \item \textit{Results from analyses:} included as a supplemental file and available
 on Dryad (\textit{to be added}).
 \item \textit{Survey results:} included as a supplemental file and available
@@ -1038,14 +1017,14 @@ column) equally spaced bins on this log axis.}
   \label{fig:survey-text-port}
 \end{figure}
 
-\begin{table}[p]
-  \centering
-  \textit{[too large to set; see csv file]}
-  \caption{Look--up table for converting the 103 growth form categories
-    in the Royal Botanic Gardens Kew database into a binary
-woody/herbaceous coding.}
-\label{tab:kew}
-\end{table}
+%\begin{table}[p]
+%  \centering
+%  \textit{[too large to set; see csv file]}
+%  \caption{Look--up table for converting the 103 growth form categories
+%    in the Royal Botanic Gardens Kew database into a binary
+%woody/herbaceous coding.}
+%\label{tab:kew}
+%\end{table}
 
 \end{document}
 
