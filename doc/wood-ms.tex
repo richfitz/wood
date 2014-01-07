@@ -137,10 +137,10 @@ However, we have no idea about what proportion of species in the world
 are actually woody.
 
 Recently assembled functional trait datasets provide an opportunity to address this
-question. However, such datasets are almost without exception biased samples of global diversity.  
+question. However, such datasets are, almost without exception, biased samples of global diversity.  
 Researchers collect data for specific questions on a local scale, and
-assembling these local datasets creates a useful resource \citep{kattge2011try}, 
-but as with GenBank's assembly of genetic data \citep{smith2011understanding},
+assembling these local datasets creates a useful resource \citep{kattge2011try}. 
+But as with GenBank's assembly of genetic data \citep{smith2011understanding},
 the simple compilation of data is not an unbiased sample, and 
 these initial sampling biases will in turn bias downstream analyses.
 %Possibly refer to the problems caused by bias
@@ -165,15 +165,15 @@ to the broader community of botanists and other biologists.
 We used a recently assembled database with growth--form data for
 49,061 vascular plant species (i.e., lycopods, ferns, gymnosperms and
 angiosperms), which is the largest such database assembled to date
-\citep[][available on the Dryad data repository; doi:10.5061/dryad.63q27/2]{Zanne}.
+\citep[][available on the Dryad data repository; DOI:10.5061/dryad.63q27/2]{Zanne}.
 %
-This database uses a functional definition of woodiness; woody species
+This database uses a functional definition of woodiness: woody species
 have a prominent aboveground stem that persists through time and changing
 environmental conditions and herbaceous species lack such a stem --- 
 a definition originally suggested by Asa Gray \citeyearpar{gray1887elements}. 
 \citet{Zanne}
 chose this simple definition because it best characterized the functional
-aspect of growth form that they investigated allowing them to compare 
+aspect of growth form that they investigated, allowing them to compare 
 species that maintain an aboveground stem through freezing conditions to 
 ephemeral species that avoid freezing conditions.  More precise definitions 
 that rely on lignin content and/or secondary vascular tissue from a bifacial
@@ -199,8 +199,8 @@ categories was reduced to a binary classification.  57 of
 the 103 categories were sufficiently unambiguous to classify species
 as either woody or herbaceous according to our definition (see Table
 \ref{tab:kew} for specific decisions).  In addition, many other
-datasets (collected for a variety of reasons including forestry
-inventories) were added according to the same categorisation
+datasets, collected for a variety of reasons including forestry
+inventories, were added according to the same categorisation
 \citep{Zanne}.  Like all data assemblies the component datasets here
 were collected for a variety of research goals and have unknown and
 potentially large sampling biases.
@@ -213,8 +213,8 @@ To bring species binomials to a common taxonomy among datasets, names
 were matched against accepted names in the Plant List
 \citep{ThePlantList}.  Any binomials not found in this list were
 matched against the International Plant Name Index
-(http://www.ipni.org/) and Tropicos (http://www.tropicos.org/);
-potential synonymy in binomials arising from the three lists was
+(http://www.ipni.org/) and Tropicos (http://www.tropicos.org/).
+Potential synonymy in binomials arising from the three lists was
 investigated using the Plant List tools \citep{ThePlantList}.  
 % NOTE: This is the cleaning step done by `load.woodiness.data()`.
 As a result of this cleaning, the number of species in the final
@@ -387,8 +387,9 @@ can give a reasonable guess at the state of remaining species.
 % sum(tmp > .1 & tmp < .9) #  58 -- interestingly variable
 
 To model the other extreme of sampling, we used an approach where we
-computed the observed fraction of woody species ($p_w = n_w / (n_w +
-n_h)$) and sampled the state of the unobserved species using a
+computed the observed fraction of woody species 
+\[p_w = n_w / (n_w +n_h)\] 
+and sampled the state of the unobserved species using a
 binomial distribution, which represents the case of sampling
 with replacement. In this case the probability that $x$ of the species
 are woody is:
@@ -433,7 +434,7 @@ In addition to the number of species known to be woody and herbaceous,
 we also require an estimate of the number of species per genus.  For this, we
 used the number of accepted names within each genus in the Plant List
 \citep{ThePlantList}. The taxonomic resources were compiled by \citet{Zanne}
-are on available on Dryad (doi:10.5061/dryad.63q27/1). 
+are on available on Dryad (DOI:10.5061/dryad.63q27/1). 
 
 For each genus, we sampled the states of unobserved species, from
 either the hypergeometric or binomial distribution, parametrised from
@@ -446,7 +447,8 @@ levels (family, order or vascular plants).  We repeated this sampling
 species that are woody.
 %
 The R code and data to replicate this analysis are available on github
-(\textit{link to be added, but archive provided for review}).
+(\textit{link to be added, but archive provided for review}) and are included
+as supplemental material.
 
 \subsection{Survey}
 
@@ -680,7 +682,7 @@ for many clades the ``collecting curve'' shows little sign of
 saturation, which is required for such an analysis.
 
 Sampling biases are pervasive in
-ecological datasets, and need to be addressed.  Global databases of
+ecological datasets, and need to be addressed when using them for analyses.  Global databases of
 functional traits \citep[e.g., TRY;][]{kattge2011try} are central to
 biodiversity research, but through no fault of the database collator they
 are inevitably biased in terms of taxonomic breadth and this may have
@@ -689,8 +691,8 @@ them.  For example, for woodiness the economic importance of forestry
 species likely leads to their over--sampling in this dataset.  Such
 biases also affects many commonly used methods in ecological and
 evolutionary research
-\citep[e.g.,][]{ackerly2000taxon,nakagawa2008missing,pennell2013integrative,
-  Pakeman2013} in addition to its well understood effects on
+\citep[e.g.,][]{ackerly2000taxon,nakagawa2008missing,pennell2013integrative,Pakeman2013}
+in addition to its well understood effects on
 conventional statistics.  In our case, taking the data at face--value,
 we would have greatly overestimated the global percentage of woody
 species.  Inferring the global frequency of any trait would face the
@@ -701,7 +703,7 @@ to be biased in the same way that woodiness was.  Our approach was
 developed for binary traits but similar approaches could be developed
 for multi--state categorical or continuous traits.
 
-Recently two related approaches have been developed to address the
+Recently, two related approaches have been developed to address the
 similar problem of missing data in trait databases, both focusing on
 continuous traits \citep{Swenson2013, PEM}.  While their details
 differ, both approaches are model--based in that they impute trait values
@@ -720,7 +722,7 @@ estimation of the states for the remaining species. While our approach
 avoids this issue, we ignore potentially useful information on the
 phylogenetic relationships within genera and branch lengths separating lineages.
 
-The availability of global databases for genetic and functional traits
+The availability of global databases for functional traits
 is one of the recent key developments in ecology and evolutionary
 research.  These databases have the promise of allowing researchers to
 address broad--reaching and long--standing questions by drawing on
@@ -759,9 +761,9 @@ section Earth and Life Sciences (ALW) grant nr. 820.01.016.
 \section{Data Accessibility}
 \begin{itemize}
 \item \textit{Woodiness database:} compiled by \citet{Zanne} and available on
-Dryad (doi:10.5061/dryad.63q27/2).
+Dryad (DOI:10.5061/dryad.63q27/2).
 \item \textit{Taxonomic resources:} compiled by \citet{Zanne} and available on
-Dryad (doi:10.5061/dryad.63q27/1).
+Dryad (DOI:10.5061/dryad.63q27/1).
 \item \textit{Growth form table:} included as a supplemental file and available
 on Dryad (\textit{to be added}).
 \item \textit{Results from analyses:} included as a supplemental file and available
@@ -771,7 +773,7 @@ on Dryad (\textit{to be added}).
 \item \textit{R scripts:} included as a supplemental file and available on
 github (\textit{to be added}).
 \item \textit{Phylogenetic tree (used in figs 2 and S.4):} from \citet{Zanne} and
-available on Dryad (doi:10.5061/dryad.63q27/3).
+available on Dryad (DOI:10.5061/dryad.63q27/3).
 \end{itemize}
 
 
@@ -841,7 +843,7 @@ conducted with R version 3.0.2 \citep{R}.
     estimated percentage that is closer to 50\% (see Figures
     \ref{fig:phylogeny-supp} and \ref{fig:distribution-genera}).
     Phylogeny from \citet{Zanne} (available on Dryad; 
-    doi:10.5061/dryad.63q27/3). Orders not placed by APG III
+    DOI:10.5061/dryad.63q27/3). Orders not placed by APG III
     \citep{APG3} are not displayed.}
 \label{fig:phylogeny}
 \end{figure}
@@ -932,7 +934,7 @@ conducted with R version 3.0.2 \citep{R}.
     an estimated percentage that is further away from 50\% (see
     Figures \ref{fig:phylogeny} and \ref{fig:distribution-genera}).
     Phylogeny from \citet{Zanne} (available on Dryad; 
-    doi:10.5061/dryad.63q27/3). Orders not placed by APG III
+    DOI:10.5061/dryad.63q27/3). Orders not placed by APG III
     \citep{APG3} are not displayed.}
   \label{fig:phylogeny-supp}
 \end{figure}
