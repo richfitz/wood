@@ -1,4 +1,6 @@
 library(diversitree)
+# Fetch the Zanne et al data from Dryad
+source("data/zae/download.R", chdir=TRUE)
 source("wood-functions.R")
 
 ## Suppress a warning about incompatibility with results from R < 2.2.0

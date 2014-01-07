@@ -14,9 +14,12 @@ load.woodiness.data.genus <- function(regenerate=FALSE,
 
   ## Next, compare the genus-> order lookup with the list of species
   ## that we have in the plant list.
-  lookup <- read.csv("data/zae/genus_order_lookup.csv",
-                     stringsAsFactors=FALSE)
-  lookup <- lookup[c("genus", "family", "order")]
+  lookup1 <- read.csv("data/zae/genus_order_lookup.csv",
+                      stringsAsFactors=FALSE)
+  lookup2 <- read.csv("data/genus_order_lookup_extra.csv",
+                      stringsAsFactors=FALSE)
+  lookup <- rbind(lookup1, lookup2)
+  rownames(lookup) <- NULL
 
   ## There are a handful of essentially unplaced families.  For now,
   ## these get their own pseudo-family
@@ -169,7 +172,7 @@ summarise.count <- function(x, extreme=FALSE) {
 
 
 load.survey <- function() {
-  d <- read.csv(file="data/dryad/survey_results.csv",
+  d <- read.csv(file="data/survey_results.csv",
                 stringsAsFactors=FALSE)
   names(d) <- c("Time", "Estimate", "Familiarity", "Training",
                 "Continent", "Country")
@@ -239,7 +242,7 @@ add.coordinates.to.survey <- function() {
 
   d <- cbind(d, coords)
 
-  write.csv(d, "data/dryad/survey_results.csv", row.names=FALSE)
+  write.csv(d, "data/survey_results.csv", row.names=FALSE)
   invisible(TRUE)
 }
 
@@ -286,7 +289,7 @@ build.order.tree <- function(dat.g, regenerate=FALSE) {
     mrca.tipset <- diversitree:::mrca.tipset
     drop.tip <- diversitree:::drop.tip.fixed
 
-    phy <- read.tree("data/zae/tempo_scrubbed_CONSTRAINT_rooted.dated.tre")
+    phy <- read.tree("data/zae/Vascular_Plants_rooted.dated.tre")
 
     ## Two phylogenetic errors in ferns need fixing:
     phy.order <- dat.g$order[match(sub("_.+$", "", phy$tip.label),
@@ -371,7 +374,7 @@ build.order.tree <- function(dat.g, regenerate=FALSE) {
 
 fig.fraction.on.phylogeny <- function(phy.o, res) {
   ## Higher level taxonomy
-  hlt <- read.csv("data/dryad/high-level-taxonomy.csv", stringsAsFactors=FALSE)
+  hlt <- read.csv("data/high-level-taxonomy.csv", stringsAsFactors=FALSE)
   phy.group <- hlt$Group[match(phy.o$tip.label, hlt$Order)]
   tmp <- 
     lapply(seq_len(max(phy.o$edge)), function(x)
