@@ -12,3 +12,5 @@ mkdir wood-minimal/data/zae
 cp $(git ls-files --directory data)     wood-minimal/data
 cp $(git ls-files --directory data/geo) wood-minimal/data/geo
 cp $(git ls-files --directory data/zae) wood-minimal/data/zae
+
+zip -rq wood-minimal wood-minimal
