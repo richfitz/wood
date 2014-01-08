@@ -619,9 +619,13 @@ distribution of sizes of those genera differs with woodiness.  Genera
 that are primarily herbaceous (less than 10\% woody species for genera
 with at least 10 records) were on average larger than primarily woody
 genera (more than 90\% woody species), with a mean of 202 species
-compared to 138 (See Figure \ref{fig:variability}).  This means that
-even a random sampling above the level of species will lead to a
-biased estimate.
+compared to 137 (See Figure \ref{fig:variability}).
+% #rstats
+% dat.10 <- dat.g[dat.g$K > 10,]
+% round(mean(dat.10$N[dat.10$p < .1])) # 202
+% round(mean(dat.10$N[dat.10$p > .9])) # 137
+This means that even a random sampling above the level of species will
+lead to a biased estimate.
 
 %Effects of sampling bias
 The effect of sampling bias within our database on the estimate is
