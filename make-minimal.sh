@@ -2,7 +2,7 @@
 rm -rf wood-minimal
 
 mkdir wood-minimal
-cp wood.* wood-functions.R wood-minimal
+cp wood.R wood-functions.R wood-minimal
 
 # Required data only:
 mkdir wood-minimal/data
@@ -13,4 +13,4 @@ cp $(git ls-files --directory data)     wood-minimal/data
 cp $(git ls-files --directory data/geo) wood-minimal/data/geo
 cp $(git ls-files --directory data/zae) wood-minimal/data/zae
 
-zip -rq wood-minimal wood-minimal
+tar -zcf wood-minimal.tar.gz wood-minimal
