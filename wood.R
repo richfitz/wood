@@ -5,7 +5,7 @@ source("wood-functions.R")
 
 ### Set options
 ##+ echo=FALSE,results=FALSE
-opts_chunk$set(tidy=FALSE)
+knitr::opts_chunk$set(tidy=FALSE)
 
 ### Suppress a warning about incompatibility with results from R < 2.2.0
 ##+ echo=FALSE,results=FALSE
