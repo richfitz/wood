@@ -3,7 +3,12 @@ library(diversitree)
 source("data/zae/download.R", chdir=TRUE)
 source("wood-functions.R")
 
-## Suppress a warning about incompatibility with results from R < 2.2.0
+### Set options
+##+ echo=FALSE,results=FALSE
+opts_chunk$set(tidy=FALSE)
+
+### Suppress a warning about incompatibility with results from R < 2.2.0
+##+ echo=FALSE,results=FALSE
 invisible(suppressWarnings(sample(1:250, 1, pr=rep(1, 250), replace=TRUE)))
 
 ## We're going to put some partly processed data here.
