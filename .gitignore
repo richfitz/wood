@@ -1,5 +1,4 @@
 cache
-figure
 how-much-wood.Rmd
 how-much-wood.md
 how-much-wood.html
@@ -21,10 +20,6 @@ data/geo/raw
 analysis-for-review/wood-analysis.Rmd
 analysis-for-review/wood-analysis.html
 analysis-for-review/wood-analysis.md
-
-wood.Rmd
-wood.html
-wood.md
 
 # attempts here
 rarefaction
