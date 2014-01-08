@@ -501,9 +501,11 @@ to.pdf <- function(filename, width, height, expr,
 label <- function(px, py, lab, ..., adj=c(0, 1)) {
   lab <- LETTERS[lab]
   usr <- par("usr")
-  text(usr[1] + px*(usr[2] - usr[1]),
-       usr[3] + py*(usr[4] - usr[3]),
-       lab, adj=adj, ...)
+  x <- usr[1] + px*(usr[2] - usr[1])
+  y <- usr[3] + py*(usr[4] - usr[3])
+  if (par("xlog")) x <- 10^x
+  if (par("ylog")) y <- 10^y
+  text(x, y, lab, adj=adj, ...)
 }
 
 ## Identify species descended from a node

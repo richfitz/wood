@@ -10,21 +10,21 @@ invisible(suppressWarnings(sample(1:250, 1, pr=rep(1, 250), replace=TRUE)))
 dir.create("output", FALSE)
 
 ## Colours used throughout:
-cols.methods <- c(binomial="#a63813",       # red
-                  hypergeometric="#4d697f") # blue
-cols.tree <- c(Monilophytes="#a63813",     # reddish brown
-               Gymnosperms="#21313b",      # dark brown
-               BasalAngiosperms="#eeb911", # yellow
-               Monocots="#204d14",         # green
-               Eudicots="#4d697f",         # light blue
-               Rest="gray15")              # dark grey
-cols.woody <- c(Woody="#533d0c",           # brown
-                Herbaceous="#799321")      # green
+cols.methods <- c(binomial="#a63813",
+                  hypergeometric="#4d697f")
+cols.tree <- c(Monilophytes="#a63813",
+               Gymnosperms="#21313b",
+               BasalAngiosperms="#eeb911",
+               Monocots="#204d14",
+               Eudicots="#4d697f",
+               Rest="gray15")
+cols.woody <- c(Woody="#533d0c",
+                Herbaceous="#799321")
 cols.woody <- c(Woody="black",
                 Herbaceous="white")
-cols.shading <- "#eeb911"                  # yellow
-cols.tropical <- c(tropical="#ea7518",     # orange
-                   temperate="#62a184")    # teal
+cols.shading <- "#eeb911"
+cols.tropical <- c(tropical="#ea7518",
+                   temperate="#62a184")
 
 ## The 'load.woodiness.data.genus' function hides a reasonable amount
 ## of data cleaning required to load the data.  This mostly involves
@@ -410,7 +410,6 @@ fig.survey.distribution <- function(d.survey, res.b, res.h) {
 ##+ survey_distribution,fig.cap="Distribution of survey results"
 fig.survey.distribution(d.survey, res.b, res.h)
 
-## TODO: labels aren't working here.
 fig.variability <- function(dat.g) {
   dat.g$p.rare <- (0.5 - abs(dat.g$p - 1/2)) * 2
   dat.g$variable <- dat.g$p.rare > 0
@@ -483,14 +482,14 @@ fig.variability <- function(dat.g) {
   lines(f.N ~ mid.N, col="red")
   mtext("Number of species in genus", 1, 3)
   mtext("Proportion of species woody", 2, 3)
-  label(.02, .96, 3)
+  label(.02, .96, 5)
 
   plot(p ~ K, sub, pch=pch, cex=cex, col=col, log="x",
        bty="l", yaxt="n", las=1)
   lines(f.K ~ mid.K, col="red")
   axis(2, labels=FALSE)
   mtext("Number of species with known state", 1, 3)
-  label(.02, .96, 4)
+  label(.02, .96, 6)
 }
 
 ##+ variability,fig.cap="Variability by genus size"
@@ -561,6 +560,6 @@ if (!interactive()) {
   to.pdf("doc/figs/survey-distribution.pdf", 6, 5,
          fig.survey.distribution(d.survey, res.b, res.h))
 
-  to.pdf("doc/figs/variability.pdf", 5, 8,
+  to.pdf("doc/figs/variability.pdf", 7, 8,
          fig.variability(dat.g))
 }
