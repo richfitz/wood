@@ -1,4 +1,4 @@
-library(assertthat)
+#!/usr/bin/env Rscript
 
 # These are the files to download
 prefix <- 'http://datadryad.org/bitstream/handle/10255/'
