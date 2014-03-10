@@ -33,7 +33,7 @@ output/dat.g.h.rds: output/woodiness.rds wood-functions.R
 	Rscript R/make-output-dat.g.h.rds.R
 
 clean:
-	rm -f output/*.rds
+	rm -f output/*.rds output/*.csv
 
 # Save on some farting about with data:
 DOWNLOADED_DATA =               	   \
