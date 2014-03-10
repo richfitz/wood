@@ -19,6 +19,9 @@ wood-minimal
 
 data/geo/raw
 
+data/theplantlist/acceptedNames1.1
+data/theplantlist/names*csv
+
 analysis-for-review/wood-analysis.Rmd
 analysis-for-review/wood-analysis.html
 analysis-for-review/wood-analysis.md

@@ -1,0 +1,12 @@
+Araucariaceae
+Cupressaceae
+Cycadaceae
+Ephedraceae
+Ginkgoaceae
+Gnetaceae
+Pinaceae
+Podocarpaceae
+Sciadopityaceae
+Taxaceae
+Welwitschiaceae
+Zamiaceae
