@@ -1,30 +1,38 @@
-cache
-how-much-wood.Rmd
-how-much-wood.md
-how-much-wood.html
-old
+# The worked analysis
+wood.Rmd
+wood.md
+wood.html
+wood.pdf
 
+# generated data
 output/
 
-doc/wood-ms.pdf
-heir
-
-coverletter/wood-coverletter.pdf
-
-wood-ms-prev.tex
-wood-ms-diff.tex
-wood-ms-diff.pdf
-
-wood-minimal
-
-data/geo/raw
-
+# Data intermediates
 data/theplantlist/acceptedNames1.1
 data/theplantlist/names*csv
+data/geo/raw
 
-analysis-for-review/wood-analysis.Rmd
-analysis-for-review/wood-analysis.html
-analysis-for-review/wood-analysis.md
+# Figures for the paper
+doc/figs/fraction-by-genus.pdf
+doc/figs/fraction-by-family.pdf
+doc/figs/fraction-by-order.pdf
+doc/figs/fraction-on-phylogeny.pdf
+doc/figs/fraction-on-phylogeny-supp.pdf
+doc/figs/distribution-raw.pdf
+doc/figs/distribution-raw-errors.pdf
+doc/figs/survey-results.pdf
+doc/figs/survey-distribution.pdf
+doc/figs/variability.pdf
+
+# Actual paper
+doc/wood-ms.pdf
+
+# knitr intermediate:
+cache
+figure
+
+# Cover letter
+coverletter/wood-coverletter.pdf
 
 # attempts here
 rarefaction
