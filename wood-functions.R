@@ -28,12 +28,10 @@ load.woodiness.data.genus <- function(regenerate=FALSE,
 
   ## All of the genera with data are present in the lookup table:
   ## cases.
-  spp <-
-    read.csv("data/spermatophyta_synonyms_PLANTLIST.csv",
-             stringsAsFactors=FALSE)
-  spp$genus.synonym <- sub("_.+", "", spp$synonym)
+  tpl <- read.csv("data/theplantlist/names_accepted.csv",
+                  stringsAsFactors=FALSE)
   
-  if (!all(dat$genus %in% spp$genus)) # should *never* fail
+  if (!all(dat$genus %in% tpl$genus)) # should *never* fail
     stop("Genera in data not known from Plant List")
   if (!all(dat$genus %in% lookup$genus))
     warning("Genera in data not known from lookup table",
@@ -44,7 +42,7 @@ load.woodiness.data.genus <- function(regenerate=FALSE,
       summarise.count(parse.count(dat$woodiness.count), extreme)
 
   ## Collapse these to get counts for all the genera that we know about.
-  dat.g <- table(factor(dat$genus, sort(unique(spp$genus[spp$valid]))),
+  dat.g <- table(factor(dat$genus, sort(unique(tpl$genus))),
                  factor(dat$woodiness, c("W", "variable", "H")))
   dat.g <- data.frame(genus=rownames(dat.g),
                       W=dat.g[,"W"],
@@ -56,7 +54,7 @@ load.woodiness.data.genus <- function(regenerate=FALSE,
   dat.g$p <- dat.g$W / dat.g$K
   
   ## Include the counts of known species:
-  spp.known <- table(spp$genus[spp$valid])
+  spp.known <- table(tpl$genus)
   dat.g$N <- as.integer(spp.known[dat.g$genus])
 
   ## Higher order taxonomy:
@@ -94,28 +92,23 @@ load.woodiness.data <- function(regenerate=FALSE) {
   if (!identical(dat$woodiness,
                  summarise.count(parse.count(dat$woodiness.count))))
     stop("Database classification failure")
-  
-  ## Next, normalise the species names.
-  spp <-
-    read.csv("data/spermatophyta_synonyms_PLANTLIST.csv",
-             stringsAsFactors=FALSE)
-  spp$genus.synonym <- sub("_.+", "", spp$synonym)
 
-  ## Locate the species names within the Plant List lookup table,
-  ## dropping all species that do not exist.
-  to.drop.no.name <- !dat$species %in% spp$synonym
+  ## Map some species names to synonyms:
+  syn <- read.csv("data/synonyms.csv", stringsAsFactors=FALSE)
+
+  idx <- match(dat$species, syn$synonym)
+  message(sprintf("Resolving synonomy for %d species",
+                  sum(!is.na(idx))))
+  i <- !is.na(idx)
+  dat$species[i] <- syn$species[idx[i]]
+
+  ## Read in The Plant List
+  tpl <- read.csv("data/theplantlist/names_accepted.csv",
+                  stringsAsFactors=FALSE)
+  keep <- dat$species %in% tpl$gs
   message(sprintf("Dropping %d species not in Plant List",
-                  sum(to.drop.no.name)))
-  dat <- dat[!to.drop.no.name,]
-
-  ## Match the species names against the plant list
-  idx <- match(dat$species, spp$synonym)
-
-  ## About 90% of names are valid:
-  message(sprintf("%2.1f%% of species have a valid name; resolving %d species",
-                  100*mean(spp$valid[idx]), sum(!spp$valid[idx])))
-  ## Assign the correct/current species name and adding the genus
-  dat[c("genus", "species")] <- spp[idx,c("genus", "species")]
+                  sum(!keep)))
+  dat <- dat[keep,]
 
   ## And look to see which species have now got duplicated records due
   ## to synonomy resolution:
@@ -135,12 +128,13 @@ load.woodiness.data <- function(regenerate=FALSE) {
                             woodiness=unname(dups.woodiness),
                             woodiness.count=unname(dups.count),
                             stringsAsFactors=FALSE, row.names=NULL)
-  dups.merged$genus <- spp$genus[match(dups.merged$species, spp$species)]
 
   ## Drop the duplicated records from the original vector, and add in
   ## the resolved entries here:
   dat <- rbind(dat[-dups.i,], dups.merged)
 
+  dat$genus <- sub("_.+$", "", dat$species)
+  
   ## Tidy up, and we're done
   dat <- dat[order(dat$genus, dat$species),
              c("genus", "species", "woodiness", "woodiness.count")]

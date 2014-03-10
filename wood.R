@@ -1,6 +1,30 @@
+## # Preliminaries
+##
+## Before running this script, be sure to have the required data in
+## place.  If you have `make` installed, this can be done by running
+##
+## ```
+## make data-fetch
+## ```
+##
+## At the command line.  Otherwise, run the scripts
+## `data/zae/download.R` and `data/theplantlist/build.R`, which can
+## be done via:
+##
+## ```{r, eval=FALSE}
+## source("data/zae/download.R")
+## source("data/theplantlist/build.R")
+## ```
+##
+## The required files will be created in the `data` directory, and are
+## the woodiness database and taxonomic information from
+## [Zanne et al.](http://)
+## and information on accepted names from
+## [The Plant List](http://www.theplantlist.org).
+##
+## See the file `data/README.md` for more information about the data
+## that we use.
 library(diversitree)
-# Fetch the Zanne et al data from Dryad
-source("data/zae/download.R", chdir=TRUE)
 source("wood-functions.R")
 
 ### Set options
