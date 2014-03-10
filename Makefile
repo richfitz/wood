@@ -16,10 +16,10 @@ wood.html: wood.md
 wood.pdf: wood.md
 	pandoc wood.md -o wood.pdf
 
-data/zae/genus_order_lookup.csv: data/zae/download.R
+data/zae/genus_order_lookup.csv: R/make-data-zae.R
 	Rscript $<
 
-data/theplantlist/names_accepted.csv: data/theplantlist/build.R
+data/theplantlist/names_accepted.csv: R/make-data-theplantlist.R
 	Rscript $<
 
 output/woodiness.rds: ${DATA} wood-functions.R
@@ -34,5 +34,22 @@ output/dat.g.h.rds: output/woodiness.rds wood-functions.R
 
 clean:
 	rm -f output/*.rds
+
+# Save on some farting about with data:
+DOWNLOADED_DATA =               	   \
+	data/theplantlist/acceptedNames1.1 \
+        data/zae/PhylogeneticResources.zip \
+	data/zae/Spermatophyta_Genera.csv  \
+	data/zae/GlobalWoodinessDatabase.csv
+DOWNLOADED_DATA_SAVE = .downloaded_data.tar.gz
+
+downloaded-data-delete:
+	rm -fr ${DOWNLOADED_DATA}
+downloaded-data-save:
+	tar -zcf ${DOWNLOADED_DATA_SAVE} ${DOWNLOADED_DATA}
+downloaded-data-unpack:
+	tar -zxvf ${DOWNLOADED_DATA_SAVE}
+downloaded-data-bulk-fetch:
+	curl -o ${DOWNLOADED_DATA_SAVE} http://www.zoology.ubc.ca/~fitzjohn/files/wood_data.tar.gz
 
 .PHONY: data-raw data-processed
