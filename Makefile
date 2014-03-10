@@ -25,7 +25,7 @@ data/zae/genus_order_lookup.csv: R/make-data-zae.R
 data/theplantlist/names_accepted.csv: R/make-data-theplantlist.R
 	Rscript $<
 
-output/woodiness.rds: ${DATA} wood-functions.R
+output/woodiness.rds: ${DATA_RAW} wood-functions.R
 	Rscript R/make-output-woodiness.rds.R
 
 output/dat.g.rds: output/woodiness.rds wood-functions.R
@@ -56,4 +56,4 @@ downloaded-data-unpack:
 downloaded-data-bulk-fetch:
 	curl -o ${DOWNLOADED_DATA_SAVE} http://www.zoology.ubc.ca/~fitzjohn/files/wood_data.tar.gz
 
-.PHONY: data-raw data-processed
+.PHONY: all clean data-raw data-processed
