@@ -1,3 +1,4 @@
+#!/usr/bin/env Rscript
 source("R/theplantlist.R")
 
 path <- "data/theplantlist"

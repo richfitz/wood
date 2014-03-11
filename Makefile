@@ -19,21 +19,21 @@ wood.pdf: wood.md
 doc/wood-ms.pdf: wood.pdf
 	make -C doc wood-ms.pdf
 
-data/zae/genus_order_lookup.csv: R/make-data-zae.R
+data/zae/genus_order_lookup.csv: make/data-zae.R
 	Rscript $<
 
-data/theplantlist/names_accepted.csv: R/make-data-theplantlist.R
+data/theplantlist/names_accepted.csv: make/data-theplantlist.R
 	Rscript $<
 
 output/woodiness.rds: ${DATA_RAW} wood-functions.R
-	Rscript R/make-output-woodiness.rds.R
+	Rscript make/output-woodiness.rds.R
 
 output/dat.g.rds: output/woodiness.rds wood-functions.R
-	Rscript R/make-output-dat.g.rds.R
+	Rscript make/output-dat.g.rds.R
 output/dat.g.w.rds: output/woodiness.rds wood-functions.R
-	Rscript R/make-output-dat.g.w.rds.R
+	Rscript make/output-dat.g.w.rds.R
 output/dat.g.h.rds: output/woodiness.rds wood-functions.R
-	Rscript R/make-output-dat.g.h.rds.R
+	Rscript make/output-dat.g.h.rds.R
 
 clean:
 	rm -f output/*.rds output/*.csv
