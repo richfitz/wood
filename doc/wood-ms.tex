@@ -672,8 +672,11 @@ biodiversity research, but through no fault of the database collator they
 are inevitably biased in terms of taxonomic breadth and this may have
 serious consequences for the reliability of inferences drawn from
 them.  For example, for woodiness the economic importance of forestry
-species likely leads to their over--sampling in this dataset.  Such
-biases also affects many commonly used methods in ecological and
+species likely leads to their over--sampling in this dataset.  
+% WKC: "For example, for woodiness..." is awkward 
+% What about: "For this woodiness dataset,..."
+This sampling 
+bias also affect many commonly used methods in ecological and
 evolutionary research
 \citep[e.g.,][]{ackerly2000taxon,nakagawa2008missing,pennell2013integrative,Pakeman2013}
 in addition to its well understood effects on
@@ -686,6 +689,17 @@ strongly taxonomically structured, and we would expect raw estimates
 to be biased in the same way that woodiness was.  Our approach was
 developed for binary traits but similar approaches could be developed
 for multi--state categorical or continuous traits.
+
+% I think there is a point we are missing here, which is the connection between our method
+% and the "gap-filling" problem.  Maybe lead this paragraph by making that point.  
+% I think that would be stronger than what we currently have.
+%
+%something like
+% The question of accounting for bias in generating global summary statistics is directly connected to the 
+% problem of phylogenetically-informed gap-filling.  In addition to improving an estimate of the mean, 
+% the methods in this paper can also be used to generate 
+% a probability of each unobserved species being woody.  
+%Two related approaches have recently been developed to address this problem focusing on continuous traits...
 
 Recently, two related approaches have been developed to address the
 problem of missing data in trait databases, both focusing on
@@ -706,9 +720,10 @@ estimation of the states for the remaining species. While our approach
 avoids this issue, we ignore potentially useful information on the
 phylogenetic relationships within genera and branch lengths separating lineages.
 
-The availability of global databases for functional traits
-is one of the recent key developments in ecology and evolutionary
-research.  These databases have the promise of allowing researchers to
+The development of global databases for functional traits
+has been one of the recent key advances in ecology and evolutionary
+research, bringing our functional understanding of the world's biota closer to our 
+taxonomic understanding of it.  These databases offer the promise of allowing researchers to
 address broad--reaching and long--standing questions by drawing on
 huge amounts of accumulated research.  Just as Theophrastus' garden
 was a non--random sample of the Greek flora, our trait databases
@@ -845,7 +860,7 @@ conducted with R version 3.0.2 \citep{R}.
   \includegraphics{figs/survey-results}
   \caption{Distribution of responses to the survey question ``What
     percentage of the world's vascular plant species are
-    woody?''. Responses are broken up by familiarity with plants
+    woody?''. Responses are divided by familiarity with plants
     (panel A) and formal training in botany or a related discipline
     (panel B). The mean and 95\% confidence intervals for our
     estimates of the proportion of woody species from the empirical
