@@ -140,27 +140,27 @@ markedly different rates of molecular evolution \citep{SmithDonoghue}.
 However, we have no idea about what proportion of species in the world
 are actually woody.
 
-Recently assembled functional trait datasets provide an opportunity to address this
-question. However, such datasets are, almost without exception, biased samples of global diversity.  
-Researchers collect data for specific questions on a local scale, and
-assembling these local datasets creates a useful resource \citep{kattge2011try}. 
-But as with GenBank's assembly of genetic data \citep{smith2011understanding},
-the simple compilation of data is not an unbiased sample, and 
-these initial sampling biases will in turn bias downstream analyses.
-%Possibly refer to the problems caused by bias
-Understanding and accounting for the biases in these datasets is a 
-important and necessary next step.
+Recently assembled functional trait datasets provide an opportunity to
+address this question. However, such datasets are, almost without
+exception, biased samples of global diversity.  Researchers collect
+data for specific questions on a local scale, and assembling these
+local datasets creates a useful resource \citep{kattge2011try}.  But
+as with GenBank's assembly of genetic data
+\citep{smith2011understanding}, the simple compilation of data is not
+an unbiased sample, and these initial sampling biases will, in turn,
+bias downstream analyses.  Understanding and accounting for the biases
+in these datasets is an important and necessary next step.
 
-We sought to develop an approach that accounts for this bias.  In doing so, we 
-were able to re--ask Theophrastus' 2000--year old
+We sought to develop an approach that accounts for this bias.  In
+doing so, we were able to re--ask Theophrastus' 2000--year old
 question at a global scale: how many of the world's plant species are
 woody?
 %
-We also sought to understand how well scientists were able to overcome this bias and make a reasonable estimate.  To do this, 
-we took the unconventional approach of coupling our
-analysis with an informal survey in which we asked our question
-to the broader community of botanists and other biologists.
-% 
+We also sought to understand how well scientists were able to overcome
+this bias and make a reasonable estimate.  To do this, we took the
+unconventional approach of coupling our analysis with an informal
+survey in which we asked our question to the broader community of
+botanists and other biologists.
 
 \section{Methods and Materials}
 
@@ -176,7 +176,7 @@ have a prominent aboveground stem that persists through time and changing
 environmental conditions and herbaceous species lack such a stem --- 
 a definition originally suggested by Asa Gray \citeyearpar{gray1887elements}. 
 \citet{Zanne}
-chose this simple definition because it best characterized the functional
+chose this simple definition because it best characterised the functional
 aspect of growth form that they investigated, allowing them to compare 
 species that maintain an aboveground stem through freezing conditions to 
 ephemeral species that avoid freezing conditions.  More precise definitions 
@@ -264,12 +264,11 @@ of being woody and herbaceous.
 % #rstats
 % nrow(dat) - sum(dat.g$K)    # 503
 % sum(tmp[,"W"] == tmp[,"H"]) # 503
-We also ran analyses where we coded species as either woody or
-herbaceous by coding species with \emph{any} record of woody or
-variable as ``woody'' (and similarly for herbaceous), using all 39,313
-species.  Neither of these cases are likely to be biologically realistic
-but allowed us to evaluate the maximal possible effect of mis--coding
-variable species.
+We also ran analyses where we coded growth forms by treating species
+with \emph{any} record of woody or variable as ``woody'' (and
+similarly for herbaceous), using all 39,313 species.  Neither of these
+cases are likely to be biologically realistic but allowed us to
+evaluate the maximal possible effect of mis--coding variable species.
 
 \subsection{Estimating the percentage of species that are woody}
 
@@ -313,7 +312,7 @@ temperate ones \citep{Molesheihgt}.
 % buildings of the british empire so they did a rather systemtic
 % inventory of woody properties of the local species since
 
-We developed a novel method to account for this sampling bias when
+We developed a simple method to account for this sampling bias when
 estimating the percentage of woody species.  In our approach, we treat
 each genus separately, and in all cases know that there are are $n_w$
 woody and $n_h$ herbaceous species and a total of $N$ species in the genus.
@@ -393,7 +392,7 @@ with replacement. In this case the probability that $x$ of the species
 are woody is:
 \begin{equation}
   \Pr(x = k) = {N - n_w - n_h \choose k - n_w} 
-  p^k (1-p)^{N - n_h - k}.
+  p_w^k (1-p_w)^{N - n_h - k}.
 \end{equation}
 %
 In cases where all known species are woody (or herbaceous as in
@@ -405,10 +404,10 @@ to the weak prior sampling approach.
 We therefore see the binomial sampling approach as corresponding to a
 very strong prior on the bimodal distribution of woodiness among
 genera, and we will refer to this as the ``strong prior'' approach
-because it more strongly constrains the state of missing species within genera with no known polymophism.
-While neither of these approaches is ``correct'', they % probably WKC: can we be stronger here and take out the probably? 
-span
-the extremes of possible outcomes.
+because it more strongly constrains the state of missing species
+within genera with no known polymorphism.  While neither of these
+approaches is ``correct'', they probably span the extremes of possible
+outcomes.
 %
 In polymorphic genera the two approaches will give similar results,
 especially where the number of unknown species is relatively large.
