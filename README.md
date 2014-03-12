@@ -1,5 +1,7 @@
 # How Much Wood?
 
+[![Build Status](https://travis-ci.org/richfitz/wood.png?branch=master)](https://travis-ci.org/richfitz/wood)
+
 Avoid hammering TPL's servers:
 
 ```
@@ -13,7 +15,11 @@ Then simply
 make
 ```
 
+This will build processed versions of the data in the `output` directory.  It then converts the file `wood.R` to a [knitr](http://yihui.name/knitr/) script (`wood.Rnw`) and runs `knitr` on this to generate `wood.md` (in [markdown](http://daringfireball.net/projects/markdown/)) and the figures for the paper (in `doc/figs`).
 
+The `wood.md` file is turned into a little html report of the analysis (`wood.html`).
+
+The actual manuscript is in `doc/wood-ms.pdf`.  Compiling this requires LaTeX to be installed.
 
 ## Requirements
 

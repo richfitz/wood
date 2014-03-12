@@ -1,9 +1,9 @@
 DATA_RAW = data/zae/genus_order_lookup.csv data/theplantlist/names_accepted.csv
 DATA_PROCESSED = output/woodiness.rds output/dat.g.rds \
 	output/dat.g.w.rds output/dat.g.h.rds output/phy.o.rds
-REPORT = wood.Rmd wood.md wood.html wood.pdf
+REPORT = wood.Rmd wood.md wood.html
 
-all: wood.html wood.pdf doc/wood-ms.pdf
+all: wood.html doc/wood-ms.pdf
 
 data-raw: ${DATA_RAW}
 data-processed: ${DATA_PROCESSED}
@@ -13,9 +13,7 @@ wood.Rmd: wood.R
 wood.md: wood.Rmd ${DATA_PROCESSED}
 	Rscript -e "library(knitr); knit('wood.Rmd')"
 wood.html: wood.md
-	pandoc wood.md -o wood.html --standalone --highlight-style=tango
-wood.pdf: wood.md
-	pandoc wood.md -o wood.pdf
+	Rscript -e "library(markdown); markdownToHTML('wood.md', 'wood.html')"
 
 doc/wood-ms.pdf: wood.pdf
 	make -C doc wood-ms.pdf
