@@ -22,14 +22,8 @@ rownames(lookup) <- NULL
 
 ## Assign order to the Plant List families using this lookup:
 tpl$order <- lookup$order[match(tpl$family, lookup$family)]
-
-## TODO: We miss a few:
-missing <- unique(tpl$family[is.na(tpl$order)])
-
-## For now just nail them down so that we can keep going.
-tpl$order[is.na(tpl$order)] <- ""
-
-## Continuing:
+## There are encoding issues here:
+tpl$order[tpl$family == "Isoëtaceae"] <- "Isoetales"
 
 ## There are a handful of essentially unplaced families.  For now,
 ## these get their own pseudo-family

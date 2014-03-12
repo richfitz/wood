@@ -1,5 +1,4 @@
 #!/usr/bin/env Rscript
-
 path <- "data/zae"
 
 # These are the files to download

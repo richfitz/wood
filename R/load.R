@@ -10,6 +10,10 @@ load.woodiness.genus <- function(extreme=FALSE) {
   readRDS(filename.woodiness.genus(extreme))
 }
 
+load.phylogeny.order <- function() {
+  readRDS("output/phy.o.rds")
+}
+
 load.theplantlist <- function() {
   tpl <- read.csv("data/theplantlist/names_accepted.csv",
                   stringsAsFactors=FALSE)

@@ -1,42 +1,27 @@
-## # Preliminaries
-##
-## Before running this script, be sure to have the required data in
-## place.  If you have `make` installed, this can be done by running
-##
-## ```
-## make data-fetch
-## ```
-##
-## At the command line.  Otherwise, run the scripts
-## `data/zae/download.R` and `data/theplantlist/build.R`, which can
-## be done via:
-##
-## ```{r, eval=FALSE}
-## source("data/zae/download.R")
-## source("data/theplantlist/build.R")
-## ```
-##
-## The required files will be created in the `data` directory, and are
-## the woodiness database and taxonomic information from
-## [Zanne et al.](http://)
-## and information on accepted names from
-## [The Plant List](http://www.theplantlist.org).
-##
-## See the file `data/README.md` for more information about the data
-## that we use.
-library(diversitree)
-source("wood-functions.R")
-
-### Set options
+### Set knitr options
 ##+ echo=FALSE,results=FALSE
 knitr::opts_chunk$set(tidy=FALSE)
-
 ### Suppress a warning about incompatibility with results from R < 2.2.0
 ##+ echo=FALSE,results=FALSE
 invisible(suppressWarnings(sample(1:250, 1, pr=rep(1, 250), replace=TRUE)))
 
-## We're going to put some partly processed data here.
-dir.create("output", FALSE)
+## # Preliminaries
+## 
+## Before running this script, be sure to have the required data in
+## place.  If you have `make` installed, this can be done by running
+## 
+## ```
+## make data-processed
+## ```
+## 
+## at the command line.
+## 
+## See the file `data/README.md` for more information about the data
+## that we use.
+
+library(diversitree)
+source("R/load.R")
+source("R/util.R")
 
 ## Colours used throughout:
 cols.methods <- c(binomial="#a63813",
@@ -60,7 +45,7 @@ cols.tropical <- c(tropical="#ea7518",
 ## matching the woodiness data set from Zanne et al. to our species
 ## list (derived from The Plant List), cleaning up synonomies, and
 ## then collapsing down to genus.
-##
+## 
 ## The final object has columns
 ## * genus, family, order -- taxonomic information
 ## * W, V, H              -- number of species scored as woody,
@@ -70,9 +55,9 @@ cols.tropical <- c(tropical="#ea7518",
 ##                           after dropping all "variable" species
 ## * p                    -- fraction of known species that are woody,
 ##                           after dropping all "variable" species
-dat.g <- load.woodiness.data.genus()
+dat.g <- load.woodiness.genus()
 
-## Here is the simulator.
+## # Imputing the state of missing species
 
 ## For each genus:
 
@@ -174,9 +159,28 @@ do.simulation <- function(dat.g, nrep, with.replacement) {
        overall=overall, overall.p=overall.p, total=total)
 }
 
+##+ simulation,cache=TRUE
 set.seed(1)
 res.b <- do.simulation(dat.g, 1000, TRUE)  # binomial - with replacement
 res.h <- do.simulation(dat.g, 1000, FALSE) # hypergeometric - without
+
+## Repeat this sampling proceedure under a more extreme
+## classification; all variable species scored as woody:
+##+ simulation_woody,cache=TRUE
+dat.g.w <- load.woodiness.genus(extreme="woody")
+res.b.w <- do.simulation(dat.g.w, 1000, TRUE)  # binomial       & woody
+res.h.w <- do.simulation(dat.g.w, 1000, FALSE) # hypergeometric & woody
+
+## ...and with all variable species scored as herbaceous:
+##+ simulation_herbaceous,cache=TRUE
+dat.g.h <- load.woodiness.genus(extreme="herbaceous")
+res.b.h <- do.simulation(dat.g.h, 1000, TRUE)  # binomial       & herby
+res.h.h <- do.simulation(dat.g.h, 1000, FALSE) # hypergeometric & herby
+
+## # Distribution of estimates of woodiness
+
+## This is the raw distribution; i.e., our estimate of the fraction of
+## species that are woody and its estimate.
 
 fig.distribution.raw <- function(res.b, res.h) {
   n.spp <- sum(res.b$order$N)
@@ -208,17 +212,9 @@ fig.distribution.raw <- function(res.b, res.h) {
 ##+ distribution_raw,fig.cap="Distribution of simulated woodiness percentage"
 fig.distribution.raw(res.b, res.h)
 
-## Try and get some extreme results; recode the results with more
-## inclusive criteria for being either woody or herbaceous:
-dat.g.w <- load.woodiness.data.genus(extreme="woody")
-dat.g.h <- load.woodiness.data.genus(extreme="herbaceous")
-
-## Redo the simulations with these more extreme codings to incorporate
-## these errors into the simulations:
-res.b.w <- do.simulation(dat.g.w, 1000, TRUE)  # binomial       & woody
-res.h.w <- do.simulation(dat.g.w, 1000, FALSE) # hypergeometric & woody
-res.b.h <- do.simulation(dat.g.h, 1000, TRUE)  # binomial       & herby
-res.h.h <- do.simulation(dat.g.h, 1000, FALSE) # hypergeometric & herby
+## Next, expand that plot to include the more extreme estimates
+## (variable species as woody and variable species as herbaceous).
+## This shows how much the classification errors affect the analysis.
 
 fig.distribution.raw.errors <- function(res.b,   res.h,
                                         res.b.w, res.h.w,
@@ -265,7 +261,9 @@ fig.distribution.raw.errors <- function(res.b,   res.h,
 ##+ distribution_errors,fig.cap="Effect of recoding on woodiness estimates"
 fig.distribution.raw.errors(res.b, res.h, res.b.w, res.h.w, res.b.h, res.h.h)
 
-## Now, look at the distributions of woodiness among families:
+## Woodiness is structured among genera and other taxonomic groups.
+## Make a plot of per genus/family/order estimates of woodiness:
+
 fig.fraction.by.group <- function(res.b, res.h, dat.g, level="genus") {
   op <- par(mfrow=c(2, 1), mar=c(2, 2, .5, .5), oma=c(2, 0, 0, 0))
   on.exit(par(op))
@@ -312,8 +310,13 @@ fig.fraction.by.group(res.b, res.h, dat.g, "family")
 ##+ fraction_by_order,fig.cap="Fraction of woodiness by order"
 fig.fraction.by.group(res.b, res.h, dat.g, "order")
 
-## Phylogeny at the level of order
-phy.o <- build.order.tree(dat.g)
+## Woodiness also varies over the tree; plot the per-order estimate of
+## woodiness around the tree (the code to do this is not very pretty,
+## so is kept separately in `R/plot-tree.R`)
+source("R/plot-tree.R")
+
+## Phylogeny at the level of order:
+phy.o <- load.phylogeny.order()
 
 ##+ fraction_phy_binomial,fig.cap="Woodiness percentage by order"
 fig.fraction.on.phylogeny(phy.o, res.b)
@@ -323,14 +326,7 @@ fig.fraction.on.phylogeny(phy.o, res.h)
 
 ## # Survey:
 
-## If you want to redo the lat/long calculations, this is the function
-## to run:
-##   `build.country.list()`
-## before running `load.survey()` below.
-## This downloads some files from GBIF and extracts country-level
-## lat/long values from it to rebuild `geo/country_coords.csv`.  This
-## file is already available in the repository, so this will rarely be
-## needed.  It is how this file was generated, however.
+## Raw results of the survey:
 d.survey <- load.survey()
 
 ## Convert estimates to normal using logit transformation:
@@ -355,6 +351,10 @@ abline(res.lat)
 res.tro <- lm(Estimate.logit ~ Tropical, d.survey)
 anova(res.tro)
 summary(res.tro)
+
+## Distribution of estimates vs different levels of botanical
+## familiarity and education, with the estimates from the database
+## overlaid.
 
 fig.survey.results <- function(d.survey, res.b, res.h) {
   ci <- 100*cbind(res.b$overall.p, res.h$overall.p)
@@ -397,6 +397,10 @@ fig.survey.results <- function(d.survey, res.b, res.h) {
 ##+ survey_results,fig.cap="Survey results by predictor"
 fig.survey.results(d.survey, res.b, res.h)
 
+## And the raw distribution of survey results, showing the general
+## tendency for relatively low estimates, again overlaid with the
+## estimates from the database:
+
 fig.survey.distribution <- function(d.survey, res.b, res.h) {
   op <- par(mfrow=c(2, 1), mar=c(2, 4, .5, .5), oma=c(2, 0, 0, 0))
   on.exit(par(op))
@@ -438,6 +442,17 @@ fig.survey.distribution <- function(d.survey, res.b, res.h) {
 
 ##+ survey_distribution,fig.cap="Distribution of survey results"
 fig.survey.distribution(d.survey, res.b, res.h)
+
+## # Variability of a genus vs size
+
+## These plots look at the how variable a genus is vs its size (left
+## column) or the number of species in a known state (right column).
+## The top row looks at how variable the genus is (a single type or a
+## mixed type), the middle row at the probability that a genus is
+## varaible.  The bottom row looks at the proportion of species that
+## are woody in a genus vs its size, testing if woody genera are
+## relatively larg or relatively small (woody genera are relatively
+## smaller).
 
 fig.variability <- function(dat.g) {
   dat.g$p.rare <- (0.5 - abs(dat.g$p - 1/2)) * 2
@@ -524,14 +539,22 @@ fig.variability <- function(dat.g) {
 ##+ variability,fig.cap="Variability by genus size"
 fig.variability(dat.g)
 
-## Export tables
+## # Write out partly processed data sets
+
+## To save having to rerun everything, these are the estimates by
+## genus, family and order for the two different sampling approaches
+## and the three different treatment of variable species (so 3 x 2 x 3
+## = 18 files)
+
 write.output <- function(d, type) {
   for (tax in c("genus", "family", "order"))
     write.csv(d[[tax]],
-              file.path("output", sprintf("%s-%s.csv", tax, type)),
+              file.path("output/results", sprintf("%s-%s.csv", tax, type)),
               row.names=FALSE)
 }
+
 ## Core data sets:
+dir.create("output/results", FALSE)
 write.output(res.b, "binomial-strong-prior")
 write.output(res.h, "hypergeometric-weak-prior")
 
@@ -541,7 +564,7 @@ write.output(res.h.w, "hypergeometric-weak-prior-wood-biased")
 write.output(res.b.h, "binomial-strong-prior-herb-biased")
 write.output(res.h.h, "hypergeometric-weak-prior-herb-biased")
 
-## Meta data:
+## Meta data for interpreting these files.
 metadata <- 
   list(order="Taxonomic order",
        family="Taxonomic family",
@@ -560,9 +583,10 @@ metadata <-
 metadata <- data.frame(column=names(metadata),
                        description=unlist(metadata),
                        stringsAsFactors=FALSE)
-write.csv(metadata, "output/metadata.csv", row.names=FALSE)
+write.csv(metadata, "output/results/metadata.csv", row.names=FALSE)
 
-## Produce versions for publication:
+## # Produce PDF versions of figures for publication:
+
 if (!interactive()) {
   to.pdf("doc/figs/fraction-by-genus.pdf", 6, 6,
          fig.fraction.by.group(res.b, res.h, dat.g, "genus"))

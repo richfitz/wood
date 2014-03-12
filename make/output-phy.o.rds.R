@@ -33,5 +33,7 @@ phy.o <- ladderize(phy.o)
 dat.g <- load.woodiness.genus()
 n <- dat.g %.% group_by(order) %.% summarise(n=sum(N))
 
-phy.o$n.taxa <- n$n[match(phy.o$tip.label, n$order)]
+phy.o$n.taxa <- structure(n$n[match(phy.o$tip.label, n$order)],
+                          names=phy.o$tip.label)
+
 saveRDS(phy.o, "output/phy.o.rds")

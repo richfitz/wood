@@ -52,6 +52,7 @@ output/phy.o.rds: make/output-phy.o.rds.R output/dat.g.rds
 
 clean:
 	rm -f output/*.rds output/*.csv
+	rm -r output/results
 	make -C doc clean
 
 # Save on some farting about with data:
