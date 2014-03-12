@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
-## Contains summarise.count() function.
-source("wood-functions.R")
+source("R/load.R")
+source("R/build.R") # parse.count / summarise.count
 
 ## Aggressive warnings: turn into errors
 options(warn=2)
@@ -12,6 +12,7 @@ dir.create("output", FALSE)
 ## Start by getting the woodiness information from the database
 dat <- read.csv("data/zae/GlobalWoodinessDatabase.csv",
                 stringsAsFactors=FALSE)
+dat$woodiness[dat$woodiness == "variable"] <- "V"
 names(dat)[names(dat) == "gs"] <- "species"
 dat$species <- sub(" ", "_", dat$species)
 
@@ -60,10 +61,10 @@ dups.merged <- data.frame(species=names(dups.woodiness),
 ## the resolved entries here:
 dat <- rbind(dat[-dups.i,], dups.merged)
 
-dat$genus <- sub("_.+$", "", dat$species)
-
 ## Tidy up, and we're done
-dat <- dat[order(dat$genus, dat$species),
-           c("genus", "species", "woodiness", "woodiness.count")]
+dat <- dat[order(dat$species),
+           c("species", "woodiness", "woodiness.count")]
+names(dat)[1] <- "gs"
+rownames(dat) <- NULL
 
 saveRDS(dat, "output/woodiness.rds")

@@ -1,3 +1,5 @@
 #!/usr/bin/env Rscript
-source("wood-functions.R")
-dat <- load.woodiness.data.genus(regenerate=TRUE, extreme="woody")
+source("R/load.R")
+source("R/build.R")
+saveRDS(build.woodiness.genus(extreme="woody"),
+        filename.woodiness.genus("woody"))

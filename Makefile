@@ -25,15 +25,21 @@ data/zae/genus_order_lookup.csv: make/data-zae.R
 data/theplantlist/names_accepted.csv: make/data-theplantlist.R
 	Rscript $<
 
-output/woodiness.rds: ${DATA_RAW} wood-functions.R
-	Rscript make/output-woodiness.rds.R
+output/genus_order_lookup.csv: make/output-genus_order_lookup.csv.R ${DATA_RAW}
+	Rscript $<
 
-output/dat.g.rds: output/woodiness.rds wood-functions.R
-	Rscript make/output-dat.g.rds.R
-output/dat.g.w.rds: output/woodiness.rds wood-functions.R
-	Rscript make/output-dat.g.w.rds.R
-output/dat.g.h.rds: output/woodiness.rds wood-functions.R
-	Rscript make/output-dat.g.h.rds.R
+output/woodiness.rds: make/output-woodiness.rds.R R/load.R R/build.R ${DATA_RAW}
+	Rscript $<
+
+DATA_GENUS_DEPS = output/genus_order_lookup.csv output/woodiness.rds \
+	R/load.R R/build.R
+
+output/dat.g.rds: make/output-dat.g.rds.R ${DATA_GENUS_DEPS}
+	Rscript $<
+output/dat.g.w.rds: make/output-dat.g.w.rds.R ${DATA_GENUS_DEPS}
+	Rscript $<
+output/dat.g.h.rds: make/output-dat.g.w.rds.R ${DATA_GENUS_DEPS}
+	Rscript $<
 
 clean:
 	rm -f output/*.rds output/*.csv
