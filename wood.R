@@ -1,3 +1,14 @@
+## # How much of the world is woody?
+## 
+## [Richard G. FitzJohn](http://www.zoology.ubc.ca/~fitzjohn),
+## [Matthew W. Pennell](mwpennell.wordpress.com),
+## [Amy E. Zanne](mwpennell.wordpress.com),
+## [Peter F. Stevens](http://www.missouribotanicalgarden.org/plant-scence/research-staff-article/487/stevens-p-f.aspx),
+## [David C. Tank](http://www.phylodiversity.net/dtank/), 
+## [William K. Cornwell](http://www.phylodiversity.net/wcornwell/)
+
+## This is the full analysis that underlies our paper.
+
 ### Set knitr options
 ##+ echo=FALSE,results=FALSE
 knitr::opts_chunk$set(tidy=FALSE)
@@ -17,7 +28,8 @@ invisible(suppressWarnings(sample(1:250, 1, pr=rep(1, 250), replace=TRUE)))
 ## at the command line.
 ## 
 ## See the file `data/README.md` for more information about the data
-## that we use.
+## that we use, and alternative ways of running things if you don't
+## have `make` installed.
 
 library(diversitree)
 source("R/load.R")
