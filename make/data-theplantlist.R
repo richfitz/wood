@@ -18,6 +18,4 @@ dat.accepted <- dat.unique[dat.unique$status == "Accepted",]
 write.csv.pl <- function(obj, filename)
   write.csv(obj, file.path(path, filename), row.names=FALSE)
 
-write.csv.pl(dat,          "names.csv")
-write.csv.pl(dat.unique,   "names_unique.csv")
 write.csv.pl(dat.accepted, "names_accepted.csv")

@@ -1,6 +1,7 @@
 DATA_RAW = data/zae/genus_order_lookup.csv data/theplantlist/names_accepted.csv
 DATA_PROCESSED = output/woodiness.rds output/dat.g.rds \
 	output/dat.g.w.rds output/dat.g.h.rds output/phy.o.rds
+REPORT = wood.Rmd wood.md wood.html wood.pdf
 
 all: wood.html wood.pdf doc/wood-ms.pdf
 
@@ -51,9 +52,15 @@ output/phy.o.rds: make/output-phy.o.rds.R output/dat.g.rds
 	Rscript $<
 
 clean:
+	rm -f data/theplantlist/names_accepted.csv
+	rm -f data/zae/Vascular_Plants_rooted.dated.tre \
+		data/zae/genus_order_lookup.csv
+	rm -rf data/geo/raw
 	rm -f output/*.rds output/*.csv
-	rm -r output/results
+	rm -rf output/results
+	rm -rf ${REPORT} figure cache
 	make -C doc clean
+	rm -f doc/figs/[a-z]*.pdf
 
 # Save on some farting about with data:
 DOWNLOADED_DATA =               	   \
