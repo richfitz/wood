@@ -1,6 +1,6 @@
 DATA_RAW = data/zae/genus_order_lookup.csv data/theplantlist/names_accepted.csv
 DATA_PROCESSED = output/woodiness.rds output/dat.g.rds \
-	output/dat.g.w.rds output/dat.g.h.rds
+	output/dat.g.w.rds output/dat.g.h.rds output/phy.o.rds
 
 all: wood.html wood.pdf doc/wood-ms.pdf
 
@@ -44,7 +44,10 @@ output/dat.g.rds: make/output-dat.g.rds.R ${DATA_GENUS_DEPS}
 	Rscript $<
 output/dat.g.w.rds: make/output-dat.g.w.rds.R ${DATA_GENUS_DEPS}
 	Rscript $<
-output/dat.g.h.rds: make/output-dat.g.w.rds.R ${DATA_GENUS_DEPS}
+output/dat.g.h.rds: make/output-dat.g.h.rds.R ${DATA_GENUS_DEPS}
+	Rscript $<
+
+output/phy.o.rds: make/output-phy.o.rds.R output/dat.g.rds
 	Rscript $<
 
 clean:
