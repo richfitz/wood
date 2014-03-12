@@ -67,33 +67,37 @@ $^{11}$ Evolution \& Ecology Research Centre, School of Biological, Earth and En
 \singlespacing
 \begin{enumerate}
 \item The question posed by the title of this paper is a basic one,
-  and it is surprising that the answer is not known. Recently assembled
-  trait datasets provide an opportunity to address this. However, a major
-  challenge in the scaling of functional datasets to the global
-  scale is sampling bias.  Although we currently know the growth
-  form of tens of thousands of species, these data are not a random sample of global
-  diversity; some clades are exhaustively characterised, while
+  and it is surprising that the answer is not known. Recently
+  assembled trait datasets provide an opportunity to address this, but
+  scaling these datasets to the global scale is challening because of
+  sampling bias.  Although we currently know the growth form of tens
+  of thousands of species, these data are not a random sample of
+  global diversity; some clades are exhaustively characterised, while
   others we know little--to--nothing about.
   % 
-\item Starting with a database of woodiness for 37,961 species of
-  vascular plants (13\% of taxonomically resolved species, 58\% of
-  which are woody), we estimated the status of the remaining
+\item Starting with a database of woodiness for 39,313 species of
+  vascular plants (12\% of taxonomically resolved species, 59\% of
+  which were woody), we estimated the status of the remaining
   taxonomically resolved species by randomisation.  To compare the
   results of our method to conventional wisdom, we informally surveyed
   a broad community of biologists.  No consensus answer to the
   question existed, with estimates ranging from 1\% to 90\% (mean:
   31.7\%).
   % #rstats
-  % nrow(load.woodiness.data()) # 37961
-  % sum(dat.g$K) / sum(dat.g$N) # 0.13 -- fraction known
-  % sum(dat.g$W) / sum(dat.g$K) # 0.58 -- fraction woody
+  % nrow(load.woodiness()) # 39313
+  % sum(dat.g$K) / sum(dat.g$N) # 0.12 -- fraction known
+  % sum(dat.g$W) / sum(dat.g$K) # 0.59 -- fraction woody
+  % d.survey <- load.survey()
   % range(d.survey$Estimate) # 1 - 90
   % mean(d.survey$Estimate)  # 31.7
 \item After accounting for sampling bias, we estimated the proportion
   of woodiness among the world's vascular plants to be between 45\%
   and 48\%.  This was much lower than a simple mean of our dataset and
   much higher than the conventional wisdom.
-  % 
+  % #rstats
+  % round(100*range(c(res.b$overall.p, res.h$overall.p)))
+  % round(100*res.b$overall.p, 1) # 45.6 (45.3 -- 45.9)
+  % round(100*res.h$overall.p, 1) # 47.6 (47.0 -- 48.2)
 \item \emph{Synthesis}: Alongside an understanding of global taxonomic
   diversity (i.e., number of species globally), building a functional
   understanding of global diversity is an important emerging research
@@ -189,9 +193,6 @@ classifies, among other groups, palms, tree ferns and bamboo as
 woody.
 %
 %WKC be nice to stop using a completely unusable definition for "true wood", even if it's what's in textbooks currently
-%
-% #rstats
-% nrow(read.csv("data/zae/GlobalWoodinessDatabase.csv"))
 
 As with all large data assemblies, the underlying datasets were collected 
 for a variety of research goals. For example, a number of the datasets come
@@ -212,12 +213,12 @@ matched against the International Plant Name Index
 (http://www.ipni.org/) and Tropicos (http://www.tropicos.org/).
 Potential synonymy in binomials arising from the three lists was
 investigated using the Plant List tools \citep{ThePlantList}.  
-% NOTE: This is the cleaning step done by `load.woodiness.data()`.
+% NOTE: This is the cleaning step done by `load.woodiness()`.
 As a result of this cleaning, the number of species in the final
-dataset was reduced from 49,061 to 37,961.
+dataset was reduced from 49,061 to 39,313.
 % #rstats
 % nrow(read.csv("data/zae/GlobalWoodinessDatabase.csv")) # 49061
-% nrow(load.woodiness.data())                            # 37961
+% nrow(load.woodiness())                                 # 39313
 
 Theophrastus recognised both the fundamental importance of the
 distinction between woody and herbaceous plants, and that this
@@ -225,47 +226,47 @@ distinction is in some cases difficult to make.  There are two ways
 that species were recorded as ``variable'' in form
 \citep{beaulieuHiddenRates}.  First, different records of a single
 species may conflict in growth form (having both records of woodiness
-and herbaceousness); this affected 313 of the 37,961 species in the
+and herbaceousness); this affected 307 of the 39,313 species in the
 database.
 % #rstats
-% dat <- load.woodiness.data()
+% dat <- load.woodiness()
 % tmp <- parse.count(dat$woodiness.count)
 % multi <- rowSums(tmp > 0) > 1
-% sum(multi)        # 313
-% nrow(tmp)         # 37961
+% sum(multi)        # 307
+% nrow(tmp)         # 39313
 % mean(multi) * 100 # 0.8%
-Second, 507 species (1.3\%) were coded as variable.
+Second, 546 species (1.4\%) were coded as variable.
 % #rstats
-% sum(tmp[,"V"] > 0)  # 507
-% nrow(tmp)           # 37961
-% mean(tmp[,"V"] > 0) # 0.013
-% sum(tmp[,"V"] > 0 & rowSums(tmp[,c("H", "W")]) > 0) # 56 (of 507)
-Following \citet{beaulieuHiddenRates}, we coded species in these groups as ``woody''
-or ``herbaceous'' when a majority of records were either ``woody'' or
-``herbaceous'', respectively, and for these species, records of ``variable'' do not
-contribute to the analysis.
+% sum(tmp[,"V"] > 0)  # 546
+% nrow(tmp)           # 39313
+% mean(tmp[,"V"] > 0) # 0.014
+% sum(tmp[,"V"] > 0 & rowSums(tmp[,c("H", "W")]) > 0) # 53 (of 546)
+Following \citet{beaulieuHiddenRates}, we coded species in these
+groups as ``woody'' or ``herbaceous'' when a majority of records were
+either ``woody'' or ``herbaceous'', respectively, and for these
+species, records of ``variable'' do not contribute to the analysis.
 %
 %
-Our final database for the main analysis contained 37,494 records with
-both information on woodiness and documented taxonomy --- 15,653 herbs
-and 21,841 woody species.  
+Our final database for the main analysis contained 38,810 records with
+both information on woodiness and documented taxonomy --- 15,957 herbs
+and 22,853 woody species.  
 % #rstats
-% sum(dat.g$K) # 37494 -- known species
-% sum(dat.g$H) # 15653 -- herbs
-% sum(dat.g$W) # 21841 -- woody species
+% sum(dat.g$K) # 38810 -- known species
+% sum(dat.g$H) # 15957 -- herbs
+% sum(dat.g$W) # 22853 -- woody species
 This included records from all flowering plant orders currently
 accepted by APG III \citep{APG3} and the fern taxonomy of
-\citet{apweb}, covering 14,680 genera and 477 families.
+\citet{apweb}, covering 15,232 genera and 465 families.
 % #rstats
 % sapply(dat.g[c("genus", "family")], function(x) length(unique(x)))
-The 467 species excluded at this step had identical numbers of records
+The 503 species excluded at this step had identical numbers of records
 of being woody and herbaceous.
 % #rstats
-% nrow(dat) - sum(dat.g$K)
-% sum(tmp[,"W"] == tmp[,"H"])
+% nrow(dat) - sum(dat.g$K)    # 503
+% sum(tmp[,"W"] == tmp[,"H"]) # 503
 We also ran analyses where we coded species as either woody or
 herbaceous by coding species with \emph{any} record of woody or
-variable as ``woody'' (and similarly for herbaceous), using all 37,961
+variable as ``woody'' (and similarly for herbaceous), using all 39,313
 species.  Neither of these cases are likely to be biologically realistic
 but allowed us to evaluate the maximal possible effect of mis--coding
 variable species.
@@ -274,12 +275,12 @@ variable species.
 
 To estimate the percentage of species that are woody, we cannot simply
 use the fraction of species within our trait database that are woody
-(21,841 of 37,494 = 58\%) as these records represent a biased sample
+(22,853 of 38,810 = 59\%) as these records represent a biased sample
 of vascular plants.
 % #rstats
-% sum(dat.g$W) # 21841 -- woody
-% sum(dat.g$K) # 37494 -- known
-% sum(dat.g$W) / sum(dat.g$K) # 0.58 -- fraction
+% sum(dat.g$W) # 22853 -- woody
+% sum(dat.g$K) # 38810 -- known
+% sum(dat.g$W) / sum(dat.g$K) # 0.59 -- fraction
 For example, most Orchidaceae are probably herbaceous; we have only
 one record of woodiness among the 1,573 species for which we have
 data.
@@ -288,20 +289,21 @@ data.
 % sum(dat.g$K[i.orc]) # 1573 -- known Orchidaceae
 % sum(dat.g$W[i.orc]) # 1    -- woody Orchidaceae
 However, the fraction of Orchidaceae species with known data (1,573 of
-27,140 = 6\%)
+27,801 = 6\%)
 % sum(dat.g$K[i.orc]) #  1573 -- known Orchidaceae
-% sum(dat.g$N[i.orc]) # 27140 -- number of Orchidaceae
-% sum(dat.g$K[i.orc]) / sum(dat.g$N[i.orc]) # 0.58 -- fraction known
+% sum(dat.g$N[i.orc]) # 27801 -- number of Orchidaceae
+% sum(dat.g$K[i.orc]) / sum(dat.g$N[i.orc]) # 0.55 -- fraction known
 is much lower than the overall rate of knowledge for all vascular
-plants (37,494 of 284,732 = 13\%), which will upwardly bias the global
+plants (38,810 of 284,732 = 12\%), which will upwardly bias the global
 estimate of woodiness.
 % #rstats
-% sum(dat.g$K) #  37494 -- known vascular
+% sum(dat.g$K) #  38810 -- known vascular
 % sum(dat.g$N) # 284732 -- total vascular
-% sum(dat.g$K) / sum(dat.g$N) # 0.13 -- fraction known
+% sum(dat.g$K) / sum(dat.g$N) # 0.12 -- fraction known
 Conversely, systematic under--sampling of tropical species would bias
-the global woodiness estimate downwards, as tropical floras are thought to harbour
-a greater proportion of woody species than temperate ones \citep{Molesheihgt}.
+the global woodiness estimate downwards, as tropical floras are
+thought to harbour a greater proportion of woody species than
+temperate ones \citep{Molesheihgt}.
 
 % WKC: After doing all that annoying dataset checking for Amy's paper
 % I figured out where the bias is from: there are several forestry
@@ -366,8 +368,8 @@ approach because it weakly constrains the state of missing species.
 However, the distribution of woodiness among genera and families is
 strongly bimodal; most genera are either all--woody or all--herbaceous
 (Figure \ref{fig:distribution-genera}, \ref{fig:distribution-family}, and 
-\citealt{sinnott1915evolution}).  Among the 748 genera with at least 10
-records, 395 are entirely woody, 268 are entirely herbaceous, and only
+\citealt{sinnott1915evolution}).  Among the 791 genera with at least 10
+records, 411 are entirely woody, 271 are entirely herbaceous, and only
 58 have between 10\% and 90\% woody species. Qualitatively similar patterns
 hold at both the level of family and order, though the distribution
 becomes progressively less bimodal as one moves up the taxonomic hierarchy 
@@ -376,8 +378,8 @@ As a result, knowing the state of a handful of species within a genus
 can give a reasonable guess at the state of remaining species.
 % #rstats
 % tmp <- dat.g$p[dat.g$K >= 10] # select genera with 10 records
-% length(tmp)              # 769 -- genera with at least 10 records
-% sum(tmp == 1)            # 395 -- 100% woody
+% length(tmp)              # 791 -- genera with at least 10 records
+% sum(tmp == 1)            # 411 -- 100% woody
 % sum(tmp == 0)            # 268 -- 100% herbaceous
 % sum(tmp > 0 & tmp < 1)   # 106 -- variable
 % sum(tmp > .1 & tmp < .9) #  58 -- interestingly variable
@@ -443,7 +445,7 @@ levels (family, order or vascular plants).  We repeated this sampling
 species that are woody.
 %
 The R code and data to replicate this analysis are available on github
-(\textit{link to be added, but archive provided for review}) and are included
+(\textit{https://github.com/richfitz/wood}) and are included
 as supplemental material.
 
 \subsection{Survey}
@@ -476,13 +478,13 @@ survey).
 Across all vascular plants, we estimated the fraction of woody species
 to be between 45\% and 48\%.
 % #rstats
-% round(100*res.b$overall.p, 1) # 45.0 (44.7 -- 45.3)
-% round(100*res.h$overall.p, 1) # 47.2 (46.6 -- 47.9)
+% round(100*res.b$overall.p, 1) # 45.6 (45.3 -- 45.9)
+% round(100*res.h$overall.p, 1) # 47.6 (47.0 -- 48.2)
 Specifically, using our strong prior sampling approach (binomial
-distribution) we estimated 45.0\% of species are woody (95\%
-confidence interval of 44.7--45.3\%) and with the weak prior
-(hypergeometric distribution) approach we estimated 47.2\% (95\% CI of
-46.6--47.8\%) (Figure \ref{fig:distribution-raw}).
+distribution) we estimated 45.6\% of species are woody (95\%
+confidence interval of 45.3--45.9\%) and with the weak prior
+(hypergeometric distribution) approach we estimated 47.6\% (95\% CI of
+47.0--48.2\%) (Figure \ref{fig:distribution-raw}).
 %
 The different approaches generated different distributions of the
 per--genus percentage of woodiness (Figure
@@ -516,27 +518,27 @@ simple approach.
 % tmp2 <- round(tmp, 2)
 % c(tmp["b.w",1], tmp["h.w",1]) - c(tmp["b",1], tmp["h",1])
 % tmp["b.h",] - tmp["b",]
-Different codings of variable species (see above) significantly moved our estimates,
-despite affecting a small minority of species.  Coding all
-variable species as woody, our estimates 
+Different codings of variable species (see above) significantly moved
+our estimates, despite affecting a small minority of species.  Coding
+all variable species as woody, our estimates
 % #rstats
 % round(tmp["b.w",] - tmp["b",], 2)
 % round(tmp["b.w",], 2)
-increased by 1.5\% to 46.1\% with the strong prior approach
+increased by 1.4\% to 47.0\% with the strong prior approach
 % #rstats
 % round(tmp["h.w",] - tmp["h",], 2)
 % round(tmp["h.w",], 2)
-and by 1\% to 48.2\% with the weak prior approach (Figure
+and by 1\% to 48.6\% with the weak prior approach (Figure
 \ref{fig:distribution-raw-errors}). Similarly, with coding
 all variable species as herbaceous, the fraction of woody species
 % #rstats
 % -round(tmp["b.h",] - tmp["b",], 2)
 % round(tmp["b.h",], 2)
-decreased by 1.9\% to 43\% under a strong prior
+decreased by 1.9\% to 43.7\% under a strong prior
 % #rstats
 % round(tmp["h.h",] - tmp["h",], 2)
 % round(tmp["h.h",], 2)
-and by 1.2\% to 45.9\% under a weak prior (Figure
+and by 1.3\% to 46.3\% under a weak prior (Figure
 \ref{fig:distribution-raw-errors}).
 
 There was strikingly little consensus among researchers as to the
@@ -606,21 +608,23 @@ the forest, and especially not in tropical forests where diversity is high and d
 
 %
 %less woody than the database mean
-Our estimates of the percentage of species that are woody (45/47\%)
-differ from the raw estimate based on species in our database (58\%).
+Our estimates of the percentage of species that are woody (45/48\%)
+differ from the raw estimate based on species in our database (59\%).
 This difference is caused by the interaction between biased sampling
 and clustered trait data at a variety of taxonomic scales.
-%
+% #rstats
+% round(100*range(c(res.b$overall.p, res.h$overall.p))) # [45,48]
+% sum(dat.g$W) / sum(dat.g$K) # 0.59 -- fraction
 The distribution of woodiness is bimodal among genera, and the
 distribution of sizes of those genera differs with woodiness.  Genera
 that are primarily herbaceous (less than 10\% woody species for genera
 with at least 10 records) were on average larger than primarily woody
-genera (more than 90\% woody species), with a mean of 202 species
-compared to 137 (See Figure \ref{fig:variability}).
+genera (more than 90\% woody species), with a mean of 214 species
+compared to 151 (See Figure \ref{fig:variability}).
 % #rstats
 % dat.10 <- dat.g[dat.g$K > 10,]
-% round(mean(dat.10$N[dat.10$p < .1])) # 202
-% round(mean(dat.10$N[dat.10$p > .9])) # 137
+% round(mean(dat.10$N[dat.10$p < .1])) # 214
+% round(mean(dat.10$N[dat.10$p > .9])) # 151
 This means that even a random sampling above the level of species will
 lead to a biased estimate.
 
@@ -639,13 +643,14 @@ answering this type of question.
 We also found that the way in which we handled variable species
 significantly altered the estimates. That changing the state of such a
 relatively small number of species has the potential to alter
-inferences made at a global scale is rather surprising. Two points regarding this 
-are worth noting here. First, we reiterate
-that our alternate coding schemes (all variable species coded as herbaceous and all 
-variable species coding as woody) are rather extreme and unlikely to be
-biologically realistic. Second, while these alternate coding schemes certainly affected
-the estimates, the magnitude of their effect is much less than
-that of the overall sampling bias in the original database.
+inferences made at a global scale is rather surprising. Two points
+regarding this are worth noting here. First, we reiterate that our
+alternate coding schemes (all variable species coded as herbaceous and
+all variable species coding as woody) are rather extreme and unlikely
+to be biologically realistic. Second, while these alternate coding
+schemes certainly affected the estimates, the magnitude of their
+effect is much less than that of the overall sampling bias in the
+original database.
 
 Higher--order classifications are at least as much a product of human
 pattern matching as biological processes.  Genera correspond to the
@@ -665,71 +670,72 @@ but this is not possible for many plant clades \citep{costello2011};
 for many clades the ``collecting curve'' shows little sign of
 saturation, which is required for such an analysis.
 
-Sampling biases are pervasive in
-ecological datasets, and need to be addressed when using them for analyses.  Global databases of
+Sampling biases are pervasive in ecological datasets, and need to be
+addressed when using them for analyses.  Global databases of
 functional traits \citep[e.g., TRY;][]{kattge2011try} are central to
-biodiversity research, but through no fault of the database collator they
-are inevitably biased in terms of taxonomic breadth and this may have
-serious consequences for the reliability of inferences drawn from
+biodiversity research, but through no fault of the database collator
+they are inevitably biased in terms of taxonomic breadth and this may
+have serious consequences for the reliability of inferences drawn from
 them.  For example, for woodiness the economic importance of forestry
-species likely leads to their over--sampling in this dataset.  
+species likely leads to their over--sampling in this dataset.
 % WKC: "For example, for woodiness..." is awkward 
 % What about: "For this woodiness dataset,..."
-This sampling 
-bias also affect many commonly used methods in ecological and
-evolutionary research
+This sampling bias also affect many commonly used methods in
+ecological and evolutionary research
 \citep[e.g.,][]{ackerly2000taxon,nakagawa2008missing,pennell2013integrative,Pakeman2013}
-in addition to its well understood effects on
-conventional statistics.  In our case, taking the data at face--value,
-we would have greatly overestimated the global percentage of woody
-species.  Inferring the global frequency of any trait would face the
-same problem.  For example, the ecologically important traits of
-nitrogen--fixing, mycorrhizal symbioses and pollinator syndrome are
-strongly taxonomically structured, and we would expect raw estimates
-to be biased in the same way that woodiness was.  Our approach was
-developed for binary traits but similar approaches could be developed
-for multi--state categorical or continuous traits.
+in addition to its well understood effects on conventional statistics.
+In our case, taking the data at face--value, we would have greatly
+overestimated the global percentage of woody species.  Inferring the
+global frequency of any trait would face the same problem.  For
+example, the ecologically important traits of nitrogen--fixing,
+mycorrhizal symbioses and pollinator syndrome are strongly
+taxonomically structured, and we would expect raw estimates to be
+biased in the same way that woodiness was.  Our approach was developed
+for binary traits but similar approaches could be developed for
+multi--state categorical or continuous traits.
 
-% I think there is a point we are missing here, which is the connection between our method
-% and the "gap-filling" problem.  Maybe lead this paragraph by making that point.  
-% I think that would be stronger than what we currently have.
+% I think there is a point we are missing here, which is the
+% connection between our method and the "gap-filling" problem.  Maybe
+% lead this paragraph by making that point.  I think that would be
+% stronger than what we currently have.
 %
-%something like
-% The question of accounting for bias in generating global summary statistics is directly connected to the 
-% problem of phylogenetically-informed gap-filling.  In addition to improving an estimate of the mean, 
-% the methods in this paper can also be used to generate 
-% a probability of each unobserved species being woody.  
-%Two related approaches have recently been developed to address this problem focusing on continuous traits...
+% something like "The question of accounting for bias in generating
+% global summary statistics is directly connected to the problem of
+% phylogenetically-informed gap-filling.  In addition to improving an
+% estimate of the mean, the methods in this paper can also be used to
+% generate a probability of each unobserved species being woody.  Two
+% related approaches have recently been developed to address this
+% problem focusing on continuous traits..."
 
 Recently, two related approaches have been developed to address the
 problem of missing data in trait databases, both focusing on
 continuous traits \citep{Swenson2013, PEM}.  While their details
-differ, both approaches are model--based in that they impute trait values
-for missing species
-based on the fitted parameters of phylogenetic models estimated from
-the species already in the database. This is conceptually different
-from our approach; we do not assume any model for the evolution of
-woodiness, such as the `Mk' model \citep{Pagel1994}, which is commonly used
-to model discrete characters evolving on a phylogeny. Both types of
-approaches --- using taxonomic categories (this study) versus modeling
-trait evolution along a phylogeny --- have advantages and
-disadvantages.  One disadvantage of a modeling--based approach is that
-if the sampling is biased with respect to the character states, the
-parameter estimates themselves will be biased, leading to incorrect
-estimation of the states for the remaining species. While our approach
-avoids this issue, we ignore potentially useful information on the
-phylogenetic relationships within genera and branch lengths separating lineages.
+differ, both approaches are model--based in that they impute trait
+values for missing species based on the fitted parameters of
+phylogenetic models estimated from the species already in the
+database. This is conceptually different from our approach; we do not
+assume any model for the evolution of woodiness, such as the `Mk'
+model \citep{Pagel1994}, which is commonly used to model discrete
+characters evolving on a phylogeny. Both types of approaches --- using
+taxonomic categories (this study) versus modeling trait evolution
+along a phylogeny --- have advantages and disadvantages.  One
+disadvantage of a modeling--based approach is that if the sampling is
+biased with respect to the character states, the parameter estimates
+themselves will be biased, leading to incorrect estimation of the
+states for the remaining species. While our approach avoids this
+issue, we ignore potentially useful information on the phylogenetic
+relationships within genera and branch lengths separating lineages.
 
-The development of global databases for functional traits
-has been one of the recent key advances in ecology and evolutionary
-research, bringing our functional understanding of the world's biota closer to our 
-taxonomic understanding of it.  These databases offer the promise of allowing researchers to
-address broad--reaching and long--standing questions by drawing on
-huge amounts of accumulated research.  Just as Theophrastus' garden
-was a non--random sample of the Greek flora, our trait databases
-contain diverse biases; accounting for them will be important in
-making inferences about broad--scale ecological and evolutionary
-patterns and processes.
+The development of global databases for functional traits has been one
+of the recent key advances in ecology and evolutionary research,
+bringing our functional understanding of the world's biota closer to
+our taxonomic understanding of it.  These databases offer the promise
+of allowing researchers to address broad--reaching and long--standing
+questions by drawing on huge amounts of accumulated research.  Just as
+Theophrastus' garden was a non--random sample of the Greek flora, our
+trait databases contain diverse biases; accounting for them will be
+important in making inferences about broad--scale ecological and
+evolutionary patterns and processes.
 
 \section{Acknowledgements}
 
@@ -984,7 +990,7 @@ conducted with R version 3.0.2 \citep{R}.
     ($p=$0.02, $r^2$=0.02).
     % #rstats
     % nrow(d.survey)                   # 292
-    % sum(!is.na(d.survey$Country))    # TODO - check
+    % sum(!is.na(d.survey$Country))    # 282
     % summary(res.tro)
   }
 
@@ -1038,15 +1044,6 @@ column) equally spaced bins on this log axis.}
     distributed}
   \label{fig:survey-text-port}
 \end{figure}
-
-%\begin{table}[p]
-%  \centering
-%  \textit{[too large to set; see csv file]}
-%  \caption{Look--up table for converting the 103 growth form categories
-%    in the Royal Botanic Gardens Kew database into a binary
-%woody/herbaceous coding.}
-%\label{tab:kew}
-%\end{table}
 
 \end{document}
 
