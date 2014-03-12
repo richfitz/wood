@@ -1,10 +1,10 @@
 all: wood-ms.pdf
 
 wood-ms.pdf: wood-ms.tex wood.bib
-	pdflatex wood-ms
+	pdflatex -interaction=nonstopmode wood-ms
 	bibtex wood-ms
-	pdflatex wood-ms
-	pdflatex wood-ms
+	pdflatex -interaction=nonstopmode wood-ms
+	pdflatex -interaction=nonstopmode wood-ms
 
 clean: tidy
 	rm -f wood-ms.pdf
