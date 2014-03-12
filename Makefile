@@ -15,7 +15,7 @@ wood.md: wood.Rmd ${DATA_PROCESSED}
 wood.html: wood.md
 	Rscript -e "library(markdown); markdownToHTML('wood.md', 'wood.html')"
 
-doc/wood-ms.pdf: wood.pdf
+doc/wood-ms.pdf: wood.md
 	make -C doc wood-ms.pdf
 
 # This target will never run because it depends on nothing.  But if
