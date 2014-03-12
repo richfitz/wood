@@ -1,6 +1,6 @@
 ## This downloads a bunch of data from gbif and gets latitude and
 ## longitude for all countries.  This is saved in the
-## survey/country_coords.csv file, so does not need to be run except
+## data/geo/country_coords.csv file, so does not need to be run except
 ## to refresh these coordinates (note that this file is under version
 ## control, so this is really here only as a reference of what was
 ## done).
