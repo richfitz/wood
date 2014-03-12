@@ -59,6 +59,7 @@ clean:
 	rm -rf ${REPORT} figure cache
 	make -C doc clean
 	rm -f doc/figs/[a-z]*.pdf
+	rm -f wood-supporting.zip
 
 # Save on some farting about with data:
 DOWNLOADED_DATA =               	   \
@@ -76,5 +77,8 @@ downloaded-data-unpack:
 	tar -zxf ${DOWNLOADED_DATA_SAVE}
 downloaded-data-bulk-fetch:
 	curl -o ${DOWNLOADED_DATA_SAVE} http://www.zoology.ubc.ca/~fitzjohn/files/wood_data.tar.gz
+
+wood-supporting.zip: ./make/wood-supporting.zip.sh
+	$<
 
 .PHONY: all clean data-raw data-processed
