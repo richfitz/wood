@@ -1,5 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 # http://sleepycoders.blogspot.com.au/2013/03/sharing-travis-ci-generated-files.html
+echo -e "Preparing to copy generated files to gh-pages branch"
 if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   echo -e "Starting to update gh-pages\n"
 
@@ -24,4 +25,8 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   git push -fq origin gh-pages > /dev/null
 
   echo -e "Uploaded generated files to gh-pages\n"
+else
+  echo -e "This is a pull request, not copying files"
 fi
+
+echo -e "Done"
