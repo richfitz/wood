@@ -19,6 +19,12 @@ wood.pdf: wood.md
 doc/wood-ms.pdf: wood.pdf
 	make -C doc wood-ms.pdf
 
+# This target will never run because it depends on nothing.  But if
+# data/geo/country_coords.csv is deleted then this will regenerate
+# that file.  It's here for reference only, really.
+data/geo/country_coords.csv:
+	Rscript make/data-geo-country_coords.csv.R
+
 data/zae/genus_order_lookup.csv: make/data-zae.R
 	Rscript $<
 
