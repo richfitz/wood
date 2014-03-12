@@ -16,6 +16,11 @@ install:
     - ./travis-tool.sh install_deps
     - ./travis-tool.sh github_package richfitz/sowsear
     - ./travis-tool.sh github_package richfitz/diversitree
+
+after_success:
+    - ./.update-gh-pages.sh
+
 env:
   global:
     - BOOTSTRAP_LATEX="1"    
+    - secure: ZBHic7uBAmMNfMOWqVIaI+tthlqSUKWb+/6KCackazf+LzVCfbj3UR0EFiT9kepa79B80TrAysb1lb0m36hkh6IDFSojlWtdk5Kk/X2xbh8s0HQ7r0Jojzk6fsxv9zFqp355qnktXD5HFb1eSOkIpIfWFTJb1miJs0MFZrknx6A=
