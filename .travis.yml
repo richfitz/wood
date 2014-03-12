@@ -20,6 +20,11 @@ install:
 after_success:
     - ./.update-gh-pages.sh
 
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
 env:
   global:
     - BOOTSTRAP_LATEX="1"    
