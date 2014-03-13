@@ -191,8 +191,6 @@ their merits, and pitfalls).  Note that in addition to species producing
 secondary xylem, this definition
 classifies, among other groups, palms, tree ferns and bamboo as
 woody.
-%
-%WKC be nice to stop using a completely unusable definition for "true wood", even if it's what's in textbooks currently
 
 As with all large data assemblies, the underlying datasets were collected 
 for a variety of research goals. For example, a number of the datasets come
@@ -303,14 +301,6 @@ Conversely, systematic under--sampling of tropical species would bias
 the global woodiness estimate downwards, as tropical floras are
 thought to harbour a greater proportion of woody species than
 temperate ones \citep{Molesheihgt}.
-
-% WKC: After doing all that annoying dataset checking for Amy's paper
-% I figured out where the bias is from: there are several forestry
-% datasets of exclusively woody species that got pulled in.  So
-% basically in the tropics, esp. the paleo-tropics various British
-% people were trying to figure out what makes good wood to build the
-% buildings of the british empire so they did a rather systemtic
-% inventory of woody properties of the local species since
 
 We developed a simple method to account for this sampling bias when
 estimating the percentage of woody species.  In our approach, we treat
@@ -449,13 +439,6 @@ as supplemental material.
 
 \subsection{Survey}
 
-% The idea is that the above shows how our biological data sets are
-% biased vs the actual data (as in, we've collected the information in
-% a biased way).
-%
-% The point of the survey is that not only are we not aware of the
-% bias, but our *guesses* as to what the mean actually is is also
-% biased.
 In estimating the number of species within Angiosperm families,
 \citet{joppa2010} found that expert opinion generally agreed closely
 with estimates from a statistical model.  We were interested in
@@ -589,7 +572,6 @@ from temperate countries ($p$=0.02), but this effect was very small
 
 \section{Discussion}
 
-% No consensus
 Our estimates of woodiness differed from both the survey and the
 simple mean of the global database: neither simple statistics nor
 biologists' intuition were accurate in this case.  The difference from
@@ -605,8 +587,6 @@ herb--centric view of the world may arise from the importance of our
 including most researchers --- likely spend more time in the garden than in
 the forest, and especially not in tropical forests where diversity is high and disproportionately woody.
 
-%
-%less woody than the database mean
 Our estimates of the percentage of species that are woody (45/48\%)
 differ from the raw estimate based on species in our database (59\%).
 This difference is caused by the interaction between biased sampling
@@ -627,7 +607,6 @@ compared to 151 (See Figure \ref{fig:variability}).
 This means that even a random sampling above the level of species will
 lead to a biased estimate.
 
-%Effects of sampling bias
 The effect of sampling bias within our database on the estimate is
 amplified by the distribution of woodiness at higher taxonomic levels,
 with families or even orders often being predominantly either woody or
@@ -677,8 +656,6 @@ they are inevitably biased in terms of taxonomic breadth and this may
 have serious consequences for the reliability of inferences drawn from
 them.  For example, for woodiness the economic importance of forestry
 species likely leads to their over--sampling in this dataset.
-% WKC: "For example, for woodiness..." is awkward 
-% What about: "For this woodiness dataset,..."
 This sampling bias also affect many commonly used methods in
 ecological and evolutionary research
 \citep[e.g.,][]{ackerly2000taxon,nakagawa2008missing,pennell2013integrative,Pakeman2013}
@@ -693,22 +670,11 @@ biased in the same way that woodiness was.  Our approach was developed
 for binary traits but similar approaches could be developed for
 multi--state categorical or continuous traits.
 
-% I think there is a point we are missing here, which is the
-% connection between our method and the "gap-filling" problem.  Maybe
-% lead this paragraph by making that point.  I think that would be
-% stronger than what we currently have.
-%
-% something like "The question of accounting for bias in generating
-% global summary statistics is directly connected to the problem of
-% phylogenetically-informed gap-filling.  In addition to improving an
-% estimate of the mean, the methods in this paper can also be used to
-% generate a probability of each unobserved species being woody.  Two
-% related approaches have recently been developed to address this
-% problem focusing on continuous traits..."
-
-Recently, two related approaches have been developed to address the
-problem of missing data in trait databases, both focusing on
-continuous traits \citep{Swenson2013, PEM}.  While their details
+In addition to improving an estimate of the mean, the methods in this paper
+can also be used to generate a probability of each unobserved species being woody.
+Thus, it can be used as a type of phylogenetically--informed data--imputation. 
+Recently, two related approaches have been developed to do just this, 
+both focusing on continuous traits \citep{Swenson2013, PEM}.  While their details
 differ, both approaches are model--based in that they impute trait
 values for missing species based on the fitted parameters of
 phylogenetic models estimated from the species already in the
