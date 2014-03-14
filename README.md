@@ -28,7 +28,6 @@ make data-raw
 This fetches a set of data that I've archived.
 
 ```
-make downloaded-data-bulk-fetch
 make downloaded-data-unpack
 ```
 

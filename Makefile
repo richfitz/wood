@@ -71,16 +71,18 @@ DOWNLOADED_DATA =               	   \
 	data/zae/GlobalWoodinessDatabase.csv
 DOWNLOADED_DATA_SAVE = .downloaded_data.tar.gz
 
+${DOWNLOADED_DATA_SAVE}:
+	curl -o ${DOWNLOADED_DATA_SAVE} http://www.zoology.ubc.ca/~fitzjohn/files/wood_data.tar.gz
+
+downloaded-data-bulk-fetch: ${DOWNLOADED_DATA_SAVE}
+downloaded-data-unpack: ${DOWNLOADED_DATA_SAVE}
+	tar -zxf $<
 downloaded-data-delete:
 	rm -fr ${DOWNLOADED_DATA}
 downloaded-data-save:
 	tar -zcf ${DOWNLOADED_DATA_SAVE} ${DOWNLOADED_DATA}
-downloaded-data-unpack:
-	tar -zxf ${DOWNLOADED_DATA_SAVE}
-downloaded-data-bulk-fetch:
-	curl -o ${DOWNLOADED_DATA_SAVE} http://www.zoology.ubc.ca/~fitzjohn/files/wood_data.tar.gz
 
 wood-supporting.zip: ./make/wood-supporting.zip.sh
 	$<
 
-.PHONY: all clean data-raw data-processed
+.PHONY: all clean data-raw data-processed downloaded-data-bulk-fetch
