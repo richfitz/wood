@@ -9,14 +9,16 @@ data-raw: ${DATA_RAW}
 data-processed: ${DATA_PROCESSED}
 
 wood.Rmd: wood.R
-	Rscript -e "library(sowsear); sowsear('wood.R', 'Rmd')"
+	Rscript -e "library(sowsear); sowsear('$<', 'Rmd')"
 wood.md: wood.Rmd ${DATA_PROCESSED}
-	Rscript -e "library(knitr); knit('wood.Rmd')"
+	Rscript -e "library(knitr); knit('$<')"
 wood.html: wood.md
-	Rscript -e "library(markdown); markdownToHTML('wood.md', 'wood.html')"
+	Rscript -e "library(markdown);\
+	 opts <- setdiff(markdownHTMLOptions(TRUE), 'base64_images');\
+	 markdownToHTML('$<', '$@', options=opts)"
 
 doc/wood-ms.pdf: wood.md
-	make -C doc wood-ms.pdf
+	make -C doc
 
 # This target will never run because it depends on nothing.  But if
 # data/geo/country_coords.csv is deleted then this will regenerate
