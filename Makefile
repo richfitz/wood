@@ -51,6 +51,52 @@ output/dat.g.h.rds: make/output-dat.g.h.rds.R ${DATA_GENUS_DEPS}
 output/phy.o.rds: make/output-phy.o.rds.R output/dat.g.rds
 	Rscript $<
 
+# Cache downloads
+RELEASE=v0.9-rc1
+
+THEPLANTLIST_CONTENTS = data/theplantlist/acceptedNames1.1
+THEPLANTLIST_CACHE = .theplantlist-cache.tar.gz
+THEPLANTLIST_URL = https://github.com/richfitz/wood/releases/download/${RELEASE}/theplantlist-cache.tar.gz
+
+DRYAD_CONTENTS = data/zae/Spermatophyta_Genera.csv \
+  data/zae/PhylogeneticResources.zip \
+  data/zae/GlobalWoodinessDatabase.csv
+DRYAD_CACHE = .dryad-cache.tar.gz
+DRYAD_URL = https://github.com/richfitz/wood/releases/download/${RELEASE}/dryad-cache.tar.gz
+
+${THEPLANTLIST_CACHE}:
+	curl -L -o $@ ${THEPLANTLIST_URL}
+theplantlist-cache-fetch: ${THEPLANTLIST_CACHE}
+theplantlist-delete:
+	rm -rf ${THEPLANTLIST_CONTENTS}
+theplantlist-cache-unpack: ${THEPLANTLIST_CACHE}
+	tar -zxf $<
+theplantlist-cache-archive:
+	tar -zcf ${THEPLANTLIST_CACHE} ${THEPLANTLIST_CONTENTS}
+
+${DRYAD_CACHE}:
+	curl -L -o $@ ${DRYAD_URL}
+dryad-cache-fetch: ${DRYAD_CACHE}
+dryad-delete:
+	rm -rf ${DRYAD_CONTENTS}
+dryad-cache-unpack: ${DRYAD_CACHE}
+	tar -zxf $<
+dryad-cache-archive:
+	tar -zcf ${DRYAD_CACHE} ${DRYAD_CONTENTS}
+
+cache-fetch: theplantlist-cache-fetch dryad-cache-fetch
+cache-unpack: theplantlist-cache-unpack dryad-cache-unpack
+
+release-files: wood-supporting.zip ${DRYAD_CACHE} ${THEPLANTLIST_CACHE}
+	rm -rf release
+	mkdir -p release
+	cp ${THEPLANTLIST_CACHE} release/theplantlist-cache.tar.gz
+	cp ${DRYAD_CACHE} release/dryad-cache.tar.gz
+	cp wood-supporting.zip release
+
+wood-supporting.zip: ./make/wood-supporting.zip.sh doc/wood-ms.pdf
+	$<
+
 clean:
 	rm -f data/theplantlist/names_accepted.csv
 	rm -f data/zae/Vascular_Plants_rooted.dated.tre \
@@ -62,27 +108,10 @@ clean:
 	make -C doc clean
 	rm -f doc/figs/[a-z]*.pdf
 	rm -f wood-supporting.zip
+	rm -rf release
 
-# Save on some farting about with data:
-DOWNLOADED_DATA =               	   \
-	data/theplantlist/acceptedNames1.1 \
-        data/zae/PhylogeneticResources.zip \
-	data/zae/Spermatophyta_Genera.csv  \
-	data/zae/GlobalWoodinessDatabase.csv
-DOWNLOADED_DATA_SAVE = .downloaded_data.tar.gz
+purge: clean
+	rm -rf ${THEPLANTLIST_CONTENTS}
+	rm -f ${DRYAD_CONTENTS}
 
-${DOWNLOADED_DATA_SAVE}:
-	curl -o ${DOWNLOADED_DATA_SAVE} http://www.zoology.ubc.ca/~fitzjohn/files/wood_data.tar.gz
-
-downloaded-data-bulk-fetch: ${DOWNLOADED_DATA_SAVE}
-downloaded-data-unpack: ${DOWNLOADED_DATA_SAVE}
-	tar -zxf $<
-downloaded-data-delete:
-	rm -fr ${DOWNLOADED_DATA}
-downloaded-data-save:
-	tar -zcf ${DOWNLOADED_DATA_SAVE} ${DOWNLOADED_DATA}
-
-wood-supporting.zip: ./make/wood-supporting.zip.sh
-	$<
-
-.PHONY: all clean data-raw data-processed downloaded-data-bulk-fetch
+.PHONY: all clean purge data-raw data-processed downloaded-data-bulk-fetch

@@ -14,7 +14,7 @@ This directory contains a few files that are special to this project:
   countries, for use with the survey results.  This can be regenerated
   by deleting the file and running `make data/geo/country_coords.csv`
 
-Running `make data-raw` or `make downloaded-data-unpack` will download and create create some additional files:
+Running `make data-raw` (optionally running `make theplantlist-cache-unpack` first to avoid hammering the plant list) will download and create create some additional files:
 
 # directory `zae`
 

@@ -28,10 +28,10 @@ make data-raw
 This fetches a set of data that I've archived.
 
 ```
-make downloaded-data-unpack
+make theplantlist-cache-unpack
 ```
 
-This route allows you to delete all the data (`make clean downloaded-data-delete`) and easily rerun the analysis (`make downloaded-data-unpack`).
+This route allows you to delete all the data (`make purge`) and easily rerun the analysis (`make theplantlist-cache-unpack all`) without redownloading the data.
 
 ## Running the analysis
 

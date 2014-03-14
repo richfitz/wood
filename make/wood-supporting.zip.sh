@@ -4,7 +4,7 @@
 DEST=wood-supporting
 rm -rf $DEST
 mkdir $DEST
-cp -R R figure wood.Rproj wood.R wood.Rmd wood.md wood.html Makefile README.md $DEST
+cp -R figure wood.Rmd wood.md wood.html $DEST
 mkdir -p $DEST/output
 cp -R output/results $DEST/output
 

@@ -3,7 +3,7 @@ language: c
 # language: objective-c
 
 script:
-    - make downloaded-data-bulk-fetch downloaded-data-unpack
+    - make cache-unpack
     - make
 
 before_install:

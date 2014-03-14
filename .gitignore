@@ -6,6 +6,7 @@ wood.pdf
 
 # generated data
 output/
+release/
 
 # Data intermediates
 data/theplantlist/acceptedNames1.1
