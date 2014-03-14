@@ -69,7 +69,7 @@ $^{11}$ Evolution \& Ecology Research Centre, School of Biological, Earth and En
 \item The question posed by the title of this paper is a basic one,
   and it is surprising that the answer is not known. Recently
   assembled trait datasets provide an opportunity to address this, but
-  scaling these datasets to the global scale is challening because of
+  scaling these datasets to the global scale is challenging because of
   sampling bias.  Although we currently know the growth form of tens
   of thousands of species, these data are not a random sample of
   global diversity; some clades are exhaustively characterised, while
@@ -670,41 +670,53 @@ biased in the same way that woodiness was.  Our approach was developed
 for binary traits but similar approaches could be developed for
 multi--state categorical or continuous traits.
 
-In addition to improving an estimate of the mean, the methods in this paper
-can also be used to generate a probability of each unobserved species being woody.
-Thus, it can be used as a type of phylogenetically--informed data--imputation. 
-Recently, two related approaches have been developed to do just this, 
-both focusing on continuous traits \citep{Swenson2013, PEM}.  While their details
-differ, both approaches are model--based in that they impute trait
-values for missing species based on the fitted parameters of
-phylogenetic models estimated from the species already in the
-database. This is conceptually different from our approach; we do not
-assume any model for the evolution of woodiness, such as the `Mk'
-model \citep{Pagel1994}, which is commonly used to model discrete
-characters evolving on a phylogeny. Both types of approaches --- using
-taxonomic categories (this study) versus modeling trait evolution
-along a phylogeny --- have advantages and disadvantages.  One
-disadvantage of a modeling--based approach is that if the sampling is
-biased with respect to the character states, the parameter estimates
-themselves will be biased, leading to incorrect estimation of the
-states for the remaining species. While our approach avoids this
-issue, we ignore potentially useful information on the phylogenetic
-relationships within genera and branch lengths separating lineages.
+In addition to improving an estimate of the mean, the methods in this
+paper can also be used to generate a probability of each unobserved
+species being woody.  Thus, it can be used as a type of taxonomically
+--informed data--imputation.  Recently, two related approaches have
+been developed to do just this, both focusing on continuous traits
+\citep{Swenson2013, PEM}.  While their details differ, both approaches
+are model--based in that they impute trait values for missing species
+based on the fitted parameters of phylogenetic models estimated from
+the species already in the database. This is conceptually different
+from our approach; we do not assume any model for the evolution of
+woodiness, such as the `Mk' model \citep{Pagel1994}, which is commonly
+used to model discrete characters evolving on a phylogeny. Both types
+of approaches --- using taxonomic categories (this study) versus
+modeling trait evolution along a phylogeny --- have advantages and
+disadvantages.  One disadvantage of a modeling--based approach is that
+if the sampling is biased with respect to the character states, the
+parameter estimates themselves will be biased, leading to incorrect
+estimation of the states for the remaining species. While our approach
+avoids this issue, we ignore potentially useful information on the
+phylogenetic relationships within genera and branch lengths separating
+lineages.
 
 \section{Concluding remarks}
 
-As a result of centuries of effort, we now have a solid understanding 
-of the taxonomic diversity of many groups and regions. By drawing on
-huge amounts of accumulated research, the recent development of global trait
-databases offers the promise of gaining similar insights into the functional 
-diversity of the earth's biota.
-While the question we ask in this paper --- what proportion of the world's 
-flora is woody? --- is rather simple, answering it required dealing with the
-diverse biases that are inevitably present in large datasets. Our approach is 
-just one of many potential ways to address these biases; we hope that our analysis
-encourages other researchers to think critically and creatively about the problem.
-Making robust inferences about broad--scale ecological and evolutionary questions
-from emerging global datasets will require tackling this issue head on. 
+As a result of centuries of effort, we now have an increasingly
+complete understanding of taxonomic diversity.  More recent
+developments in assembling global trait databases offer the promise of
+gaining similar insights into the functional diversity of the earth's
+biota.
+%
+While the question we ask in this paper --- what proportion of the
+world's flora is woody? --- is simple, answering it required dealing
+with the pervasive biases that will be present in most large datasets.
+%
+Researchers should be aware that because of these biases and the
+phylogenetically non-random distribtion of traits, the law of large
+numbers will not apply, and that estimates from trait databases will
+converge on the true value, even when they are fairly extensive.
+%
+Our approach is just one of many potential ways to address these
+biases; we hope that our analysis encourages others to think
+critically and creatively about the problem.
+%
+Just as Theophrastus' garden was a non--random sample of the Greek
+flora, our trait databases contain diverse biases; accounting for them
+will be important in making inferences about broad--scale ecological
+and evolutionary patterns and processes.
 
 \section{Acknowledgements}
 
@@ -724,9 +736,9 @@ Research Centre through the working group.
 %
 RGF was supported by a Vanier Commonwealth Graduate Scholarship from
 the Natural Sciences and Engineering Research Council of Canada
-(NSERC).
-MWP was supported by a NESCent graduate fellowship and a 
-University of Idaho Bioinformatics and Computational Biology graduate fellowship.
+(NSERC).  MWP was supported by a NESCent graduate fellowship and a
+University of Idaho Bioinformatics and Computational Biology graduate
+fellowship.
 %
 WKC was supported by Netherlands Organisation for
 Scientific Research (NWO) through its Open Competition Program of the

@@ -5,6 +5,7 @@ wood-ms.pdf: wood-ms.tex wood.bib
 	bibtex wood-ms
 	pdflatex -interaction=nonstopmode wood-ms
 	pdflatex -interaction=nonstopmode wood-ms
+	pdflatex -interaction=nonstopmode wood-ms
 
 clean: tidy
 	rm -f wood-ms.pdf
