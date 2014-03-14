@@ -13,5 +13,5 @@ cp -R output/results $DEST/output
 mkdir $DEST/data
 tar -cf - `git ls-files --directory data` | tar -xpf - -C $DEST
 
-zip -r $DEST.zip $DEST
+tar -zcf $DEST.tar.gz $DEST
 rm -rf $DEST

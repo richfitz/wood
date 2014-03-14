@@ -87,14 +87,14 @@ dryad-cache-archive:
 cache-fetch: theplantlist-cache-fetch dryad-cache-fetch
 cache-unpack: theplantlist-cache-unpack dryad-cache-unpack
 
-release-files: wood-supporting.zip ${DRYAD_CACHE} ${THEPLANTLIST_CACHE}
+release-files: wood-supporting.tar.gz ${DRYAD_CACHE} ${THEPLANTLIST_CACHE}
 	rm -rf release
 	mkdir -p release
 	cp ${THEPLANTLIST_CACHE} release/theplantlist-cache.tar.gz
 	cp ${DRYAD_CACHE} release/dryad-cache.tar.gz
-	cp wood-supporting.zip release
+	cp wood-supporting.tar.gz release
 
-wood-supporting.zip: ./make/wood-supporting.zip.sh doc/wood-ms.pdf
+wood-supporting.tar.gz: ./make/wood-supporting.tar.gz.sh doc/wood-ms.pdf
 	$<
 
 clean:
@@ -107,7 +107,7 @@ clean:
 	rm -rf ${REPORT} figure cache
 	make -C doc clean
 	rm -f doc/figs/[a-z]*.pdf
-	rm -f wood-supporting.zip
+	rm -f wood-supporting.tar.gz
 	rm -rf release
 
 purge: clean
