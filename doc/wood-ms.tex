@@ -16,33 +16,27 @@
 
 \title{How much of the world is woody?}
 \author{
-Richard G. FitzJohn$^{*,1,2}$, Matthew W. Pennell$^{*,\dag,3,4}$, Amy E. Zanne$^{5,6}$,\\ Peter F. Stevens$^{7,8}$, David C. Tank$^{3,9}$, William K. Cornwell$^{10, 11}$
+Richard G. FitzJohn$^{\dag, 1, 2}$, Matthew W. Pennell$^{\dag,3,4, *}$, Amy E. Zanne$^{5,6}$,\\ Peter F. Stevens$^{7,8}$, David C. Tank$^{3}$, and William K. Cornwell$^{9, 10}$
 }
 \date{}
 \affiliation{\noindent{\footnotesize
-$^*$ These authors contributed equally\\
-$^\dag$ To whom correspondence should be addressed.\\
+$^\dag$ These authors contributed equally\\
 $^1$ Biodiversity Research Centre and Department of Zoology,
-University of British Columbia, Vancouver, BC V6G 1Z4, Canada
-\texttt{rich.fitzjohn@gmail.com}\\
+University of British Columbia, Vancouver, BC V6G 1Z4, Canada\\
 $^2$ Department of Biological Sciences, Macquarie University, Sydney, NSW 2109, Australia \\
 $^3$ Department of Biological Sciences and Institute for Bioinformatics and Evolutionary Studies, University
-of Idaho, Moscow, ID 83844, U.S.A.
-\texttt{mwpennell@gmail.com}\\
+of Idaho, Moscow, ID 83844, U.S.A.\\
 $^4$ National Evolutionary Synthesis Center, Durham, NC 27705, U.S.A.\\
 $^5$ Department of Biological Sciences, George Washington University,
-Washington, D.C. 20052, U.S.A.
-\texttt{aezanne@gmail.com}\\
+Washington, D.C. 20052, U.S.A.\\
 $^6$ Center for Conservation and Sustainable Development, Missouri Botanical Garden, St. Louis, MO, 63121, USA \\
 $^7$ Department of Biology, University of Missouri, St. Louis, MO
-63166, U.S.A.
-\texttt{stevensp@umsl.edu}\\
+63166, U.S.A.\\
 $^8$ Missouri Botanical Garden, PO Box 299, St Louis, MO 63166-0299\\
-$^9$ \texttt{dtank@uidaho.edu}\\
-$^{10}$ Department of Systems Ecology, VU University, 1081 HV
+$^{9}$ Department of Systems Ecology, VU University, 1081 HV
 Amsterdam, The Netherlands\\
-$^{11}$ Evolution \& Ecology Research Centre, School of Biological, Earth and Environmental Sciences, University of New South Wales, Sydney 2052 NSW, Australia
-\texttt{w.cornwell@unsw.edu.au}}\\
+$^{10}$ Evolution \& Ecology Research Centre, School of Biological, Earth and Environmental Sciences, University of New South Wales, Sydney 2052 NSW, Australia\\
+$^*$ Correspondence author. Email: \texttt{mwpennell@gmail.com}}\\
 
 \vfill
 % \raggedright, no line numbers, \pagestyle{empty}, copy and paste,
@@ -52,8 +46,9 @@ $^{11}$ Evolution \& Ecology Research Centre, School of Biological, Earth and En
 %\paragraph{Manuscript elements:} Fig.~1-3 (bw in print), Appendix.
 %\paragraph{Article type:} Note.
 }
+\mstype{Future Directions paper}
 \runninghead{How much of the world is woody?}
-\keywords{Databases, Sampling bias, Macroecology, Herbaceousness, Woodiness, Functional diversity}
+\keywords{Databases, Determinates of plant community diversity and structure, Functional diversity, Herbaceousness, Macroecology, Sampling bias, Woodiness}
 
 \begin{document}
 % \raggedright
@@ -102,7 +97,7 @@ $^{11}$ Evolution \& Ecology Research Centre, School of Biological, Earth and En
   diversity (i.e., number of species globally), building a functional
   understanding of global diversity is an important emerging research
   direction.  This approach represents a novel way to account for
-  sampling bias in functional trait datasets and answer basic
+  sampling bias in functional trait datasets and to answer basic
   questions about functional diversity at a global scale.
 \end{enumerate}
 \end{abstract}
@@ -162,7 +157,7 @@ unconventional approach of coupling our analysis with an informal
 survey in which we asked our question to the broader community of
 botanists and other biologists.
 
-\section{Methods and Materials}
+\section{Materials and Methods}
 
 \subsection{Dataset}
 
@@ -172,13 +167,13 @@ angiosperms), which is the largest such database assembled to date
 \citep[][available on the Dryad data repository; doi:10.5061/dryad.63q27/2]{Zanne}.
 %
 This database uses a functional definition of woodiness: woody species
-have a prominent aboveground stem that persists through time and changing
+have a prominent above--ground stem that persists through time and changing
 environmental conditions and herbaceous species lack such a stem --- 
 a definition originally suggested by Asa Gray \citeyearpar{gray1887elements}. 
 \citet{Zanne}
 chose this simple definition because it best characterised the functional
 aspect of growth form that they investigated, allowing them to compare 
-species that maintain an aboveground stem through freezing conditions to 
+species that maintain an above--ground stem through freezing conditions to 
 ephemeral species that avoid freezing conditions.  More precise definitions 
 that rely on lignin content and/or secondary vascular tissue from a bifacial
 cambium are problematic because there are many exceptions depending on tissue 
@@ -335,7 +330,7 @@ the greater the uncertainty in our estimates for the proportion of species
 which are woody.
 %
 For \textit{Microcoelia} this model gives a 42\% probability that all
-species are herbaceous, and a 90\% chance that at most three species
+species are herbaceous, and a 90\% chance that at most 3 species
 are woody.
 % #rstats
 % # Based on the code inside rhyper2()
@@ -540,7 +535,7 @@ estimate (Figure \ref{fig:survey}).  There was a significant effect of
 the respondent's familiarity with plants on the estimates, primarily
 driven by respondents with little botanical familiarity (the ``What's
 a Plant?'' category in the survey), whose estimates tended to be lower (less woody)
-than the estimates of those with more familiarity. However, excluding those of
+than the estimates of those with more familiarity. However, excluding
 respondents with little familiarity with plants had virtually no effect
 on the mean estimate of respondents (32.4\% excluding this category as compared
 to 31.7\% with them included).
@@ -656,7 +651,7 @@ they are inevitably biased in terms of taxonomic breadth and this may
 have serious consequences for the reliability of inferences drawn from
 them.  For example, for woodiness the economic importance of forestry
 species likely leads to their over--sampling in this dataset.
-This sampling bias also affect many commonly used methods in
+This sampling bias also affects many commonly used methods in
 ecological and evolutionary research
 \citep[e.g.,][]{ackerly2000taxon,nakagawa2008missing,pennell2013integrative,Pakeman2013}
 in addition to its well understood effects on conventional statistics.
@@ -686,7 +681,7 @@ of approaches --- using taxonomic categories (this study) versus
 modeling trait evolution along a phylogeny --- have advantages and
 disadvantages.  One disadvantage of a modeling--based approach is that
 if the sampling is biased with respect to the character states, the
-parameter estimates themselves will be biased, leading to incorrect
+parameter estimates themselves will be biased, leading to an incorrect
 estimation of the states for the remaining species. While our approach
 avoids this issue, we ignore potentially useful information on the
 phylogenetic relationships within genera and branch lengths separating

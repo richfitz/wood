@@ -106,12 +106,14 @@ Titles for Systematic biology:
 \def\author{\gdef\theauthor}
 \def\affiliation{\gdef\theaffiliation}
 \def\runninghead{\gdef\therunninghead}
+\def\mstype{\gdef\themstype}
 \def\keywords{\gdef\thekeywords}
 \def\version{\gdef\theversion}
 
 \newcommand{\mstitlepage}{
 %\begin{titlepage}
 %\singlespacing
+\paragraph{\MakeUppercase{\themstype}}
 \paragraph{Running head:} \MakeUppercase{\therunninghead}
 \parindent=0pt
 %\maketitle
@@ -131,7 +133,7 @@ Titles for Systematic biology:
 \setlength{\parskip}{.2ex plus1pt} % threequarters
 % \end{titlepage}
 \vfill
-\paragraph{Keywords:} \thekeywords
+\paragraph{Key-words:} \thekeywords
 
 \clearpage
 \doublespacing
