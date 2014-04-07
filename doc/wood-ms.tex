@@ -351,13 +351,13 @@ approach because it weakly constrains the state of missing species.
 
 However, the distribution of woodiness among genera and families is
 strongly bimodal; most genera are either all--woody or all--herbaceous
-(Figure \ref{fig:distribution-genera}, \ref{fig:distribution-family}, and 
+(Fig. \ref{fig:distribution-genera}, \ref{fig:distribution-family}, and 
 \citealt{sinnott1915evolution}).  Among the 791 genera with at least 10
 records, 411 are entirely woody, 271 are entirely herbaceous, and only
 58 have between 10\% and 90\% woody species. Qualitatively similar patterns
 hold at both the level of family and order, though the distribution
 becomes progressively less bimodal as one moves up the taxonomic hierarchy 
-(Figures \ref{fig:distribution-family} and \ref{fig:distribution-order}). 
+(Figs. \ref{fig:distribution-family} and \ref{fig:distribution-order}). 
 As a result, knowing the state of a handful of species within a genus 
 can give a reasonable guess at the state of remaining species.
 % #rstats
@@ -461,17 +461,17 @@ Specifically, using our strong prior sampling approach (binomial
 distribution) we estimated 45.6\% of species are woody (95\%
 confidence interval of 45.3--45.9\%) and with the weak prior
 (hypergeometric distribution) approach we estimated 47.6\% (95\% CI of
-47.0--48.2\%) (Figure \ref{fig:distribution-raw}).
+47.0--48.2\%) (Fig. \ref{fig:distribution-raw}).
 %
 The different approaches generated different distributions of the
-per--genus percentage of woodiness (Figure
+per--genus percentage of woodiness (Fig.
 \ref{fig:distribution-genera}), with a less strongly bimodal
-distribution using the weak prior approach. (See Figures
+distribution using the weak prior approach. (See Figs.
 \ref{fig:distribution-family} and \ref{fig:distribution-order} 
 for the distributions at the level of families and orders, respectively.) 
 However, the two different approaches (strong
 versus weak priors) led to similar phylogenetic distributions of
-estimated woodiness (Figure \ref{fig:phylogeny} versus Figure
+estimated woodiness (Fig. \ref{fig:phylogeny} versus Fig.
 \ref{fig:phylogeny-supp}), differing only in the details. We have compiled
 a table of the estimated number of woody species under both sampling
 approaches for all genera, families and orders included in our analysis.
@@ -505,7 +505,7 @@ increased by 1.4\% to 47.0\% with the strong prior approach
 % #rstats
 % round(tmp["h.w",] - tmp["h",], 2)
 % round(tmp["h.w",], 2)
-and by 1\% to 48.6\% with the weak prior approach (Figure
+and by 1\% to 48.6\% with the weak prior approach (Fig.
 \ref{fig:distribution-raw-errors}). Similarly, with coding
 all variable species as herbaceous, the fraction of woody species
 % #rstats
@@ -515,13 +515,13 @@ decreased by 1.9\% to 43.7\% under a strong prior
 % #rstats
 % round(tmp["h.h",] - tmp["h",], 2)
 % round(tmp["h.h",], 2)
-and by 1.3\% to 46.3\% under a weak prior (Figure
+and by 1.3\% to 46.3\% under a weak prior (Fig.
 \ref{fig:distribution-raw-errors}).
 
 There was strikingly little consensus among researchers as to the
 percentage of species that are woody.  We received 292 responses from
 29 countries, with estimates that ranged from 1\% to 90\% with a mean
-of 31.7\% (Figure \ref{fig:survey-distribution}).  The lowest
+of 31.7\% (Fig. \ref{fig:survey-distribution}).  The lowest
 estimate from our analyses (45\% woody) is greater than 81\% of our survey estimates.
 % #rstats
 % nrow(d.survey)                   # 292
@@ -531,7 +531,7 @@ estimate from our analyses (45\% woody) is greater than 81\% of our survey estim
 % mean(d.survey$Estimate < 45) # 0.81
 % mean(d.survey$Estimate < 100*res.b$overall.p[["mean"]]) # 0.83
 We found little effect of respondents' level of training on their
-estimate (Figure \ref{fig:survey}).  There was a significant effect of
+estimate (Fig. \ref{fig:survey}).  There was a significant effect of
 the respondent's familiarity with plants on the estimates, primarily
 driven by respondents with little botanical familiarity (the ``What's
 a Plant?'' category in the survey), whose estimates tended to be lower (less woody)
@@ -561,7 +561,7 @@ gradient in woodiness \citep{Molesheihgt}.
 Indeed, there was an effect of being in a tropical country, with the
 estimates from tropical countries being slightly higher than those
 from temperate countries ($p$=0.02), but this effect was very small
-($r^2$=0.02, Figure \ref{fig:survey-distribution}).
+($r^2$=0.02, Fig. \ref{fig:survey-distribution}).
 % #rstats
 % summary(res.tro)
 
@@ -594,7 +594,7 @@ distribution of sizes of those genera differs with woodiness.  Genera
 that are primarily herbaceous (less than 10\% woody species for genera
 with at least 10 records) were on average larger than primarily woody
 genera (more than 90\% woody species), with a mean of 214 species
-compared to 151 (See Figure \ref{fig:variability}).
+compared to 151 (See Fig. \ref{fig:variability}).
 % #rstats
 % dat.10 <- dat.g[dat.g$K > 10,]
 % round(mean(dat.10$N[dat.10$p < .1])) # 214
@@ -605,7 +605,7 @@ lead to a biased estimate.
 The effect of sampling bias within our database on the estimate is
 amplified by the distribution of woodiness at higher taxonomic levels,
 with families or even orders often being predominantly either woody or
-herbaceous (Figure \ref{fig:phylogeny} and
+herbaceous (Fig. \ref{fig:phylogeny} and
 \citealt{sinnott1915evolution}).  There are two major clades that are
 primarily herbaceous --- the monocots (Monocotyledons) and ferns
 (Monilophyta). However, there are many primarily herbaceous clades
@@ -630,12 +630,12 @@ pattern matching as biological processes.  Genera correspond to the
 morphological discontinuities among species that humans deem important
 \citep{scotland2004significance}, which likely includes woodiness
 \citep[e.g.,][]{Hutchinson}.  The relative rarity of genera with
-significant numbers of both woody and herbaceous species (Figure
+significant numbers of both woody and herbaceous species (Fig.
 \ref{fig:distribution-genera}) reinforces the importance of this
 trait.  A significant, but unaccounted for, source of error is the
 likely nonrandom woodiness of undiscovered species. We would predict
 that there are likely more herbs to be discovered than woody plants;
-larger genera tend to be more herbaceous (Figure \ref{fig:variability}) and we
+larger genera tend to be more herbaceous (Fig. \ref{fig:variability}) and we
 think it is more likely that new species are yet to be described in
 these large groups.  In principle, rarefaction analysis could estimate
 the number of species remaining to be discovered in different groups,
@@ -746,7 +746,7 @@ section Earth and Life Sciences (ALW) grant nr. 820.01.016.
 Dryad (doi:10.5061/dryad.63q27/2).
 \item \textit{Taxonomic resources:} compiled by \citet{Zanne} and available on
 Dryad (doi:10.5061/dryad.63q27/1).
-\item \textit{Phylogenetic tree (used in Figures 2 and S.4):} from \citet{Zanne} and
+\item \textit{Phylogenetic tree (used in Figs. 2 and S.4):} from \citet{Zanne} and
 available on Dryad (doi:10.5061/dryad.63q27/3).
 \end{itemize}
 
@@ -827,7 +827,7 @@ conducted with R version 3.0.2 \citep{R}.
     percentage of woody (black) and herbaceous (white) species,
     estimated using the ``strong prior'' (binomial) approach.  Using
     the ``weak prior'' (hypergeometric) approach generally leads to an
-    estimated percentage that is closer to 50\% (see Figures
+    estimated percentage that is closer to 50\% (see Figs.
     \ref{fig:phylogeny-supp} and \ref{fig:distribution-genera}).
     Phylogeny from \citet{Zanne} (available on Dryad; 
     doi:10.5061/dryad.63q27/3). Orders not placed by APG III
@@ -911,7 +911,7 @@ conducted with R version 3.0.2 \citep{R}.
   \includegraphics{figs/fraction-on-phylogeny-supp}
 
   \caption{(Supplementary)
-    \textit{This is Figure \ref{fig:phylogeny} using the alternative
+    \textit{This is Fig. \ref{fig:phylogeny} using the alternative
       sampling approach.}\\
     %
     Distribution of the fraction of woodiness among orders of vascular
@@ -923,7 +923,7 @@ conducted with R version 3.0.2 \citep{R}.
     estimated using the ``weak prior'' (hypergeometric) approach.
     Using the ``strong prior'' (binomial) approach generally leads to
     an estimated percentage that is further away from 50\% (see
-    Figures \ref{fig:phylogeny} and \ref{fig:distribution-genera}).
+    Figs. \ref{fig:phylogeny} and \ref{fig:distribution-genera}).
     Phylogeny from \citet{Zanne} (available on Dryad; 
     doi:10.5061/dryad.63q27/3). Orders not placed by APG III
     \citep{APG3} are not displayed.}
@@ -937,7 +937,7 @@ conducted with R version 3.0.2 \citep{R}.
     of the fraction of species that are woody, under the strong prior
     approach (binomial; panel A) and weak prior approach
     (hypergeometric; panel B).  The dark distributions are the results
-    from our main analysis (Figure \ref{fig:distribution-raw}).
+    from our main analysis (Fig. \ref{fig:distribution-raw}).
     Distributions to the left (with lower estimates of woodiness) code
     all species with any record of herbaceousness or variability as
     herbaceous.  Similarly, distributions to the right (with higher
