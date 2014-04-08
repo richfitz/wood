@@ -649,4 +649,4 @@ if (!interactive()) {
   to.pdf("doc/figs/graphical-abstract.pdf", 7, 3.5,
          fig.graphical.abstract(res.b, res.h, dat.g, d.survey))
 }
-# pie(c(.48, .52), c("Woody", "Herbaceous"))
+
