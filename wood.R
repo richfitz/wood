@@ -597,6 +597,24 @@ metadata <- data.frame(column=names(metadata),
                        stringsAsFactors=FALSE)
 write.csv(metadata, "output/results/metadata.csv", row.names=FALSE)
 
+## # Idea for the graphical abstract:
+
+fig.graphical.abstract <- function(res.b, res.h, dat.g, d.survey) {
+  p.raw <- sum(dat.g$W) / sum(dat.g$K)
+  p.survey <- mean(d.survey$Estimate) / 100
+  p.data <- mean(c(res.b$overall.p[["mean"]], res.h$overall.p[["mean"]]))
+  
+  f <- function(p, title) {
+    pie(c(p, 1-p), c("Woody", "Herbaceous"), col=cols.woody)
+    text(0, par("usr")[2], title, adj=c(0.5, 0), cex=1.2)
+  }
+  par(mfrow=c(1, 3), mar=rep(1, 4))
+  f(p.raw,    "Raw data")
+  f(p.survey, "Survey estimate")
+  text(0, 1.5, "How much of the world is woody?", cex=1.5, xpd=NA)
+  f(p.data,   "Bias corrected")
+}
+
 ## # Produce PDF versions of figures for publication:
 
 if (!interactive()) {
@@ -627,4 +645,8 @@ if (!interactive()) {
 
   to.pdf("doc/figs/variability.pdf", 7, 8,
          fig.variability(dat.g))
+
+  to.pdf("doc/figs/graphical-abstract.pdf", 7, 3.5,
+         fig.graphical.abstract(res.b, res.h, dat.g, d.survey))
 }
+# pie(c(.48, .52), c("Woody", "Herbaceous"))
