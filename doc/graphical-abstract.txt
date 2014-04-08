@@ -1,0 +1,3 @@
+Graphical abstract for JEcol publication
+
+Our paper poses a simple question but addressing it required us to deal with biases inherent in large functional trait databases. We develop an approach to overcome these biases using observed trait values and taxonomic information. We estimate that between 45-48% of the world’s plant species are woody. The world is much woodier than biologists think.
