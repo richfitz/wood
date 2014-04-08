@@ -1,7 +1,7 @@
 # How much of the world is woody?
 
 [Richard G. FitzJohn](http://www.zoology.ubc.ca/~fitzjohn),
-[Matthew W. Pennell](http://mwpennell.wordpress.com),
+[Matthew W. Pennell](https://mwpennell.github.io),
 [Amy E. Zanne](http://phylodiversity.net/azanne/),
 [Peter F. Stevens](http://www.missouribotanicalgarden.org/plant-scence/research-staff-article/487/stevens-p-f.aspx),
 [David C. Tank](http://www.phylodiversity.net/dtank/), 
