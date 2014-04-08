@@ -615,6 +615,9 @@ fig.graphical.abstract <- function(res.b, res.h, dat.g, d.survey) {
   f(p.data,   "Bias corrected")
 }
 
+##+ graphical_abstract,fig.height=3.5
+fig.graphical.abstract(res.b, res.h, dat.g, d.survey)
+
 ## # Produce PDF versions of figures for publication:
 
 if (!interactive()) {
