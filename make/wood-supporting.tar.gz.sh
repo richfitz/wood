@@ -4,7 +4,6 @@
 DEST=wood-supporting
 rm -rf $DEST
 mkdir $DEST
-cp -R figure wood.Rmd wood.md wood.html $DEST
 mkdir -p $DEST/output
 cp -R output/results $DEST/output
 
