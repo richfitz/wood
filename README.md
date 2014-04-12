@@ -72,5 +72,12 @@ install_github("richfitz/sowsear")
 
 (install `devtools` with `install.packages("devtools")` if you don't already have it).
 
+At present, we depend on the github version of diversitree; install that with 
+
+```
+library(devtools)
+install_github("richfitz/diversitree")
+```
+
 To recreate the geographic data (in `data/geo/country_coords.csv`) the
 `rgdal` package is required.

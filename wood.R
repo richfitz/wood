@@ -7,7 +7,7 @@
 ## [David C. Tank](http://www.phylodiversity.net/dtank/), 
 ## [William K. Cornwell](http://www.phylodiversity.net/wcornwell/)
 
-## This is the full analysis that underlies our paper.
+## This is the full analysis that underlies our paper.    
 
 ### Set knitr options
 ##+ echo=FALSE,results=FALSE
