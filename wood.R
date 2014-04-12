@@ -653,3 +653,6 @@ if (!interactive()) {
          fig.graphical.abstract(res.b, res.h, dat.g, d.survey))
 }
 
+## # Version information:
+
+sessionInfo()
