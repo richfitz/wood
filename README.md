@@ -11,6 +11,24 @@ This repository contains all the code and data used in the manuscript.
 
 [![Build Status](https://travis-ci.org/richfitz/wood.png?branch=master)](https://travis-ci.org/richfitz/wood)
 
+## Synopsis
+
+Running
+
+```
+make deps theplantlist-cache-unpack all
+```
+
+should run things with the greatest chance of success.
+
+## Automatically run version:
+
+We use [Travis CI](https://travis-ci.org/) to ensure reproducibility (or rather, repeatability/recomputability) of this project.  A generated analysis can be found [here](http://richfitz.github.io/wood).  The log of running the analysis can be seen [here](https://travis-ci.org/richfitz/wood) (click on either of the jobs in the build matrix).
+
+## More detail:
+
+There are two big prerequisites for running this analysis: (1) installing all the packages (with versions that work) and (2) downloading all the data that the analysis depends on.  There are two ways of doing each of these!  The data is described first, and the alternative package approach is described at the bottom of the file.  This should only be needed once package versions have changed to the point where the analysis is no longer working.
+
 ## Fetching the data
 
 There are two ways of fetching the required data (see `data/README.md` for information on the data that we depend on).
@@ -61,9 +79,19 @@ This will not compile the manuscript `doc/wood-ms.tex` to pdf; if you have LaTeX
 
 ## Requirements
 
-We require a few packages, namely `dplyr`, `diversitree`, `RCurl` and `knitr`.  These can all be installed off CRAN.
+We require a few packages, namely `dplyr`, `diversitree`, `RCurl` and `knitr`, along with the non-CRAN package [sowsear](https://github.com/richfitz/sowsear).  Detailed version information is available in the file `.packrat/packrat.lock` (on github see [here](https://github.com/richfitz/wood/tree/master/.packrat/packrat.lock)).
 
-To generate the report, we depend on the non-CRAN package [sowsear](https://github.com/richfitz/sowsear).  The easiest way to install that is with [devtools](https://github.com/hadley/devtools)
+Running
+
+```
+make deps
+```
+
+will organise installing any missing packages and will warn about any packages that are out of date.
+
+### Manually:
+
+Most packages can be installed off CRAN.  To generate the report, we depend on the non-CRAN package [sowsear](https://github.com/richfitz/sowsear).  The easiest way to install that is with [devtools](https://github.com/hadley/devtools)
 
 ```
 library(devtools)
@@ -80,9 +108,9 @@ install_github("richfitz/diversitree")
 ```
 
 To recreate the geographic data (in `data/geo/country_coords.csv`) the
-`rgdal` package is required.
+`rgdal` package is also required, but this also requires system installation of `gdal` and should not 
 
-## Using a known set of working packages with `packrat`
+### Using a known set of working packages with `packrat`
 
 Version rot means that while the analysis works now, it may not work in a few years when packages have been updated and changed their APIs.  To guard against this, we have archived a set of known working packages using [packrat](https://github.com/rstudio/packrat).
 

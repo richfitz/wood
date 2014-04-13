@@ -17,7 +17,13 @@ knitr::opts_chunk$set(tidy=FALSE)
 invisible(suppressWarnings(sample(1:250, 1, pr=rep(1, 250), replace=TRUE)))
 
 ## # Preliminaries
-## 
+##
+## Ensure that you have all the required packages installed by running
+##
+## ```
+## make deps
+## ```
+##
 ## Before running this script, be sure to have the required data in
 ## place.  If you have `make` installed, this can be done by running
 ## 
@@ -25,7 +31,7 @@ invisible(suppressWarnings(sample(1:250, 1, pr=rep(1, 250), replace=TRUE)))
 ## make data-processed
 ## ```
 ## 
-## at the command line.
+## at the command line.  See `README.md` for more details.
 ## 
 ## See the file `data/README.md` for more information about the data
 ## that we use, and alternative ways of running things if you don't
@@ -597,7 +603,7 @@ metadata <- data.frame(column=names(metadata),
                        stringsAsFactors=FALSE)
 write.csv(metadata, "output/results/metadata.csv", row.names=FALSE)
 
-## # Idea for the graphical abstract:
+## # Graphical abstract:
 
 fig.graphical.abstract <- function(res.b, res.h, dat.g, d.survey) {
   p.raw <- sum(dat.g$W) / sum(dat.g$K)
