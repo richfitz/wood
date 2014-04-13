@@ -1,0 +1,108 @@
+PackratFormat: 1.1
+PackratVersion: 0.1.0
+RVersion: 3.1.0
+Repos: http://cran.csiro.au/
+
+Package: ape
+Source: CRAN
+Version: 3.1-1
+Requires: nlme, lattice
+
+Package: assertthat
+Source: CRAN
+Version: 0.1
+
+Package: BH
+Source: CRAN
+Version: 1.54.0-1
+
+Package: bitops
+Source: CRAN
+Version: 1.0-6
+
+Package: deSolve
+Source: CRAN
+Version: 1.10-8
+
+Package: digest
+Source: CRAN
+Version: 0.6.4
+
+Package: diversitree
+Source: github
+Version: 0.9-7
+Requires: deSolve, ape, subplex, Rcpp
+GithubRepo: diversitree
+GithubUsername: richfitz
+GithubRef: master
+GithubSha1: 8248939bce18541a9df83d27db504f85c1054e42
+
+Package: dplyr
+Source: CRAN
+Version: 0.1.3
+Requires: assertthat, Rcpp, BH
+
+Package: evaluate
+Source: CRAN
+Version: 0.5.3
+Requires: stringr
+
+Package: formatR
+Source: CRAN
+Version: 0.10
+
+Package: highr
+Source: CRAN
+Version: 0.3
+
+Package: knitr
+Source: CRAN
+Version: 1.5
+Requires: evaluate, digest, formatR, highr, markdown, stringr
+
+Package: lattice
+Source: CRAN
+Version: 0.20-29
+
+Package: markdown
+Source: CRAN
+Version: 0.6.5
+
+Package: nlme
+Source: CRAN
+Version: 3.1-117
+Requires: lattice
+
+Package: packrat
+Source: github
+Version: 0.1.0
+GithubRepo: packrat
+GithubUsername: rstudio
+GithubRef: master
+GithubSha1: 0e360b5c15d319b796a1d4fdc83a2c5ae7a67333
+
+Package: Rcpp
+Source: CRAN
+Version: 0.11.1
+
+Package: RCurl
+Source: CRAN
+Version: 1.95-4.1
+Requires: bitops
+
+Package: sowsear
+Source: github
+Version: 0.1-1
+Requires: knitr
+GithubRepo: sowsear
+GithubUsername: richfitz
+GithubRef: master
+GithubSha1: e641b190830a91fafcfcb262eb13edad37531c82
+
+Package: stringr
+Source: CRAN
+Version: 0.6.2
+
+Package: subplex
+Source: CRAN
+Version: 1.1-3

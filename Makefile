@@ -89,6 +89,10 @@ cache-unpack: theplantlist-cache-unpack dryad-cache-unpack
 
 ARCHIVES = wood-supporting.tar.gz wood-analysis.tar.gz
 
+# Packrat support.
+PACKRAT_SOURCES_URL = http://www.zoology.ubc.ca/~fitzjohn/wood-packrat.tar.gz
+include make/packrat.mk
+
 release-files: ${ARCHIVES} ${DRYAD_CACHE} ${THEPLANTLIST_CACHE}
 	rm -rf release
 	mkdir -p release

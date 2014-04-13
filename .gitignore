@@ -41,3 +41,10 @@ rarefaction
 kew.R
 kewLifeform_data.csv
 .Rproj.user
+
+# packrat:
+.Renviron
+.Rprofile
+packrat.lock
+packrat.sources
+library

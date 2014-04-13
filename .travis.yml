@@ -30,3 +30,6 @@ env:
   global:
     - BOOTSTRAP_LATEX="1"    
     - secure: ZBHic7uBAmMNfMOWqVIaI+tthlqSUKWb+/6KCackazf+LzVCfbj3UR0EFiT9kepa79B80TrAysb1lb0m36hkh6IDFSojlWtdk5Kk/X2xbh8s0HQ7r0Jojzk6fsxv9zFqp355qnktXD5HFb1eSOkIpIfWFTJb1miJs0MFZrknx6A=
+  matrix:
+    - USE_PACKRAT=0
+    - USE_PACKRAT=1

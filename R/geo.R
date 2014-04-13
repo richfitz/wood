@@ -1,3 +1,6 @@
+## This really needs rgdal loaded or it won't run.  However, it's
+## disabled for now because it breaks packrat on OSX at the moment.
+
 ## This downloads a bunch of data from gbif and gets latitude and
 ## longitude for all countries.  This is saved in the
 ## data/geo/country_coords.csv file, so does not need to be run except
@@ -15,7 +18,6 @@ build.country.list <- function() {
     invisible(TRUE)
   }
 
-  library(rgdal)
   path.raw <- "data/geo/raw"
   dir.create(path.raw, showWarnings=FALSE, recursive=TRUE)
   ext <- c("dbf", "fix", "ORG.dbf", "prj", "qix", "shp", "shx")
