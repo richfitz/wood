@@ -126,4 +126,8 @@ purge: clean
 	rm -rf ${THEPLANTLIST_CONTENTS}
 	rm -f ${DRYAD_CONTENTS}
 
-.PHONY: all clean purge data-raw data-processed
+deps:
+	${RSCRIPT} make/dependencies.R
+
+# Lots of phony targets not listed...
+.PHONY: all clean purge data-raw data-processed deps
