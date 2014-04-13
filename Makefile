@@ -1,3 +1,6 @@
+RSCRIPT_PKGS := $(shell Rscript -e 'library(methods);writeLines(Sys.getenv("R_DEFAULT_PACKAGES"))')
+RSCRIPT = Rscript --default-packages="${RSCRIPT_PKGS},methods"
+
 DATA_RAW = data/zae/genus_order_lookup.csv data/theplantlist/names_accepted.csv
 DATA_PROCESSED = output/woodiness.rds output/dat.g.rds \
 	output/dat.g.w.rds output/dat.g.h.rds output/phy.o.rds
@@ -9,11 +12,11 @@ data-raw: ${DATA_RAW}
 data-processed: ${DATA_PROCESSED}
 
 wood.Rmd: wood.R
-	Rscript -e "library(sowsear); sowsear('$<', 'Rmd')"
+	${RSCRIPT} -e "library(sowsear); sowsear('$<', 'Rmd')"
 wood.md: wood.Rmd ${DATA_PROCESSED}
-	Rscript -e "library(knitr); knit('$<')"
+	${RSCRIPT} -e "library(knitr); knit('$<')"
 wood.html: wood.md
-	Rscript -e "library(markdown);\
+	${RSCRIPT} -e "library(markdown);\
 	 opts <- setdiff(markdownHTMLOptions(TRUE), 'base64_images');\
 	 markdownToHTML('$<', '$@', options=opts)"
 
@@ -24,32 +27,32 @@ doc/wood-ms.pdf: wood.md
 # data/geo/country_coords.csv is deleted then this will regenerate
 # that file.  It's here for reference only, really.
 data/geo/country_coords.csv:
-	Rscript make/data-geo-country_coords.csv.R
+	${RSCRIPT} make/data-geo-country_coords.csv.R
 
 data/zae/genus_order_lookup.csv: make/data-zae.R
-	Rscript $<
+	${RSCRIPT} $<
 
 data/theplantlist/names_accepted.csv: make/data-theplantlist.R
-	Rscript $<
+	${RSCRIPT} $<
 
 output/genus_order_lookup.csv: make/output-genus_order_lookup.csv.R ${DATA_RAW}
-	Rscript $<
+	${RSCRIPT} $<
 
 output/woodiness.rds: make/output-woodiness.rds.R R/load.R R/build.R ${DATA_RAW}
-	Rscript $<
+	${RSCRIPT} $<
 
 DATA_GENUS_DEPS = output/genus_order_lookup.csv output/woodiness.rds \
 	R/load.R R/build.R
 
 output/dat.g.rds: make/output-dat.g.rds.R ${DATA_GENUS_DEPS}
-	Rscript $<
+	${RSCRIPT} $<
 output/dat.g.w.rds: make/output-dat.g.w.rds.R ${DATA_GENUS_DEPS}
-	Rscript $<
+	${RSCRIPT} $<
 output/dat.g.h.rds: make/output-dat.g.h.rds.R ${DATA_GENUS_DEPS}
-	Rscript $<
+	${RSCRIPT} $<
 
 output/phy.o.rds: make/output-phy.o.rds.R output/dat.g.rds
-	Rscript $<
+	${RSCRIPT} $<
 
 # Cache downloads
 RELEASE=v0.9-rc1
@@ -99,6 +102,7 @@ release-files: ${ARCHIVES} ${DRYAD_CACHE} ${THEPLANTLIST_CACHE}
 	cp ${THEPLANTLIST_CACHE} release/theplantlist-cache.tar.gz
 	cp ${DRYAD_CACHE} release/dryad-cache.tar.gz
 	mv ${ARCHIVES} release
+	cp ${PACKRAT_SOURCES_ARCHIVE} release
 
 wood-supporting.tar.gz: ./make/wood-supporting.tar.gz.sh doc/wood-ms.pdf
 	$<
