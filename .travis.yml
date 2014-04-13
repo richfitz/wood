@@ -17,6 +17,7 @@ install:
     - ./travis-tool.sh install_deps
     - ./travis-tool.sh github_package richfitz/sowsear
     - ./travis-tool.sh github_package richfitz/diversitree
+    - make packrat-perhaps
 
 after_success:
     - ./.update-gh-pages.sh
