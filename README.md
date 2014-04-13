@@ -81,3 +81,41 @@ install_github("richfitz/diversitree")
 
 To recreate the geographic data (in `data/geo/country_coords.csv`) the
 `rgdal` package is required.
+
+## Using a known set of working packages with `packrat`
+
+Version rot means that while the analysis works now, it may not work in a few years when packages have been updated and changed their APIs.  To guard against this, we have archived a set of known working packages using [packrat](https://github.com/rstudio/packrat).
+
+We didn't want to use packrat *all the time* (our package use is hopefully straightforward enough that a plain installation should work) and we didn't want to bog down the repository with about 20MB of package sources (especially as there are stable canonical sources for almost all packages because CRAN retains sources indefinitely).  As such there is a fairly unfortunate, and likey fragile, bootstrapping procedure for enabling packrat that we have bodged together.
+
+Run
+
+```
+make packrat-enable
+```
+
+which will download the known set of working sources from our [releases page](https://github.com/richfitz/wood/releases) and copy files over from the `.packrat` directory.  This puts packrat into the state that packrat assumes the project is always in.  Packrat then goes through and compiles all the packages and installs them locally into a directory `library`.  This process can take a while!
+
+To disable packrat (putting the project back to using system-installed packages) run
+
+```
+make packrat-disable
+```
+
+To update the set of known working packages you can use the normal packrat tools and then run
+
+```
+make packrat-update
+```
+
+which copies local changes into the `.packrat` directory.  These files can then be committed, though the remote `tar.gz` file would then need updating to share these changes.
+
+To record a set of system-installed packages as working, run
+
+```
+make packrat-refresh
+```
+
+(note that this also sets the project up to use packrat, so running `make packrat-disable` afterwards is probably wise).
+
+See `make/packrat.mk` for more information on our approach here, which does not fit neatly within packrat's scope.  It's possible that by the time using the archived packages is necessary, better systems for doing this will exist.
