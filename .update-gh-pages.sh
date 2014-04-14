@@ -1,32 +1,53 @@
 #!/bin/bash
+# Based on
 # http://sleepycoders.blogspot.com.au/2013/03/sharing-travis-ci-generated-files.html
+# https://help.github.com/articles/creating-project-pages-manually
+#
+# This differs by deleting the history of the gh pages branch by doing
+# a force push off a brand new branch.  This helps keep the size of
+# the repo under control.
 echo -e "Preparing to copy generated files to gh-pages branch"
 if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-  echo -e "Starting to update gh-pages\n"
+    if [ "$USE_PACKRAT" == "1" ]; then
+        echo -e "This is a the packrat version, not copying files"
+    else
+        echo -e "Starting to update gh-pages\n"
 
-  mkdir -p $HOME/keep
-  cp -R wood.html figure doc/wood-ms.pdf $HOME/keep
+        mkdir -p $HOME/keep
+        cp -R wood.html figure doc/wood-ms.pdf $HOME/keep
+        cp doc/gh-pages_index.html $HOME/keep/index.html
 
-  #go to home and setup git
-  cd $HOME
-  git config --global user.email "rich.fitzjohn@gmail.com"
-  git config --global user.name "Rich FitzJohn"
+        #go to home and setup git
+        cd $HOME
+        git config --global user.email "rich.fitzjohn@gmail.com"
+        git config --global user.name "Rich FitzJohn"
 
-  #using token clone gh-pages branch
-  git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/richfitz/wood.git gh-pages > /dev/null
+        echo -e "Recloning project"
+        # Reclone the project, using the secret token.  Uses /dev/null to avoid leaking decrypted key
+        git clone --quiet --branch=gh-pages --single-branch https://${GH_TOKEN}@github.com/richfitz/wood.git gh-pages > /dev/null
 
-  #go into diractory and copy data we're interested in to that directory
-  cd gh-pages
-  cp -Rf $HOME/keep/* .
+        cd gh-pages
+        # We want to keep the old index page though.
+        cp index.html $HOME/keep
 
-  #add, commit and push files
-  git add -f .
-  git commit -m "Travis build $TRAVIS_BUILD_NUMBER pushed to gh-pages"
-  git push -fq origin gh-pages > /dev/null
+        # Move the old branch out of the way and create a new one:
+        git branch -m gh-pages-old
+        git checkout --orphan gh-pages
 
-  echo -e "Uploaded generated files to gh-pages\n"
+        # Delete all the files and replace with our good set
+        git rm -rf .
+        cp -Rf $HOME/keep/* .
+
+        # add, commit and push files
+        git add -f .
+        git commit -m "Travis build $TRAVIS_BUILD_NUMBER pushed to gh-pages"
+        echo -e "Pushing to origin/gh-pages"
+        git push -fq origin gh-pages > /dev/null
+
+        echo -e "Uploaded generated files to gh-pages\n"
+    fi
 else
-  echo -e "This is a pull request, not copying files"
+    echo -e "This is a pull request, not copying files"
 fi
 
 echo -e "Done"
