@@ -14,6 +14,9 @@ untar.if.exists <- function(filename) {
   }
 }
 
+## Check that dependencies are installed:
+Rscript("make/dependencies.R")
+
 ## 'data-raw'
 untar.if.exists(".dryad-cache.tar.gz")
 untar.if.exists(".theplantlist-cache.tar.gz")
