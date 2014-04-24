@@ -6,7 +6,7 @@ For a recent research project on the evolution of this simplest plant trait stem
 
 This absence of information lead us to ponder how, in the era of "big data", could such a simple question remain unknown?  Splitting plants into herbaceous and woody dates to Theophrastus in (~300 BC), but still by all appearances such a partitioning of biodiversity into different forms is a blind spot in the accumulated scientific knowledge.  The diagram represents the problem we faced:
 
-![image](venn.pdf =450x)
+![image](venn.pdf)
 
 As shown in the diagram, while we think we live in the time of "big data" with databases representing tens of thousands of species, our data are typically still a small fraction of global biodiversity. We should point out that for our NESCent project, we assembled the largest single plant trait database to date for one of the simplest possible traits--woodiness--and we still only reached values for 16% of known species (Zanne et al. 2014).  GenBank which is the most successful crowd sourced open data effort in our field is only doing slightly better. The take home message then is that an understanding of global biodiversity that goes beyond simply a name is still absent.  
 
