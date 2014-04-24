@@ -26,6 +26,10 @@ We used [knitr](http://yihui.name/knitr/) to implement the analysis in a [litera
 
 All of our data manipulation was handled with scripts, and we could delete all figures/outputs and recreate them at will.
 
+**Automated caching of dependencies**
+
+We used [make](http://en.wikipedia.org/wiki/Make_(software%29) to document dependencies within components of the projects, rebuilding only the sections that required changing.  This also makes the build process somewhat self documenting.
+
 **Version control**
 
 All of our scripts were under version control using [git](http://git-scm.com) from [the beginning](https://github.com/richfitz/wood/commit/8ed0c8c10dfda2a8f11f169ec528b7e161832eeb), enabling us to dig back through old versions.  This was central to everything we did!  See [this article](http://www.scfbm.org/content/8/1/7) for much more on how version control facilitates research.
@@ -36,7 +40,7 @@ We used the "[continuous integration](http://en.wikipedia.org/wiki/Continuous_in
 
 **Documenting dependencies**
 
-We used [packrat](https://github.com/rstudio/packrat)` for managing and archiving R package dependencies to ensure future repeatability.  In theory, this means that if software versions change enough to break our scripts, we have an archived set of packages that can be used.  This is a very new tool; only time will tell if this will work, however.
+We used [packrat](https://github.com/rstudio/packrat) for managing and archiving R package dependencies to ensure future repeatability.  In theory, this means that if software versions change enough to break our scripts, we have an archived set of packages that can be used.  This is a very new tool; only time will tell if this will work, however.
 
 ## Remaining challenges
 
