@@ -12,7 +12,9 @@ if (length(pkgs.missing) > 0) {
   pkgs.missing.info <- pkgs[match(pkgs.missing, pkgs$Package),]
   pkgs.missing.cran <-
     pkgs.missing.info$Package[pkgs.missing.info$Source == "CRAN"]
-  install.packages(pkgs.missing.cran)
+  if (length(pkgs.missing.cran) > 0) {
+    install.packages(pkgs.missing.cran)
+  }
 
   # Then get the github ones:
   pkgs.missing.info.github <-
