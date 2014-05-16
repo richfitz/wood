@@ -18,7 +18,7 @@ Running `make data-raw` (optionally running `make theplantlist-cache-unpack` fir
 
 # directory `zae`
 
-Files from Zanne et al. (2015) [doi:10.1038/nature12872](http://doi.org/10.1038/nature12872).
+Files from Zanne et al. (2014) [doi:10.1038/nature12872](http://doi.org/10.1038/nature12872).
 
 * `zae/GlobalWoodinessDatabase.csv`: list of species with their woodiness
   status.  See `woodinessReadme.txt` for more information.
