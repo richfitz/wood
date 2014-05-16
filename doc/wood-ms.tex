@@ -280,23 +280,23 @@ of vascular plants.
 % sum(dat.g$K) # 38810 -- known
 % sum(dat.g$W) / sum(dat.g$K) # 0.59 -- fraction
 For example, most Orchidaceae are probably herbaceous; we have only
-one record of woodiness among the 1,573 species for which we have
+one record of woodiness among the 1,537 species for which we have
 data.
 % #rstats
 % i.orc <- dat.g$family == "Orchidaceae"
-% sum(dat.g$K[i.orc]) # 1573 -- known Orchidaceae
+% sum(dat.g$K[i.orc]) # 1537 -- known Orchidaceae
 % sum(dat.g$W[i.orc]) # 1    -- woody Orchidaceae
-However, the fraction of Orchidaceae species with known data (1,573 of
+However, the fraction of Orchidaceae species with known data (1,537 of
 27,801 = 6\%)
-% sum(dat.g$K[i.orc]) #  1573 -- known Orchidaceae
+% sum(dat.g$K[i.orc]) #  1537 -- known Orchidaceae
 % sum(dat.g$N[i.orc]) # 27801 -- number of Orchidaceae
-% sum(dat.g$K[i.orc]) / sum(dat.g$N[i.orc]) # 0.55 -- fraction known
+% sum(dat.g$K[i.orc]) / sum(dat.g$N[i.orc]) # 0.055 -- fraction known
 is much lower than the overall rate of knowledge for all vascular
-plants (38,810 of 284,732 = 12\%), which will upwardly bias the global
+plants (38,810 of 316,143 = 12\%), which will upwardly bias the global
 estimate of woodiness.
 % #rstats
 % sum(dat.g$K) #  38810 -- known vascular
-% sum(dat.g$N) # 284732 -- total vascular
+% sum(dat.g$N) # 316143 -- total vascular
 % sum(dat.g$K) / sum(dat.g$N) # 0.12 -- fraction known
 Conversely, systematic under--sampling of tropical species would bias
 the global woodiness estimate downwards, as tropical floras are
@@ -372,7 +372,7 @@ can give a reasonable guess at the state of remaining species.
 % length(tmp)              # 791 -- genera with at least 10 records
 % sum(tmp == 1)            # 411 -- 100% woody
 % sum(tmp == 0)            # 268 -- 100% herbaceous
-% sum(tmp > 0 & tmp < 1)   # 106 -- variable
+% sum(tmp > 0 & tmp < 1)   # 109 -- variable
 % sum(tmp > .1 & tmp < .9) #  58 -- interestingly variable
 
 To model the other extreme of sampling, we used an approach where we
@@ -462,7 +462,7 @@ survey).
 Across all vascular plants, we estimated the fraction of woody species
 to be between 45\% and 48\%.
 % #rstats
-% round(100*res.b$overall.p, 1) # 45.6 (45.3 -- 45.9)
+% round(100*res.b$overall.p, 1) # 45.5 (45.2 -- 45.8)
 % round(100*res.h$overall.p, 1) # 47.6 (47.0 -- 48.2)
 Specifically, using our strong prior sampling approach (binomial
 distribution) we estimated 45.6\% of species are woody (95\%
