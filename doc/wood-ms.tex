@@ -97,8 +97,8 @@ $^*$ Correspondence author. Email: \texttt{mwpennell@gmail.com}}\\
   much higher than the conventional wisdom.
   % #rstats
   % round(100*range(c(res.b$overall.p, res.h$overall.p)))
-  % round(100*res.b$overall.p, 1) # 45.6 (45.3 -- 45.9)
-  % round(100*res.h$overall.p, 1) # 47.6 (47.0 -- 48.2)
+  % round(100*res.b$overall.p, 1) # 45.5 (45.2 -- 45.8)
+  % round(100*res.h$overall.p, 1) # 47.6 (46.9 -- 48.2)
 \item \emph{Synthesis}: Alongside an understanding of global taxonomic
   diversity (i.e., number of species globally), building a functional
   understanding of global diversity is an important emerging research
@@ -371,7 +371,7 @@ can give a reasonable guess at the state of remaining species.
 % tmp <- dat.g$p[dat.g$K >= 10] # select genera with 10 records
 % length(tmp)              # 791 -- genera with at least 10 records
 % sum(tmp == 1)            # 411 -- 100% woody
-% sum(tmp == 0)            # 268 -- 100% herbaceous
+% sum(tmp == 0)            # 271 -- 100% herbaceous
 % sum(tmp > 0 & tmp < 1)   # 109 -- variable
 % sum(tmp > .1 & tmp < .9) #  58 -- interestingly variable
 
@@ -463,12 +463,12 @@ Across all vascular plants, we estimated the fraction of woody species
 to be between 45\% and 48\%.
 % #rstats
 % round(100*res.b$overall.p, 1) # 45.5 (45.2 -- 45.8)
-% round(100*res.h$overall.p, 1) # 47.6 (47.0 -- 48.2)
+% round(100*res.h$overall.p, 1) # 47.6 (46.9 -- 48.2)
 Specifically, using our strong prior sampling approach (binomial
 distribution) we estimated 45.6\% of species are woody (95\%
 confidence interval of 45.3--45.9\%) and with the weak prior
 (hypergeometric distribution) approach we estimated 47.6\% (95\% CI of
-47.0--48.2\%) (Fig. \ref{fig:distribution-raw}).
+46.9--48.2\%) (Fig. \ref{fig:distribution-raw}).
 %
 The different approaches generated different distributions of the
 per--genus percentage of woodiness (Fig.
@@ -492,8 +492,7 @@ to 45\% than to 47\%.  A more sophisticated hierarchical modelling
 approach could lead to a more precise answer, but we feel that our
 values probably span the range of estimates that such an approach
 would generate. And in any case, we felt that addressing a simple question
-warranted a %(relatively)
-simple approach.  
+warranted a simple approach.  
 
 % #rstats
 % n.spp <- sum(res.b$order$N)
@@ -508,7 +507,7 @@ all variable species as woody, our estimates
 % #rstats
 % round(tmp["b.w",] - tmp["b",], 2)
 % round(tmp["b.w",], 2)
-increased by 1.4\% to 47.0\% with the strong prior approach
+increased by 1.6\% to 47.1\% with the strong prior approach
 % #rstats
 % round(tmp["h.w",] - tmp["h",], 2)
 % round(tmp["h.w",], 2)
@@ -516,7 +515,7 @@ and by 1\% to 48.6\% with the weak prior approach (Fig.
 \ref{fig:distribution-raw-errors}). Similarly, with coding
 all variable species as herbaceous, the fraction of woody species
 % #rstats
-% -round(tmp["b.h",] - tmp["b",], 2)
+% round(tmp["b.h",] - tmp["b",], 2)
 % round(tmp["b.h",], 2)
 decreased by 1.9\% to 43.7\% under a strong prior
 % #rstats
