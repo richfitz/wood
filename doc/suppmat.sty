@@ -1,43 +1,51 @@
+% Default is singlespacing.
 \RequirePackage{setspace}
-% \newcommand{\textspacing}{\setstretch{1.45}}
-% \setlength{\parskip}{.2ex plus1pt} % threequarters
-
-\newcommand{\textspacing}{\setstretch{1.25}}
-%\setlength{\parskip}{.1ex plus1pt} % threequarters
-
-\raggedbottom
-
-\DeclareOption{singlespace}{%
+\newcommand{\textspacing}{}
+\DeclareOption{singlespacing}{%
     \typeout{Using single spacing}%
     \renewcommand{\textspacing}{\singlespacing}}
-\DeclareOption{onehalfspace}{%
+\DeclareOption{onehalfspacing}{%
   \typeout{Using one-and-a-half spacing}%
   \renewcommand{\textspacing}{\onehalfspacing}}
-\DeclareOption{doublespace}{%
+\DeclareOption{doublespacing}{%
     \typeout{Using double spacing}%
     \setlength{\parskip}{.6ex plus1pt}
     \renewcommand{\textspacing}{\doublespacing}}
-
 \ProcessOptions\relax
 \textspacing
 
+% Fill the page a bit more:
 \usepackage[hmargin=3.5cm,vmargin=3.5cm]{geometry}
-
+\raggedbottom
 
 % Tame hyphenation:
 \hyphenpenalty=3000
 \tolerance=200
 
-% Hyphenatable code (doesn't always work manually though)
-\newcommand\codeh[1]{\texttt{\hyphenchar\font=45\relax #1}}
-% Allow \-/ hyphenation of already-hyphen\-/ated words
-\usepackage[shortcuts]{extdash}
-
-\RequirePackage[mathlf,minionint]{MinionPro}
+% Nicer titles:
 \RequirePackage{titlesec}
 \RequirePackage{numname}
 \RequirePackage{textcase}
+
+% Hyperlinks:
+\usepackage{xcolor}
+\definecolor{navy}{rgb}{0,0,0.4}
+\usepackage[colorlinks,citecolor=navy,linkcolor=navy,urlcolor=navy]{hyperref}
+
+% NOTE: I am a big fan of Minion Pro, especially for small caps.
+% However, installing it is a pain:
+%   https://gist.github.com/richfitz/2324707
+% So this switches between Minion Pro and Palatino, which at least
+% looks substantially nicer than Computer Modern.
+\IfFileExists{MinionPro.sty}{
+\RequirePackage[mathlf,minionint]{MinionPro}
 \RequirePackage[protrusion=true,expansion=false,verbose=silent]{microtype}
+}{
+\RequirePackage[osf]{mathpazo}
+\def\textssc{\textsc}
+\RequirePackage[tracking=smallcaps,protrusion=true,expansion=false,verbose=silent]{microtype}
+}
+
 \DeclareRobustCommand{\spacedsmallcaps}[1]{\textls[50]{\scshape{#1}}}%
 \DeclareRobustCommand{\spacedallcaps}[1]{\textssc{\MakeTextUppercase{#1}}}
 \DeclareRobustCommand{\spacedlowcaps}[1]{\textssc{\MakeTextLowercase{#1}}}
@@ -49,6 +57,7 @@
 \renewcommand{\headrulewidth}{0pt}
 \fancyfoot[LE,RO]{\footnotesize\thepage}}
 
+\definecolor{grey}{rgb}{0.4,0.4,0.4}
 \pagestyle{plain}
 \renewcommand{\headrulewidth}{0pt}
 \fancyhf{}
@@ -57,9 +66,6 @@
 \fancyfoot[LE,RO]{\footnotesize\thepage}
 \fancyhead[LO,RE]{\color{grey}{\footnotesize\spacedlowcaps{\@titleprefix}}}
 \fancyhead[LE,RO]{\footnotesize\spacedlowcaps{\@runninghead}}
-
-
-
 
 % Can't get spaced sc here
 %\titleformat*{\section}{\raggedright\singlespace\large\sscshape}
@@ -88,11 +94,6 @@
 \def\emailaddress{\gdef\@emailaddress}
 \def\titleprefix{\gdef\@titleprefix}
 \def\runninghead{\gdef\@runninghead}
-
-\usepackage{xcolor}
-\definecolor{navy}{rgb}{0,0,0.4}
-\definecolor{grey}{rgb}{0.4,0.4,0.4}
-\usepackage[colorlinks,citecolor=navy,linkcolor=navy,urlcolor=navy]{hyperref}
 
 \newcommand{\sectionline}{%
   \nointerlineskip \vspace{\baselineskip}%
