@@ -14,7 +14,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         echo -e "Starting to update gh-pages\n"
 
         mkdir -p $HOME/keep
-        cp -R wood.html figure doc/wood-ms.pdf $HOME/keep
+        cp -R wood.html figure doc/wood-ms.pdf doc/wood-ms-supporting.pdf $HOME/keep
         cp doc/gh-pages_index.html $HOME/keep/index.html
 
         #go to home and setup git
