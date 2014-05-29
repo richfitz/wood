@@ -5,6 +5,11 @@
 \usepackage{lineno}
 \usepackage{graphicx}
 \usepackage{caption}
+
+% Allow referencing into the supporting information:
+\usepackage{xr}
+\externaldocument{wood-ms-supporting}
+
 \modulolinenumbers[5]
 \linenumbers
 
@@ -745,6 +750,7 @@ WKC was supported by Netherlands Organisation for
 Scientific Research (NWO) through its Open Competition Program of the
 section Earth and Life Sciences (ALW) grant nr. 820.01.016.
 
+\clearpage
 \section{Data Accessibility}
 \subsection{Previously published resources}
 \begin{itemize}
@@ -768,50 +774,9 @@ available on Dryad (doi:10.5061/dryad.63q27/3).
   (\texttt{https://github.com/richfitz/wood}).
 \end{itemize}
 
-
-\section{Appendix: Survey details}
-%
-The survey we created is included as a Supplementary figure to
-this paper (see \ref{fig:survey-text} and \ref{fig:survey-text-port}).
-We distributed the survey to the 
-community via several electronic
-mailing lists with wide circulation among biologists: \emph{EvolDir},
-\emph{ECOLOG}, \emph{\mbox{r-sig-phylo}}, \emph{Taxacom},
-\emph{Herbaria}, as well as local lists. We also posted links on the
-social--networking platforms \textsc{google+}, \textsc{twitter} and
-\textsc{facebook} to reach a broad audience.
-%
-In order to increase representation of survey responses from Latin
-America, we translated the survey into Portuguese and distributed it
-to Brazilian biology \textsc{facebook} groups and university mailing
-lists.
-
-To analyse the survey data, we used linear regression on
-logit--transformed percent woodiness as \citep[see][]{wartonarcsine}
-and treated the self--reported level of botanical familiarity and
-education as factors.  We converted country of training to coarse
-latitude using shapefiles
-from the GBIF dataportal\\
-(\texttt{http://code.google.com/p/gbif-dataportal/wiki/ConfiguringGeoserver}),
-and converted these into ``tropical'' and ``temperate'' using an
-absolute latitude of 23$^\circ$~26$^\prime$.  All analyses were
-conducted with R version 3.0.2 \citep{R}.
-
-
+\clearpage
 \bibliographystyle{jecol}
 \bibliography{wood.bib}
-
-\section{Supporting Information}
-
-\begin{flushleft}
-\textbf{Fig. S.1} Distribution of woodiness proportion among families\\
-\textbf{Fig. S.2} Distribution of woodiness proportion among orders\\
-\textbf{Fig. S.3} Estimates of woodiness proportion using both approaches\\
-\textbf{Fig. S.4} Phylogenetic distribution of woodiness (``weak prior'' approach)\\
-\textbf{Fig. S.5} Effect of variable species coding on estimates\\
-\textbf{Fig. S.6} Distribution of survey responses\\
-\textbf{Fig. S.7} Relationship between genus size and proportion of woodiness
-\end{flushleft}
 
 \begin{figure}[p]
   \centering
@@ -871,174 +836,6 @@ conducted with R version 3.0.2 \citep{R}.
     red lower rectangle corresponds to the ``strong prior'' approach
     (see Appendix for details).}
   \label{fig:survey}
-\end{figure}
-
-\clearpage
-\renewcommand\thefigure{S.\arabic{figure}}
-\renewcommand\thetable{S.\arabic{table}}
-\setcounter{figure}{0}    
-\setcounter{table}{0}
-
-\begin{figure}[p]
-  \centering
-  \includegraphics{figs/fraction-by-family}
-  \caption{Distribution of the percentage of woodiness among families.
-    The distribution of the percentage of species that are woody within
-    a family is strongly bimodal among families (panel A), though less
-    strongly bimodal than among genera.
-    % 
-    The two different sampling approaches generate distributions that
-    differ in their bimodality (panel B).  Using the weak prior
-    approach generates a broad distribution with many polymorphic
-    genera (blue line), while using the strong prior approach
-    generates a strongly bimodal distribution (red line).}
-  \label{fig:distribution-family}
-\end{figure}
-
-\begin{figure}[p]
-  \centering
-  \includegraphics{figs/fraction-by-order}
-  \caption{Distribution of the percentage of woodiness among orders.
-    The distribution of the percentage of species that are woody within
-    an order is bimodal among orders (panel A), though
-    less strongly bimodal than among both genera and families.
-    % 
-    The two different sampling approaches generate distributions that
-    differ in their bimodality (panel B).  Using the weak prior
-    approach generates a broad distribution with many polymorphic
-    genera (blue line), while using the strong prior approach
-    generates a strongly bimodal distribution (red line).}
-  \label{fig:distribution-order}
-\end{figure}
-
-\begin{figure}[p]
-  \centering
-  \includegraphics{figs/distribution-raw}
-  \caption{(Supplementary) The posterior probability distribution for
-    the proportion of the world's flora that is woody, using our two
-    sampling approaches.  The red (left) distribution samples missing
-    species using the strong prior approach (binomial distribution),
-    while the blue distribution (right) samples missing species using
-    the weak prior approach (hypergeometric distribution).}
-  \label{fig:distribution-raw}
-\end{figure}
-
-\begin{figure}[p]
-  \centering
-  \includegraphics{figs/fraction-on-phylogeny-supp}
-
-  \caption{(Supplementary)
-    \textit{This is Fig. \ref{fig:phylogeny} using the alternative
-      sampling approach.}\\
-    %
-    Distribution of the fraction of woodiness among orders of vascular
-    plants.  Each tip represents an order, with the fraction of
-    circumference proportional to the square root of the number of
-    recognised species in that order (data from accepted names in
-    \citet{ThePlantList}).  The bars around the perimeter indicate the
-    percentage of woody (black) and herbaceous (white) species,
-    estimated using the ``weak prior'' (hypergeometric) approach.
-    Using the ``strong prior'' (binomial) approach generally leads to
-    an estimated percentage that is further away from 50\% (see
-    Figs. \ref{fig:phylogeny} and \ref{fig:distribution-genera}).
-    Phylogeny from \citet{Zanne} (available on Dryad; 
-    doi:10.5061/dryad.63q27/3). Orders not placed by APG III
-    \citep{APG3} are not displayed.}
-  \label{fig:phylogeny-supp}
-\end{figure}
-
-\begin{figure}[p]
-  \centering
-  \includegraphics{figs/distribution-raw-errors}
-  \caption{(Supplementary) The effect of different coding on estimates
-    of the fraction of species that are woody, under the strong prior
-    approach (binomial; panel A) and weak prior approach
-    (hypergeometric; panel B).  The dark distributions are the results
-    from our main analysis (Fig. \ref{fig:distribution-raw}).
-    Distributions to the left (with lower estimates of woodiness) code
-    all species with any record of herbaceousness or variability as
-    herbaceous.  Similarly, distributions to the right (with higher
-    estimates of woodiness) code all species with any record of
-    woodiness or variability as woody.}
-  \label{fig:distribution-raw-errors}
-\end{figure}
-    
-      
-\begin{figure}[p]
-  \centering
-  \includegraphics{figs/survey-distribution}
-  \caption{(Supplementary) Distribution of all responses to the survey
-    question ``What percentage of the world's vascular plant species
-    are woody?''.
-    %
-    The mean and 95\% confidence intervals for our estimates of the
-    proportion of woody species from the empirical data are depicted
-    by the horizontal shaded rectangles; the blue rectangle
-    corresponds to the ``weak prior'' approach and the red rectangle
-    corresponds to the ``strong prior'' approach (see Appendix for
-    details).  
-    % 
-    Panel A includes all 292 responses.  In panel B, the 282
-    responses that indicated country are shown separated into
-    ``tropical'' (orange distribution) and ``temperate'' (teal).
-    Estimates from tropical countries were slightly, but
-    significantly, higher than those from temperate countries
-    ($p=$0.02, $r^2$=0.02).
-    % #rstats
-    % nrow(d.survey)                   # 292
-    % sum(!is.na(d.survey$Country))    # 282
-    % summary(res.tro)
-  }
-
-  \label{fig:survey-distribution}
-\end{figure}
-
-
-
-
-
-\begin{figure}[p]
-  \centering
-  \includegraphics[scale=0.7]{figs/variability}
-  \caption{(Supplementary) The relationship between the size of a genus
-and its chance of being ``variable'' for woodiness.
-%
-We plotted the relationship between the level of variablitiy in the
-dataset (from all of a single--type to equal numbers of woody and
-herbaceous species) against the number of species in a genus (panel A)
-and the number of species with known state (panel B). Larger genera
-tend to be more variable although this pattern is not strong. We then
-coded all genera as being either variable or all of a single--type and
-examined the relationship between this binary characterization and the
-number of species per genus (panel C) and the number for which we
-have known states (panel D). Using the binary characterization, it is
-clear that large genera have a higher probability of being variable,
-even if few species actually vary (compare with panels A and
-B). Though there is a great deal of scatter, larger genera also tend to be
-more herbaceous than woody genera (panel E) but the genera for which
-we have more data tend to be more woody (panel F). This shows that the
-available data is generally biased towards woody species.  In all
-panels, the red line is a moving average over 20 (left column) of 15 (right
-column) equally spaced bins on this log axis.}
-  \label{fig:variability}
-\end{figure}
-
-\begin{figure}[p]
-  \centering
-  \vspace{-20ex}
-  \includegraphics[scale=0.7]{figs/Survey_supplemental}
-  \caption{(Supplementary) English--language version of the survey we
-    distributed}
-  \label{fig:survey-text}
-\end{figure}
-
-\begin{figure}[p]
-  \centering
-  \vspace{-20ex}
-  \includegraphics[scale=0.8]{figs/Survey_supplemental_Portuguese}
-  \caption{(Supplementary) Portuguese--language version of the survey we
-    distributed}
-  \label{fig:survey-text-port}
 \end{figure}
 
 \end{document}
