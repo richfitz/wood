@@ -55,7 +55,7 @@ output/phy.o.rds: make/output-phy.o.rds.R output/dat.g.rds
 	${RSCRIPT} $<
 
 # Cache downloads
-RELEASE=v0.9-rc1
+RELEASE=v1.0
 
 THEPLANTLIST_CONTENTS = data/theplantlist/acceptedNames1.1
 THEPLANTLIST_CACHE = .theplantlist-cache.tar.gz
@@ -93,7 +93,7 @@ cache-unpack: theplantlist-cache-unpack dryad-cache-unpack
 ARCHIVES = wood-supporting.tar.gz wood-analysis.tar.gz
 
 # Packrat support.
-PACKRAT_SOURCES_URL = http://www.zoology.ubc.ca/~fitzjohn/wood-packrat.tar.gz
+PACKRAT_SOURCES_URL = https://github.com/richfitz/wood/releases/download/${RELEASE}/packrat.sources.tar.gz
 include make/packrat.mk
 
 release-files: ${ARCHIVES} ${DRYAD_CACHE} ${THEPLANTLIST_CACHE}
