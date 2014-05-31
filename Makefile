@@ -18,7 +18,7 @@ wood.md: wood.Rmd ${DATA_PROCESSED}
 wood.html: wood.md
 	${RSCRIPT} -e "library(markdown);\
 	 opts <- setdiff(markdownHTMLOptions(TRUE), 'base64_images');\
-	 markdownToHTML('$<', '$@', options=opts)"
+	 markdownToHTML('$<', '$@', options=opts, stylesheet='stylesheet.css', template='.template.html')"
 
 doc/wood-ms.pdf: wood.md
 	make -C doc

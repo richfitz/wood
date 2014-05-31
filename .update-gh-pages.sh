@@ -14,8 +14,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         echo -e "Starting to update gh-pages\n"
 
         mkdir -p $HOME/keep
-        cp -R wood.html figure doc/wood-ms.pdf doc/wood-ms-supporting.pdf $HOME/keep
-        cp doc/gh-pages_index.html $HOME/keep/index.html
+        cp -R index.html wood.html stylesheet.css figure doc/wood-ms.pdf doc/wood-ms-supporting.pdf $HOME/keep
 
         #go to home and setup git
         cd $HOME
@@ -27,8 +26,6 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         git clone --quiet --branch=gh-pages --single-branch https://${GH_TOKEN}@github.com/richfitz/wood.git gh-pages > /dev/null
 
         cd gh-pages
-        # We want to keep the old index page though.
-        cp index.html $HOME/keep
 
         # Move the old branch out of the way and create a new one:
         git branch -m gh-pages-old
