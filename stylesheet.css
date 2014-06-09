@@ -1,0 +1,250 @@
+/* http://colorschemedesigner.com/#0A61P----SjTe */
+
+html, body {
+   margin:0;
+   padding:0;
+   height:100%;
+
+   margin: auto;
+
+   line-height: 1.8em;
+   background-color: #ffeeca;
+   /*color: ;*/
+   font-family: Arvo, sans-serif;
+}
+
+#container {
+    margin: 0 auto;
+    padding-bottom: 3em;
+
+    width: 80%;
+    max-width: 80em;
+
+    min-height:100%;
+    position:relative;
+}
+
+#container-front {
+    min-height:100%;
+    position:relative;
+}
+
+/* Body for most pages */
+#body {
+    max-width: 60em; /* 960px */
+    position: relative;
+    background: white;
+    /*margin: 40px 0 0 0; */
+    padding: 2em 4em 3em 2em;
+    /* Curvy outside */
+    border-radius:         10px;
+    /* Shadow */
+    box-shadow:         0 6px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Front page */
+#body-front {
+    padding:10px;
+    /*padding-bottom: 40px;   /* Height of the footer */
+    width: 800px;
+}
+
+#header {
+    padding:10px;
+}
+
+#lhs {
+    /* border: solid red;  /* debug */
+    /* Positioning */
+    display: inline-block;
+    position: relative;
+    left: 60px;
+    float: left;
+
+    /* Size and margins */
+    width: 340px;
+    margin-top: 30px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 30px;
+
+    /* Fonts and colours */
+    font-size: 110%;
+    background-color: white;
+
+    /* Other */
+    border-radius: 10px;
+    box-shadow:    0 6px 10px rgba(0, 0, 0, 0.5);
+}
+
+#rhs { 
+    /* border: solid blue; /* debug */ 
+
+    /* Positioning */
+    display: inline-block;
+    position: relative;
+    left: 60px;
+    float: left;
+
+    /* Size and margins */
+    width: 340px;
+    margin-top: 30px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 0px;
+    padding: 0px;
+    padding-top: 30px;
+
+    /* Fonts and colours */
+    font-size: 100%;
+    background-color: #ffeeca66;
+    /*line-height: 1.8em;*/
+    outline-color: #586E75;
+    outline-style: none;
+    outline-width: 0px;
+
+    box-shadow:    10px 20px 20px #ffeeca66; /*rgba(255, 238, 202, 1);*/
+
+    /* Other */
+    zoom: 1;
+}
+
+#lhs p {
+    margin-top: 0px;
+}
+#lhs p:last-child {margin-bottom: 0px;}
+
+#rhs ul {
+    margin-top: 0px;
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+#rhs li {
+    margin-bottom: 1ex;
+    
+}
+
+::selection {
+    background: #00BFFF;
+    color: white;
+    text-shadow: none;
+}
+
+.name {
+    color: #FF3900;
+    font-weight: bold;
+    font-size: 120%;
+    text-decoration: none;
+    border: none;
+}
+
+a:visited {
+    color: #FF8300;
+}
+a, a:active {
+    color: #FF8300;
+    vertical-align: baseline;
+    text-decoration: none;
+    border-bottom: 1px dotted #B58900;
+}
+
+a:hover {
+    color: #036;
+}
+
+#footer {
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:10px;   /* Height of the footer */
+    background:#000;
+    padding-top: 5px;
+    opacity: .3;
+    -webkit-transition-duration: 0.2s;
+    /*-webkit-transition-timing-function: ease;*/
+/*padding-top: 5px;*/
+}
+
+p.icons {
+    padding: 0;
+}
+
+p.icons a {
+    color: #FF3900;
+    border: none;
+    padding: 0;
+}
+
+p.ref, p.paperinfo {
+    font-size: 90%;
+    margin: 0;
+    padding: 0;
+    padding-left: 2em;
+}
+
+p.ref {
+    color: #777777;
+}
+
+p.paperinfo a {
+    white-space: nowrap;
+}
+
+.lowerright {
+    position:absolute;
+    bottom:0;
+    right:0;
+}
+
+#footer:Hover {
+    opacity: 1;
+    height: 36px;
+}
+#footer img {
+    padding-left: .5em;
+}
+
+#footer a {
+    text-decoration: none;
+    border: 0;
+}
+
+hr.eop {
+    border: 0;
+    border-bottom: 1px solid black;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+#bottom-nav {
+    float: left;
+    font-size: 80%;
+}
+
+h1{
+    color: #FF3900;
+}
+
+h2 {
+    color: #FF8300;
+    font-size: 110%;
+}
+
+/* Extra things for R code */
+pre, img {
+  max-width: 100%;
+}
+
+pre code {
+   display: block; 
+   line-height: 20px;
+   padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  background: #fff8ea;
+}
