@@ -1,5 +1,5 @@
-RSCRIPT_PKGS := $(shell Rscript -e 'library(methods);writeLines(Sys.getenv("R_DEFAULT_PACKAGES"))')
-RSCRIPT = Rscript --default-packages="${RSCRIPT_PKGS},methods"
+RSCRIPT_PKGS := $(shell Rscript --no-user-file -e 'library(methods);writeLines(Sys.getenv("R_DEFAULT_PACKAGES"))')
+RSCRIPT = Rscript --no-user-file --default-packages="${RSCRIPT_PKGS},methods"
 
 DATA_RAW = data/zae/genus_order_lookup.csv data/theplantlist/names_accepted.csv
 DATA_PROCESSED = output/woodiness.rds output/dat.g.rds \
