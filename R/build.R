@@ -10,14 +10,14 @@ build.woodiness.genus <- function(extreme=FALSE) {
       summarise.count(parse.count(dat$woodiness.count), extreme)
 
   res <-
-    tpl %.% left_join(dat, "gs") %.%
-    group_by(genus, family) %.%
+    tpl %>% left_join(dat, "gs") %>%
+    group_by(genus, family) %>%
     summarise(W=sum(woodiness == "W", na.rm=TRUE),
               V=sum(woodiness == "V", na.rm=TRUE),
               H=sum(woodiness == "H", na.rm=TRUE),
-              N=length(woodiness)) %.%
-    mutate(K = W + H) %.%
-    mutate(p = W / K) %.%
+              N=length(woodiness)) %>%
+    mutate(K = W + H) %>%
+    mutate(p = W / K) %>%
     left_join(lookup, c("genus", "family"))
 
   cols <- c("genus", "family", "order", "W", "V", "H", "N", "K", "p")

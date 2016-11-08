@@ -15,9 +15,9 @@ phy.order <- lookup$order[match(sub("_.+$", "", phy$tip.label),
 phy.order[grepl("^UnknownOrder-", phy.order)] <- NA
 
 keep <- data.frame(tip=phy$tip.label, order=phy.order,
-                   stringsAsFactors=FALSE) %.%
-  filter(!is.na(order)) %.%
-  group_by(order) %.%
+                   stringsAsFactors=FALSE) %>%
+  filter(!is.na(order)) %>%
+  group_by(order) %>%
   summarise(tip=tip[[1]])
 
 ## Update this for a few cases:
@@ -31,7 +31,7 @@ phy.o <- ladderize(phy.o)
 
 ## Get counts by order:
 dat.g <- load.woodiness.genus()
-n <- dat.g %.% group_by(order) %.% summarise(n=sum(N))
+n <- dat.g %>% group_by(order) %>% summarise(n=sum(N))
 
 phy.o$n.taxa <- structure(n$n[match(phy.o$tip.label, n$order)],
                           names=phy.o$tip.label)
